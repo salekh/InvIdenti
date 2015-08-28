@@ -1,0 +1,27 @@
+<component name="libraryTable">
+  <library name="attributes-processor-1.2.3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/optional/attributes-processor-1.2.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/commons-codec-1.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/httpclient-4.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/httpcore-4.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/httpmime-4.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/jcl-over-slf4j-1.7.12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/lucene-backward-codecs-5.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/lucene-core-5.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/lucene-highlighter-5.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/lucene-join-5.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/lucene-memory-5.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/lucene-queries-5.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/lucene-queryparser-5.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/lucene-sandbox-5.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/morfologik-fsa-1.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/morfologik-polish-1.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/morfologik-stemming-1.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/rome-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/optional/rome-fetcher-1.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
