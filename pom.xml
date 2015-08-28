@@ -7,6 +7,31 @@
     <groupId>org.InvIdenti</groupId>
     <artifactId>InvIdenti</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <source>1.8</source>
+                            <target>1.8</target>
+                        </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <resources>
+            <resource>
+                <directory>configuration</directory>
+                <includes>
+                    <include>log4j.xml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+
 <dependencies>
     <dependency>
         <groupId>us.codecraft</groupId>
@@ -15,11 +40,17 @@
     </dependency>
 
 
-        <dependency>
-            <groupId>org.carrot2</groupId>
-            <artifactId>carrot2-core</artifactId>
-            <version>3.10.3</version>
-        </dependency>
+    <dependency>
+        <groupId>org.carrot2</groupId>
+        <artifactId>carrot2-core</artifactId>
+        <version>3.10.3</version>
+    </dependency>
+
+    <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.2</version>
+    </dependency>
 
 </dependencies>
     <repositories>
@@ -36,4 +67,7 @@
             </snapshots>
         </repository>
     </repositories>
+
+
+
 </project>

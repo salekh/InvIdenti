@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/carrot2-examples.iml" filepath="$PROJECT_DIR$/carrot2-examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/InvIdenti.iml" filepath="$PROJECT_DIR$/InvIdenti.iml" />
     </modules>
   </component>
 </project>
