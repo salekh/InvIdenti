@@ -91,7 +91,7 @@ public class USPTOSearch
     public static List<String> getTextByNumber(String number)
     {
         Document doc=getDocumentByNumber(number);
-        ArrayList<String> strs=new ArrayList<>();
+        ArrayList<String> strs=new ArrayList<String>();
         //Document doc=getDocumentByNumber(number);
         strs.add(getAbstract(number, doc));
         strs.add(getClaims(number, doc));

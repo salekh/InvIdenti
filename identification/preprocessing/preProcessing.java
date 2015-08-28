@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class preProcessing
 {
     String str="RNA is transcribed from a double stranded DNA template by forming a complex by hybridizing to the template at a desired transcription initiation site one or more oligonucleic acid analogues of the PNA type capable of forming a transcription initiation site with the DNA and exposing the complex to the action of a DNA dependant RNA polymerase in the presence of nucleoside triphosphates. Equal length transcripts may be obtained by placing a block to transcription downstream from the initiation site or by cutting the template at such a selected location. The initiation site is formed by displacement of one strand of the DNA locally by the PNA hybridization.";
-    ArrayList<Document> docs=new ArrayList<>();
+    ArrayList<Document> docs=new ArrayList<Document>();
     PreprocessingContext context;
     public preProcessing(ArrayList<Document> docs)
     {
@@ -36,7 +36,7 @@ public class preProcessing
 
     public String removeStopWords()
     {
-        ArrayList<String> strs=new ArrayList<>();
+        ArrayList<String> strs=new ArrayList<String>();
         String s_r="";
         for(int i=0;i<context.allWords.type.length;i++) {
             if (context.allWords.type[i]!=4097)
@@ -53,7 +53,7 @@ public class preProcessing
     public static void main(String[] args)
     {
         String str="RNA is transcribed from a double stranded DNA template by forming a complex by hybridizing to the template at a desired transcription initiation site one or more oligonucleic acid analogues of the PNA type capable of forming a transcription initiation site with the DNA and exposing the complex to the action of a DNA dependant RNA polymerase in the presence of nucleoside triphosphates. Equal length transcripts may be obtained by placing a block to transcription downstream from the initiation site or by cutting the template at such a selected location. The initiation site is formed by displacement of one strand of the DNA locally by the PNA hybridization.";
-        ArrayList<Document> docs=new ArrayList<>();
+        ArrayList<Document> docs=new ArrayList<Document>();
         docs.add(new Document(str));
         /*
         PreprocessingContext c=new CompletePreprocessingPipeline().preprocess(docs,null,LanguageCode.ENGLISH);
