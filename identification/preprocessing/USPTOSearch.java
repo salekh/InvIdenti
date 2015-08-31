@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
+import us.codecraft.webmagic.Spider;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +19,49 @@ import java.util.List;
 public class USPTOSearch
 {
 
+   public String patetnt_number;
 
+    private String abs;//Get the abstract of the patent
+
+    private String claims;//Get the claims of the patent
+
+    private String description;//Get the description of the patent
+
+
+    public USPTOSearch(String patent_number)
+   {
+       this.patetnt_number=patent_number;
+       String base_url="http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO2&Sect2=HITOFF&p=1&u=%2Fnetahtml%2FPTO%2Fsearch-adv.htm&r=1&f=G&l=50&d=PALL&";
+       String pat_number="S1="+this.patetnt_number+"&OS="+this.patetnt_number+"&RS="+this.patetnt_number;
+       String full_path=base_url+pat_number;
+       USPTOSpider g=new USPTOSpider();
+       Spider.create(g).addUrl(full_path).thread(1).run();
+       abs=g.getAbs();
+       claims=g.getClaims();
+       description=g.getDescription();
+   }
+
+    public static void main(String[] args)
+    {
+        USPTOSearch s=new USPTOSearch("4202051");
+    }
+
+    public String getAbs()
+    {
+        return abs;
+    }
+
+    public String getClaims()
+    {
+        return claims;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+   /*
     //Get abstract of the patent
    public static String getAbstractByNunmber(String number)
    {
@@ -162,7 +205,7 @@ public class USPTOSearch
             if (e==null) return null; else
             {
                 String str=getTextBetweenTwoTags(e,"hr","hr");
-                return str;//e.parent().nextElementSibling().ownText();
+                return str;//4.parent().nextElementSibling().ownText();
             }
 
         }
@@ -221,6 +264,6 @@ public class USPTOSearch
     public static void main(String[] args)
     {
        System.out.println(USPTOSearch.getClaimsByNunmber("D0405326"));
-    }
+    }*/
 
 }

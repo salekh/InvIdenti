@@ -12,6 +12,7 @@ import java.util.List;
  * Created by sunlei on 15/8/20.
  */
 public class patParser {
+
     private JLabel Abstract;
     private JLabel Claims;
     private JTextArea AbstractText;
@@ -25,16 +26,17 @@ public class patParser {
 
 
     public patParser() {
+
         Fetch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 if(e.getSource()==Fetch)
                 {
-                    List<String> strs=USPTOSearch.getTextByNumber(PatentNumber.getText());
-                    AbstractText.setText(strs.get(0));
-                    ClaimsText.setText(strs.get(1));
-                    DescriptionText.setText(strs.get(2));
+                    USPTOSearch s=new USPTOSearch(PatentNumber.getText());
+                    AbstractText.setText(s.getAbs());
+                    ClaimsText.setText(s.getClaims());
+                    DescriptionText.setText(s.getDescription());
                 }
 
             }
@@ -68,4 +70,5 @@ public class patParser {
         frame.pack();
         frame.setVisible(true);
     }
+
 }
