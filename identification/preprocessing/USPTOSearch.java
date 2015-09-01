@@ -1,17 +1,5 @@
 package preprocessing;
-
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
 import us.codecraft.webmagic.Spider;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by leisun on 15/8/20.
  * Search the patents from the USPTO
@@ -28,23 +16,40 @@ public class USPTOSearch
     private String description;//Get the description of the patent
 
 
-    public USPTOSearch(String patent_number)
-   {
-       this.patetnt_number=patent_number;
-       String base_url="http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO2&Sect2=HITOFF&p=1&u=%2Fnetahtml%2FPTO%2Fsearch-adv.htm&r=1&f=G&l=50&d=PALL&";
-       String pat_number="S1="+this.patetnt_number+"&OS="+this.patetnt_number+"&RS="+this.patetnt_number;
-       String full_path=base_url+pat_number;
-       USPTOSpider g=new USPTOSpider();
-       Spider.create(g).addUrl(full_path).thread(1).run();
-       abs=g.getAbs();
-       claims=g.getClaims();
-       description=g.getDescription();
-   }
+    public USPTOSearch(String patent_number) {
+        this.patetnt_number = patent_number;
+        String base_url = "http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO2&Sect2=HITOFF&p=1&u=%2Fnetahtml%2FPTO%2Fsearch-adv.htm&r=1&f=G&l=50&d=PALL&";
+        String pat_number = "S1=" + this.patetnt_number + "&OS=" + this.patetnt_number + "&RS=" + this.patetnt_number;
+        String full_path = base_url + pat_number;
+        USPTOSpider g = new USPTOSpider();
+        Spider.create(g).addUrl(full_path).thread(1).run();
+        if (g.getTitle().contains(patent_number)) {
+            abs = g.getAbs();
+            claims = g.getClaims();
+            description = g.getDescription();
+        }
+        else
+        {
 
-    public static void main(String[] args)
-    {
-        USPTOSearch s=new USPTOSearch("4202051");
+            base_url="http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO1&Sect2=HITOFF&d=PALL&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.htm&r=1&f=G&l=50&";
+            pat_number="s1="+patent_number+".PN.&OS=PN/"+patent_number+"&RS=PN/"+patent_number;
+            Spider.create(g).addUrl(base_url+pat_number).thread(1).run();
+            if(g.getTitle().contains(patent_number))
+            {
+                abs = g.getAbs();
+                claims = g.getClaims();
+                description = g.getDescription();
+            }
+            else {
+                System.out.println("failed to find the patent,please check the patent number:" + this.patetnt_number);
+                this.abs = null;
+                this.claims = null;
+                this.description = null;
+            }
+        }
     }
+
+
 
     public String getAbs()
     {
@@ -257,13 +262,6 @@ public class USPTOSearch
         return doc;
     }
 
-
-
-
-
-    public static void main(String[] args)
-    {
-       System.out.println(USPTOSearch.getClaimsByNunmber("D0405326"));
-    }*/
+*/
 
 }

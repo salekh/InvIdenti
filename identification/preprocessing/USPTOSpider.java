@@ -21,6 +21,8 @@ public class USPTOSpider implements PageProcessor
 
     private String description;//Get the description of the patent
 
+    private String title;
+
     private Site site=Site.me().setRetryTimes(3).setRetryTimes(100);
 
     public void process(Page page)
@@ -29,8 +31,10 @@ public class USPTOSpider implements PageProcessor
 
 
         Document doc= Jsoup.parse(page.getHtml().toString());
+        Elements e=doc.getElementsByTag("title");
+        if(e==null||e.size()==0) title=null; else title=e.first().toString();
 
-        Elements e=doc.getElementsMatchingOwnText("Abstract");
+        e=doc.getElementsMatchingOwnText("Abstract");
 
         if (e==null||e.size()==0) abs=null; else this.abs=e.first().parent().nextElementSibling().ownText();
         e=doc.getElementsMatchingOwnText("Claims");
@@ -89,6 +93,8 @@ public class USPTOSpider implements PageProcessor
     {
         return description;
     }
+
+    public String getTitle(){return title;}
 
     public Site getSite()
     {
