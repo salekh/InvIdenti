@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 public class preProcessing
 {
-    String str="RNA is transcribed from a double stranded DNA template by forming a complex by hybridizing to the template at a desired transcription initiation site one or more oligonucleic acid analogues of the PNA type capable of forming a transcription initiation site with the DNA and exposing the complex to the action of a DNA dependant RNA polymerase in the presence of nucleoside triphosphates. Equal length transcripts may be obtained by placing a block to transcription downstream from the initiation site or by cutting the template at such a selected location. The initiation site is formed by displacement of one strand of the DNA locally by the PNA hybridization.";
+    //String str="RNA is transcribed from a double stranded DNA template by forming a complex by hybridizing to the template at a desired transcription initiation site one or more oligonucleic acid analogues of the PNA type capable of forming a transcription initiation site with the DNA and exposing the complex to the action of a DNA dependant RNA polymerase in the presence of nucleoside triphosphates. Equal length transcripts may be obtained by placing a block to transcription downstream from the initiation site or by cutting the template at such a selected location. The initiation site is formed by displacement of one strand of the DNA locally by the PNA hybridization.";
     ArrayList<Document> docs=new ArrayList<Document>();
     PreprocessingContext context;
     public preProcessing(ArrayList<Document> docs)
@@ -32,18 +32,20 @@ public class preProcessing
     private void completePreprocess()
     {
         context=new CompletePreprocessingPipeline().preprocess(docs,null,LanguageCode.ENGLISH);
+        System.out.println(context.allWords);
     }
 
     public String removeStopWords()
     {
         ArrayList<String> strs=new ArrayList<String>();
         String s_r="";
-        for(int i=0;i<context.allWords.type.length;i++) {
-            if (context.allWords.type[i]!=4097)
+        System.out.println(this.context.allLabels.featureIndex.length);
+        for(int i=0;i<this.context.allLabels.featureIndex.length;i++)
+        {
+            if(this.context.allLabels.featureIndex[i]<this.context.allWords.tf.length)
             {
-                //System.out.println(context.allWords.type[i]);
-                strs.add(new String(context.allWords.image[i]));
-                s_r=s_r+new String(context.allWords.image[i])+" ";
+                s_r+=this.context.allWords.image[i];
+                s_r+=" ";
             }
         }
         return s_r;
