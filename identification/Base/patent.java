@@ -1,5 +1,7 @@
 package Base;
 
+import org.apache.mahout.math.matrix.DoubleMatrix2D;
+
 /**
  * Created by sunlei on 15/9/6.
  */
@@ -9,6 +11,7 @@ public class patent
     private String abs;
     private String claims;
     private String description;
+    private DoubleMatrix2D td;
 
     public patent(String patent_number,String abs,String claims,String description)
     {
@@ -16,6 +19,21 @@ public class patent
         this.abs=abs;
         this.claims=claims;
         this.description=description;
+    }
+
+    public patent(String patent_number,String str)
+    {
+        this.description=str;
+    }
+
+    public void setTd(DoubleMatrix2D M)
+    {
+        td=M.copy();
+    }
+
+    public DoubleMatrix2D getTd()
+    {
+        return td;
     }
 
     public String getPatent_number()

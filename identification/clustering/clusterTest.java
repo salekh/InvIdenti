@@ -1,5 +1,6 @@
 package clustering;
 
+import Base.patent;
 import com.carrotsearch.hppc.IntArrayList;
 import com.carrotsearch.hppc.IntIntHashMap;
 import com.carrotsearch.hppc.cursors.IntIntCursor;
@@ -18,11 +19,14 @@ import org.carrot2.text.vsm.ReducedVectorSpaceModelContext;
 import org.carrot2.text.vsm.TermDocumentMatrixBuilder;
 import org.carrot2.text.vsm.TermDocumentMatrixReducer;
 import org.carrot2.text.vsm.VectorSpaceModelContext;
+import weka.clusterers.AbstractClusterer;
+import weka.clusterers.SimpleKMeans;
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instance;
+import weka.core.Instances;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by sunlei on 15/9/6.
@@ -33,11 +37,13 @@ public class clusterTest extends ProcessingComponentBase implements IClusteringA
 
     public List<Cluster> clusters = null;
 
-    public int clusterCount = 1;
+    public int clusterCount = 15;
 
     public int maxIterations = 15;
 
     public boolean useDimensionalityReduction = true;
+
+    private DoubleMatrix2D tdMatrix;
 
     public IPreprocessingPipeline preprocessingPipeline = new CompletePreprocessingPipeline();
     public final TermDocumentMatrixBuilder matrixBuilder = new TermDocumentMatrixBuilder();
@@ -54,6 +60,11 @@ public class clusterTest extends ProcessingComponentBase implements IClusteringA
 
     public void process() throws ProcessingException {
 
+    }
+
+    public DoubleMatrix2D getTdMatrix()
+    {
+        return tdMatrix;
     }
 
     private void cluster(LanguageCode language)
@@ -122,6 +133,9 @@ public class clusterTest extends ProcessingComponentBase implements IClusteringA
 
             ArrayList var21 = Lists.newArrayList();
             DoubleMatrix2D selected = var19.viewSelection((int[])null, var20.toArray()).copy();
+
+            this.tdMatrix=selected.copy();
+            /*
             DenseDoubleMatrix2D similarities = new DenseDoubleMatrix2D(3, selected.columns());
             //System.out.println(similarities.columns()+" "+similarities.rows());
             var19.zMult(selected, similarities, 1.0D, 0.0D, true, false);
@@ -133,8 +147,10 @@ public class clusterTest extends ProcessingComponentBase implements IClusteringA
                     System.out.print(similarities.get(i, j) + " ");
 
                 }
-                System.out.println();
             }
+            */
+
+            System.out.println(selected.columns()+" "+selected.rows());
 
 
 
@@ -144,6 +160,7 @@ public class clusterTest extends ProcessingComponentBase implements IClusteringA
 
 
     }
+
 
     public static void main(String[] args)
     {
@@ -155,7 +172,70 @@ public class clusterTest extends ProcessingComponentBase implements IClusteringA
         docs.add(new Document(abs));
         docs.add(new Document(claims));
         docs.add(new Document(description));
-        new clusterTest(docs);
+        clusterTest t= new clusterTest(docs);
+        patent p = new patent("a",abs);
+        IntArrayList t1=new IntArrayList();
+        t1.add(0);
+        //p.setTd(t.getTdMatrix().viewSelection((int[]) null, t1.toArray()));
+
+
+
+        FastVector f=new FastVector(333);
+        for(int i=0;i<333;i++)
+            f.addElement(new Attribute(Integer.toString(i)));
+        Instances instances=new Instances("patent",f,100);
+        /*
+        Instance newInstance = (Instance)instance.copy();
+        newInstance.setDataset(this);
+        this.m_Instances.addElement(newInstance);
+        */
+        Instance newi0=new Instance(333);
+        newi0.setDataset(instances);
+        for(int i=0;i<333;i++)
+        {
+            newi0.setValue(i, t.getTdMatrix().get(i, 0));
+        }
+        instances.add(newi0);
+        t1.clear();
+        t1.add(1);
+        Instance newi1=new Instance(333);
+        newi0.setDataset(instances);
+        for(int i=0;i<333;i++)
+        {
+            newi1.setValue(i,t.getTdMatrix().get(i,1));
+        }
+        instances.add(newi1);
+        t1.clear();
+        t1.add(2);
+        Instance newi2=new Instance(333);
+        newi0.setDataset(instances);
+        for(int i=0;i<333;i++)
+        {
+            newi2.setValue(i, t.getTdMatrix().get(i, 2));
+        }
+        instances.add(newi2);
+        /*
+        for(int i=0;i<t.getTdMatrix().rows();i++) {
+            for (int j = 0; j < t.getTdMatrix().columns(); j++) {
+                System.out.print(t.getTdMatrix().get(i, j)+" ");
+            }
+
+        }
+        */
+
+        simpleKMeans km=new simpleKMeans(333);
+        try {
+            km.buildClusterer(instances);
+            for(int i=0;i<km.getClusterSizes().length;i++)
+            {
+                System.out.println(km.getClusterSizes()[i]);
+            }
+            System.out.println(km.getClusterSizes().length);
+
+            System.out.println(km.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
