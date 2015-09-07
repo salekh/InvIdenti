@@ -52,6 +52,18 @@
         <version>1.2</version>
     </dependency>
 
+    <dependency>
+        <groupId>org.apache.mahout</groupId>
+        <artifactId>mahout-math</artifactId>
+        <version>0.6</version>
+    </dependency>
+
+    <dependency>
+        <groupId>nz.ac.waikato.cms.weka</groupId>
+        <artifactId>weka-stable</artifactId>
+        <version>3.6.12</version>
+    </dependency>
+
 </dependencies>
     <repositories>
         <repository>
