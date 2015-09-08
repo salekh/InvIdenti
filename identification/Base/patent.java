@@ -23,6 +23,7 @@ public class patent
 
     public patent(String patent_number,String str)
     {
+        this.patent_number=patent_number;
         this.description=str;
     }
 

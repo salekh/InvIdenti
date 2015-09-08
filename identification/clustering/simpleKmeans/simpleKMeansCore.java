@@ -1,5 +1,6 @@
-package clustering;
+package clustering.simpleKmeans;
 
+import clustering.patentDistance;
 import weka.classifiers.rules.DecisionTableHashKey;
 import weka.clusterers.NumberOfClustersRequestable;
 import weka.clusterers.RandomizableClusterer;
@@ -13,11 +14,10 @@ import java.util.Random;
 /**
  * Created by sunlei on 15/9/7.
  */
-public class simpleKMeans extends RandomizableClusterer implements NumberOfClustersRequestable, WeightedInstancesHandler {
+public class simpleKMeansCore extends RandomizableClusterer {
 
     private int m_NumClusters = 2;
     private Instances m_ClusterCentroids;
-    private Instances m_ClusterStdDevs;
     private int[][][] m_ClusterNominalCounts;
     private int[][] m_ClusterMissingCounts;
     private int[] m_ClusterSizes;
@@ -31,7 +31,7 @@ public class simpleKMeans extends RandomizableClusterer implements NumberOfClust
     protected int dimension=0;
 
 
-    public simpleKMeans(int dimension) {
+    public simpleKMeansCore(int dimension) {
         this.m_SeedDefault = 10;
         this.setSeed(this.m_SeedDefault);
         this.dimension=dimension;
@@ -177,7 +177,7 @@ public class simpleKMeans extends RandomizableClusterer implements NumberOfClust
     protected double[] moveCentroid(int centroidIndex, Instances members, boolean updateClusterInfo) {
         double[] vals = new double[members.numAttributes()];
         for(int j = 0; j < members.numAttributes(); ++j) {
-                vals[j] = members.meanOrMode(j);
+            vals[j] = members.meanOrMode(j);
             if(updateClusterInfo) {
                 this.m_ClusterMissingCounts[centroidIndex][j] = members.attributeStats(j).missingCount;
                 this.m_ClusterNominalCounts[centroidIndex][j] = members.attributeStats(j).nominalCounts;
@@ -285,9 +285,6 @@ public class simpleKMeans extends RandomizableClusterer implements NumberOfClust
         return this.m_ClusterCentroids;
     }
 
-    public Instances getClusterStandardDevs() {
-        return this.m_ClusterStdDevs;
-    }
 
     public int[][][] getClusterNominalCounts() {
         return this.m_ClusterNominalCounts;
