@@ -21,40 +21,74 @@ public class USPTOSpider implements PageProcessor
 
     private String description;//Get the description of the patent
 
+    private String head;
+
     private String title;
 
     private Site site=Site.me().setRetryTimes(3).setRetryTimes(100);
 
+    public void setCharset(String code)
+    {
+        this.site.setCharset(code);
+    }
+
     public void process(Page page)
     {
 
-
-
         Document doc= Jsoup.parse(page.getHtml().toString());
-        Elements e=doc.getElementsByTag("title");
-        if(e==null||e.size()==0) title=null; else title=e.first().toString();
+
+        Elements e=doc.getElementsByTag("Title");
+
+
+        if(e==null||e.size()==0) this.head=null; else this.head=e.first().toString();
 
         e=doc.getElementsMatchingOwnText("Abstract");
 
+
+        String str=e.first().parent().previousElementSibling().previousElementSibling().previousElementSibling().ownText();
+
+        this.title=str;
+
+
+
         if (e==null||e.size()==0) abs=null; else this.abs=e.first().parent().nextElementSibling().ownText();
-        e=doc.getElementsMatchingOwnText("Claims");
+
+        e=doc.getElementsContainingOwnText("Claims");
+
 
         if (e==null||e.size()==0) claims=null; else
         {
-            Element current=e.first();
+            int claims_number=0;
+            for(Element temp:e)
+            {
+                if (temp.ownText().equalsIgnoreCase("Claims")) break;
+                claims_number++;
+            }
+            if (claims_number==e.size()) this.claims=null; else {
+                Element current = e.get(claims_number);
+                while(current.nextSibling()==null) current=current.parent();
+                this.claims = getTextBetweenTwoTags(current.parent(),"hr","hr");
+            }
 
-            while(current.nextSibling()==null) current=current.parent();
-            this.claims = getTextBetweenTwoTags(current.parent(),"hr","hr");
         }
         e=doc.getElementsMatchingOwnText("Description");
         if (e==null||e.size()==0) claims=null; else
-        {
-            Element current=e.first();
-
-            while(current.nextSibling()==null) current=current.parent();
-            this.description = getTextBetweenTwoTags(current.parent(),"hr","hr");
+        { int description_number=0;
+            for(Element temp:e)
+            {
+                if (temp.ownText().equalsIgnoreCase("Description")) break;
+                description_number++;
+            }
+            if (description_number==e.size()) this.claims=null; else {
+                Element current = e.get(description_number);
+                while(current.nextSibling()==null) current=current.parent();
+                this.claims = getTextBetweenTwoTags(current.parent(),"hr","hr");
+            }
         }
     }
+
+
+
 
     //Get texts between start tag and end tag.
     private static String getTextBetweenTwoTags(Element e,String start,String end)
@@ -100,4 +134,6 @@ public class USPTOSpider implements PageProcessor
     {
         return site;
     }
+
+    public String getHead(){return head;}
 }

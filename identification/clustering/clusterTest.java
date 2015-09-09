@@ -244,7 +244,7 @@ public class clusterTest extends ProcessingComponentBase implements IClusteringA
         pre.preprocess();
         */
         simpleKMeansPatent km2=new simpleKMeansPatent();
-        km2.setClusterCount(2);
+        km2.setClusterCount(3);
         km2.Cluster(pts);
         System.out.println(km2.toString());
 

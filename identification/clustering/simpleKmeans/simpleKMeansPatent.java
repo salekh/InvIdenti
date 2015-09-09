@@ -22,6 +22,7 @@ public class simpleKMeansPatent
     private int clusterCount=25;
     private LanguageCode language=LanguageCode.ENGLISH;
     ArrayList<patentCluster> clusters=new ArrayList<>();
+    private double oversim;
 
     public void setClusterCount(int number)
     {
@@ -90,6 +91,25 @@ public class simpleKMeansPatent
                 clusters.get(km.clusterInstance(instances.instance(i))).addPatent(patents.get(i));
             }
 
+            //Calculating the overall similarity
+            oversim=0.0;
+            for(patentCluster cluster:clusters)
+            {
+                double sim=0.0;
+                for(int i=0;i<cluster.getPatents().size()-1;i++)
+                {
+                    for(int j=i+1;j<cluster.getPatents().size();j++)
+                    {
+                        int temp1=this.getIndex(cluster.getPatents().get(i));
+                        int temp2=this.getIndex(cluster.getPatents().get(j));
+                        sim+=new patentDistance().distance(instances.instance(temp1),instances.instance(temp2),tfDimension);
+                    }
+                    if(cluster.getPatents().size()>1) sim=2*sim/(cluster.getPatents().size()*cluster.getPatents().size()-1);
+                }
+                oversim+=sim;
+            }
+            oversim=oversim/clusters.size();
+            System.out.println(oversim);
 
 
         } catch (Exception e) {
@@ -102,17 +122,35 @@ public class simpleKMeansPatent
         return this.clusters;
     }
 
+
+    public int getIndex(patent p)
+    {
+
+        for(int i=0;i<this.patents.size();i++)
+        {
+            if(patents.get(i).getPatent_number().equals(p.getPatent_number())) return i;
+        }
+
+        return -1;
+    }
+
     public String toString()
     {
-        String str="";
+        String str="Cluster Number:"+clusters.size()+"\t"+"Overall Similarity:"+oversim+"\n";
 
         for(int i=0;i<this.clusters.size();i++)
         {
             str+=("Cluster "+i);
-            str+=("\n==========\n");
+            str+=("\n================================\n");
             for(patent p:this.clusters.get(i).getPatents())
             {
-                str+=p.getPatent_number()+"\n";
+                str+=p.getPatent_number()+"\t"+p.getAuthor();
+                if(p.getAuthor().length()<13)
+                    for(int j=0;j<(13-p.getAuthor().length());j++)
+                    {
+                        str+=" ";
+                    }
+                     str+="\t"+p.getTitle()+"\n";
             }
         }
 

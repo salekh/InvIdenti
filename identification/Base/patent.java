@@ -12,19 +12,32 @@ public class patent
     private String claims;
     private String description;
     private DoubleMatrix2D td;
+    private String author;
+    private String title;
 
-    public patent(String patent_number,String abs,String claims,String description)
+    public patent(String patent_number,String abs,String claims,String description,String title)
     {
         this.patent_number=patent_number;
         this.abs=abs;
         this.claims=claims;
         this.description=description;
+        this.title=title;
     }
 
     public patent(String patent_number,String str)
     {
         this.patent_number=patent_number;
         this.description=str;
+    }
+
+    public void setAuthor(String author)
+    {
+        this.author=author;
+    }
+
+    public String getAuthor()
+    {
+        return this.author;
     }
 
     public void setTd(DoubleMatrix2D M)
@@ -56,4 +69,6 @@ public class patent
     {
         return this.description;
     }
+
+    public String getTitle() {return this.title;}
 }
