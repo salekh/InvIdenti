@@ -3,6 +3,7 @@ package clustering.simpleKmeans;
 import Base.patent;
 import Base.patentCluster;
 import clustering.patentDistance;
+
 import org.carrot2.core.LanguageCode;
 import preprocessing.patentPreprocessing;
 import weka.core.Attribute;
@@ -56,17 +57,24 @@ public class simpleKMeansPatent
 
         for(int i=0;i<tfDimension;i++)
             f.addElement(new Attribute(Integer.toString(i)));
+
+        f.addElement(new Attribute("Assignee",(FastVector)null));
+
+        f.addElement(new Attribute("Category",(FastVector)null));
+
         Instances instances=new Instances("patent",f,patents.size());
 
         for(int i=0;i<patents.size();i++)
         {
-            Instance temp=new Instance(tfDimension);
+            Instance temp=new Instance(tfDimension+2);
             temp.setDataset(instances);
             for(int j=0;j<tfDimension;j++)
             {
                 temp.setValue(j, patents.get(i).getTd().get(j, 0));
             }
 
+            temp.setValue(temp.attribute(tfDimension),patents.get(i).getCategory());
+            temp.setValue(temp.attribute(tfDimension+1),patents.get(i).getAssignee());
             instances.add(temp);
         }
 
@@ -153,9 +161,26 @@ public class simpleKMeansPatent
                      str+="\t"+p.getTitle()+"\n";
             }
         }
-
         return str;
     }
 
+    public static void main(String[] args)
+    {
+        FastVector f=new FastVector();
+        f.addElement(new Attribute("Ass",(FastVector)null));
+        f.addElement(new Attribute(Integer.toString(1)));
+        Instances dataset=new Instances("patemt",f,1);
+        Instance i=new Instance(1);
+        i.setDataset(dataset);
+
+        Attribute a=new Attribute("Ass",(FastVector)null);
+
+//        System.out.println(a.type());
+
+        i.setValue(i.attribute(0),"asdas");
+        System.out.println(i.stringValue(i.attribute(0)));
+
+
+    }
 
 }

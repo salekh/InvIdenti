@@ -202,7 +202,7 @@ public class simpleKMeansCore extends RandomizableClusterer {
 
         for(int i = 0; i < this.m_NumClusters; ++i) {
             double dist = this.m_DistanceFunction.distance(instance, this.m_ClusterCentroids.instance(i),dimension);
-            if(dist > minDist) {
+            if(dist < minDist) {
                 minDist = dist;
                 bestCluster = i;
             }

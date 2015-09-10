@@ -2,6 +2,8 @@ package Base;
 
 import org.apache.mahout.math.matrix.DoubleMatrix2D;
 
+import java.util.Locale;
+
 /**
  * Created by sunlei on 15/9/6.
  */
@@ -14,14 +16,18 @@ public class patent
     private DoubleMatrix2D td;
     private String author;
     private String title;
+    private String category;
+    private String Assignee;
 
-    public patent(String patent_number,String abs,String claims,String description,String title)
+    public patent(String patent_number,String abs,String claims,String description,String title,String category,String Assignee)
     {
         this.patent_number=patent_number;
         this.abs=abs;
         this.claims=claims;
         this.description=description;
         this.title=title;
+        this.category=category;
+        this.Assignee=Assignee;
     }
 
     public patent(String patent_number,String str)
@@ -44,6 +50,10 @@ public class patent
     {
         td=M.copy();
     }
+
+    public void setAssignee(String assignee){this.Assignee=assignee;}
+
+    public void setCategory(String category){this.Assignee= category;}
 
     public DoubleMatrix2D getTd()
     {
@@ -71,4 +81,9 @@ public class patent
     }
 
     public String getTitle() {return this.title;}
+
+    public String getAssignee(){return this.Assignee;}
+
+    public String getCategory(){return this.category;}
+
 }

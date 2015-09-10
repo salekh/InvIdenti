@@ -5,7 +5,11 @@ import org.apache.mahout.math.matrix.DoubleMatrix1D;
 import org.apache.mahout.math.matrix.DoubleMatrix2D;
 import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix1D;
 import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
+import org.ini4j.Wini;
 import weka.core.*;
+
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -14,8 +18,13 @@ import weka.core.*;
 public class patentDistance implements Cloneable, TechnicalInformationHandler {
 
     private Instances m_Data;
+    private boolean textCompare;
+    private boolean assigneeCompare;
+    private boolean categoryCompare;
 
-    public patentDistance() {
+    public patentDistance()
+    {
+        initialOption();
     }
 
     public void setInstances(Instances data)
@@ -44,33 +53,61 @@ public class patentDistance implements Cloneable, TechnicalInformationHandler {
         return result;
     }
 
+
     public double distance(Instance first,Instance second,int dimension)
     {
         double result=0.0D;
-        double[][] dd=new double[dimension][2];
 
-        for(int i=0;i<dimension;i++)
+        //Text Compare
+        if(this.textCompare==true) {
+            double[][] dd = new double[dimension][2];
+            for (int i = 0; i < dimension; i++) {
+                dd[i][0] = first.value(i);
+            }
+            for (int i = 0; i < dimension; i++) {
+                dd[i][1] = second.value(i);
+            }
+            DoubleMatrix2D d = new DenseDoubleMatrix2D(dd);
+            DoubleMatrix2D result_m = new DenseDoubleMatrix2D(2, 2);
+            d.zMult(d, result_m, 1.0D, 0.0, true, false);
+            if (result_m.get(0, 0) != 0 && result_m.get(1, 0) != 0)
+                result += 1-result_m.get(0, 1) / (Math.sqrt(result_m.get(0, 0)) * Math.sqrt(result_m.get(1, 1)));
+            else result += 1;
+        }
+        System.out.println("before"+result);
+        //Class Compare
+        if(this.categoryCompare==true)
         {
-            dd[i][0]=first.value(i);
+            if(!first.stringValue(first.attribute(dimension)).equalsIgnoreCase(second.stringValue(second.attribute(dimension))))
+                result+=1;
         }
 
-        for(int i=0;i<dimension;i++)
+        //Assign Compare
+
+        if(this.assigneeCompare==true)
         {
-            dd[i][1]=second.value(i);
+            if(!first.stringValue(first.attribute(dimension+1)).equalsIgnoreCase(second.stringValue(second.attribute(dimension+1))))
+                result+=1;
         }
-
-        DoubleMatrix2D d=new DenseDoubleMatrix2D(dd);
-
-        DoubleMatrix2D result_m=new DenseDoubleMatrix2D(2,2);
-
-        d.zMult(d,result_m,1.0D,0.0,true,false);
-
-
-        if (result_m.get(0,0)!=0&&result_m.get(1,0)!=0)
-            result=result_m.get(0,1)/(Math.sqrt(result_m.get(0,0))*Math.sqrt(result_m.get(1,1)));
-        else result=0;
-
+        System.out.println("after"+result);
         return result;
+    }
+
+    //Initialize the options
+    public void initialOption()
+    {
+        try {
+            Wini initalFile=new Wini(new File("invidenti.ini"));
+            this.textCompare=initalFile.get("DistanceOption","TextCompare").equalsIgnoreCase("true");
+            this.categoryCompare=initalFile.get("DistanceOption","CategoryCompare").equalsIgnoreCase("true");
+            this.assigneeCompare=initalFile.get("DistanceOption","AssigneeCompare").equalsIgnoreCase("true");
+        } catch (IOException e)
+        {
+            System.out.println("Initial File 'invidenti.ini not found',distance function will use default options");
+            this.categoryCompare=true;
+            this.assigneeCompare=true;
+            this.textCompare=true;
+        }
     }
 
     public String getRevision() {
