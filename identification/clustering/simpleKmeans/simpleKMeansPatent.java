@@ -62,6 +62,7 @@ public class simpleKMeansPatent extends patentClustering
         try {
             km.setMaxIterations(this.maxIteration);
             km.setNumClusters(this.clusterCount);
+            km.setAttriInfor(this.attriInfo);
             km.buildClusterer(instances);
 
             for(int i=0;i<km.numberOfClusters();i++)
@@ -89,8 +90,9 @@ public class simpleKMeansPatent extends patentClustering
                         int temp2=this.getIndex(cluster.getPatents().get(j));
                         sim+=new patentDistance().distance(this.attriInfo,instances.instance(i),instances.instance(j));
                     }
-                    if(cluster.getPatents().size()>1) sim=2*sim/(cluster.getPatents().size()*cluster.getPatents().size()-1);
+
                 }
+                if(cluster.getPatents().size()>1) sim=2*sim/(cluster.getPatents().size()*cluster.getPatents().size()-1);
                 oversim+=sim;
             }
             oversim=oversim/clusters.size();

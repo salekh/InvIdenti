@@ -63,10 +63,30 @@ public class patentDistance implements Cloneable, TechnicalInformationHandler {
         double result=0.0D;
 
         //Text Compare
-        if (this.fulltextCompare==true) result+=textCompare("FullText",attributes,first,second);
-        if (this.abstractCompare==true) result+=textCompare("Abstract",attributes,first,second);
-        if (this.claimsCompare==true) result+=textCompare("Claims",attributes,first,second);
-        if (this.desComapre==true) result+=textCompare("Description",attributes,first,second);
+        if (this.fulltextCompare==true)
+        {
+
+            result+=textCompare("FullText",attributes,first,second);
+
+        }
+        if (this.abstractCompare==true)
+        {
+
+            result+=textCompare("Abstract",attributes,first,second);
+
+        }
+        if (this.claimsCompare==true)
+        {
+
+            result+=textCompare("Claims",attributes,first,second);
+
+        }
+        if (this.desComapre==true)
+        {
+
+            result+=textCompare("Description",attributes,first,second);
+
+        }
 
         //Class Compare
         if(this.categoryCompare==true)
@@ -81,6 +101,9 @@ public class patentDistance implements Cloneable, TechnicalInformationHandler {
             if(!first.stringValue(first.attribute(attributes.firatarg.get("Assignee"))).equalsIgnoreCase(second.stringValue(second.attribute(attributes.firatarg.get("Assignee")))))
                 result+=1;
         }
+
+        System.out.println(result);
+
         return result;
     }
 
@@ -101,7 +124,7 @@ public class patentDistance implements Cloneable, TechnicalInformationHandler {
         d.zMult(d, result_m, 1.0D, 0.0, true, false);
 
         if (result_m.get(0, 0) != 0 && result_m.get(1, 0) != 0)
-            result += 1-result_m.get(0, 1) / (Math.sqrt(result_m.get(0, 0)) * Math.sqrt(result_m.get(1, 1)));
+            result += (result_m.get(0, 1) / (Math.sqrt(result_m.get(0, 0)) * Math.sqrt(result_m.get(1, 1))));
             else result += 1;
 
         return result;

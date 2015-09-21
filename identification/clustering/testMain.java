@@ -3,12 +3,14 @@ package clustering;
 import Base.patent;
 import clustering.simpleKmeans.simpleKMeansPatent;
 import preprocessing.USPTOSearch;
+import sun.jvm.hotspot.opto.HaltNode;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 /**
  * Created by leisun on 15/9/8.
@@ -49,7 +51,7 @@ public class testMain
             p.setAuthor(author_1);
             patents.add(p);
             no++;
-            if (no>0) break;
+            if(no>1) break;
 
         }
 
@@ -65,7 +67,8 @@ public class testMain
             p.setAuthor(author_2);
             patents.add(p);
             no++;
-            if (no>0) break;
+            if(no>1) break;
+
         }
 
 
@@ -80,7 +83,8 @@ public class testMain
             p.setAuthor(author_3);
             patents.add(p);
             no++;
-            if (no>0) break;
+            if(no>1) break;
+
 
         }
 /*
@@ -103,9 +107,12 @@ public class testMain
 
     public static void main(String[] args)
     {
+
         testMain m=new testMain();
         m.buildPatents();
          //new USPTOSearch("06393104");
+        //Hashtable<Integer,Integer> i=new Hashtable<>();
+        //i.put(1,i.size());
 
 
 

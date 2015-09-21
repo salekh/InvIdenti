@@ -27,7 +27,6 @@ public abstract class patentClustering
     protected Instances final_instances;
     protected ArrayList<Integer> dims;
 
-    protected HashMap<String,Integer> attriNum;
     protected pair<HashMap<String,Integer>,HashMap<String,Integer>> attriInfo;
 
     public void setLanguage(LanguageCode code)
@@ -98,15 +97,15 @@ public abstract class patentClustering
         FastVector var0 = new FastVector();
 
         attributes.add(new Attribute("Assignee", (FastVector) null));
-        attriNum.put("Assignee", attriNum.size());
+
         attributes.add(new Attribute("Category", (FastVector) null));
-        attriNum.put("Category", attriNum.size());
+
 
 
         if (true) {
             for (int i = 0; i < patents.get(0).getTd().rows(); i++) {
                 attributes.add(new Attribute("FullText" + Integer.toString(i)));
-                attriNum.put("FullText" + Integer.toString(i), attriNum.size());
+
             }
             attributesNumber.put("FullText",patents.get(0).getTd().rows());
         }
@@ -114,7 +113,7 @@ public abstract class patentClustering
 
             for (int i = 0; i < patents.get(0).getTd_abs().rows(); i++) {
                 attributes.add(new Attribute("Abstract" + Integer.toString(i)));
-                attriNum.put("Abstract" + Integer.toString(i), attriNum.size());
+
             }
             attributesNumber.put("Abstract",patents.get(0).getTd_abs().rows());
         }
@@ -122,7 +121,7 @@ public abstract class patentClustering
 
             for (int i = 0; i < patents.get(0).getTd_claims().rows(); i++) {
                 attributes.add(new Attribute("Claims" + Integer.toString(i)));
-                attriNum.put("Claims" + Integer.toString(i), attriNum.size());
+
             }
             attributesNumber.put("Claims",patents.get(0).getTd_claims().rows());
         }
@@ -130,45 +129,47 @@ public abstract class patentClustering
 
             for (int i = 0; i < patents.get(0).getTd_des().rows(); i++) {
                 attributes.add(new Attribute("Description" + Integer.toString(i)));
-                attriNum.put("Description" + Integer.toString(i), attriNum.size());
+
             }
             attributesNumber.put("Description",patents.get(0).getTd().rows());
         }
         int index=0;
+
         for (Attribute var1 : attributes) {
             var0.addElement(var1);
             attributeIndex.put(var1.name(), index);
             index++;
         }
+
         this.attriInfo=new pair<>(attributeIndex,attributesNumber);
 
         /**Initialize the dataset**/
         instances = new Instances("Patent", var0, patents.size());
 
         for (int i = 0; i < patents.size(); i++) {
-            Instance var3 = new Instance(2);
+            Instance var3 = new Instance(attributes.size());
             var3.setDataset(instances);
-            var3.setValue(var3.attribute(attriNum.get("Assginee")), patents.get(i).getAssignee());
-            var3.setValue(var3.attribute(attriNum.get("Category")), patents.get(i).getCategory());
+            var3.setValue(var3.attribute(attributeIndex.get("Assignee")), patents.get(i).getAssignee());
+            var3.setValue(var3.attribute(attributeIndex.get("Category")), patents.get(i).getCategory());
 
             if ( true) {
                 for (int j = 0; j < patents.get(0).getTd().rows(); j++) {
-                    var3.setValue(var3.attribute(attriNum.get("FullText" + Integer.toString(j))), patents.get(i).getTd().get(j, 0));
+                    var3.setValue(var3.attribute(attributeIndex.get("FullText" + Integer.toString(j))), patents.get(i).getTd().get(j, 0));
                 }
             }
             if (true) {
                 for (int j = 0; j < patents.get(0).getTd_abs().rows(); j++) {
-                    var3.setValue(var3.attribute(attriNum.get("Abstract" + Integer.toString(j))), patents.get(i).getTd_abs().get(j, 0));
+                    var3.setValue(var3.attribute(attributeIndex.get("Abstract" + Integer.toString(j))), patents.get(i).getTd_abs().get(j, 0));
                 }
             }
             if ( true) {
                 for (int j = 0; j < patents.get(0).getTd_claims().rows(); j++) {
-                    var3.setValue(var3.attribute(attriNum.get("Claims" + Integer.toString(j))), patents.get(i).getTd_claims().get(j, 0));
+                    var3.setValue(var3.attribute(attributeIndex.get("Claims" + Integer.toString(j))), patents.get(i).getTd_claims().get(j, 0));
                 }
             }
             if ( true) {
                 for (int j = 0; j < patents.get(0).getTd_des().rows(); j++) {
-                    var3.setValue(var3.attribute(attriNum.get("Description" + Integer.toString(j))), patents.get(i).getTd_des().get(j, 0));
+                    var3.setValue(var3.attribute(attributeIndex.get("Description" + Integer.toString(j))), patents.get(i).getTd_des().get(j, 0));
                 }
             }
             instances.add(var3);

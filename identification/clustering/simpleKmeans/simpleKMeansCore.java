@@ -1,5 +1,6 @@
 package clustering.simpleKmeans;
 
+import Base.pair;
 import clustering.patentDistance;
 import weka.classifiers.rules.DecisionTableHashKey;
 import weka.clusterers.NumberOfClustersRequestable;
@@ -31,13 +32,19 @@ public class simpleKMeansCore extends RandomizableClusterer {
     protected int dimension=0;
 
 
+    protected pair<HashMap<String,Integer>,HashMap<String,Integer>> attriInfo;
+
+
     public simpleKMeansCore() {
         this.m_SeedDefault = 10;
         this.setSeed(this.m_SeedDefault);
         this.dimension=dimension;
     }
 
-
+    public void setAttriInfor(pair<HashMap<String,Integer>,HashMap<String,Integer>> info)
+    {
+        this.attriInfo=info;
+    }
 
     public void buildClusterer(Instances data) throws Exception {
         //this.getCapabilities().testWithFail(data);
@@ -201,7 +208,7 @@ public class simpleKMeansCore extends RandomizableClusterer {
         int bestCluster = 0;
 
         for(int i = 0; i < this.m_NumClusters; ++i) {
-            double dist = this.m_DistanceFunction.distance(instance, this.m_ClusterCentroids.instance(i),dimension);
+            double dist = this.m_DistanceFunction.distance(this.attriInfo,instance,this.m_ClusterCentroids.instance(i));
             if(dist > minDist) {
                 minDist = dist;
                 bestCluster = i;
