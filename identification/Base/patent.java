@@ -13,7 +13,12 @@ public class patent
     private String abs;
     private String claims;
     private String description;
+    /**Text vector representation of the patent**/
     private DoubleMatrix2D td;
+    private DoubleMatrix2D td_abs;
+    private DoubleMatrix2D td_claims;
+    private DoubleMatrix2D td_des;
+    /**Attributes of the patent**/
     private String author;
     private String title;
     private String category;
@@ -35,15 +40,10 @@ public class patent
         this.patent_number=patent_number;
         this.description=str;
     }
-
+    /**Set patent attributes value**/
     public void setAuthor(String author)
     {
         this.author=author;
-    }
-
-    public String getAuthor()
-    {
-        return this.author;
     }
 
     public void setTd(DoubleMatrix2D M)
@@ -51,13 +51,50 @@ public class patent
         td=M.copy();
     }
 
+    public void setTd_abs(DoubleMatrix2D M)
+    {
+        this.td_abs=M.copy();
+    }
+
+    public void setTd_des(DoubleMatrix2D M)
+    {
+        this.td_des=M.copy();
+    }
+
+    public void setTd_claims(DoubleMatrix2D M)
+    {
+        this.td_claims=M.copy();
+    }
+
     public void setAssignee(String assignee){this.Assignee=assignee;}
 
     public void setCategory(String category){this.Assignee= category;}
 
+    /**Get the attribute value of the patent**/
+
+    public String getAuthor()
+    {
+        return this.author;
+    }
+
     public DoubleMatrix2D getTd()
     {
         return td;
+    }
+
+    public DoubleMatrix2D getTd_abs()
+    {
+        return td_abs;
+    }
+
+    public DoubleMatrix2D getTd_des()
+    {
+        return td_des;
+    }
+
+    public DoubleMatrix2D getTd_claims()
+    {
+        return td_claims;
     }
 
     public String getPatent_number()

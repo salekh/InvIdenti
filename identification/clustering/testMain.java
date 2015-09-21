@@ -3,6 +3,10 @@ package clustering;
 import Base.patent;
 import clustering.simpleKmeans.simpleKMeansPatent;
 import preprocessing.USPTOSearch;
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instance;
+import weka.core.Instances;
 
 import java.util.ArrayList;
 
@@ -45,6 +49,7 @@ public class testMain
             p.setAuthor(author_1);
             patents.add(p);
             no++;
+            if (no>0) break;
 
         }
 
@@ -60,7 +65,7 @@ public class testMain
             p.setAuthor(author_2);
             patents.add(p);
             no++;
-
+            if (no>0) break;
         }
 
 
@@ -75,7 +80,8 @@ public class testMain
             p.setAuthor(author_3);
             patents.add(p);
             no++;
-         
+            if (no>0) break;
+
         }
 /*
         String[] patents_number_4=this.patent_number_4.split(",");
@@ -87,7 +93,7 @@ public class testMain
             patents.add(p);
         }
 */
-        simpleKMeansPatent km2=new simpleKMeansPatent();
+        simpleKMeansPatent km2=new simpleKMeansPatent(patents);
         km2.setClusterCount(3);
         km2.Cluster(patents);
         System.out.println(km2.toString());
@@ -99,7 +105,9 @@ public class testMain
     {
         testMain m=new testMain();
         m.buildPatents();
-      // new USPTOSearch("06393104");
+         //new USPTOSearch("06393104");
+
+
 
     }
 

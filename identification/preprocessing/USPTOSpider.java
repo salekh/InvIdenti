@@ -25,7 +25,7 @@ public class USPTOSpider implements PageProcessor
 
     private String title;
 
-    private Site site=Site.me().setRetryTimes(3).setRetryTimes(100);
+    private Site site=Site.me().setRetryTimes(5).setRetryTimes(1000);
 
     public void setCharset(String code)
     {
@@ -82,7 +82,7 @@ public class USPTOSpider implements PageProcessor
             if (description_number==e.size()) this.claims=null; else {
                 Element current = e.get(description_number);
                 while(current.nextSibling()==null) current=current.parent();
-                this.claims = getTextBetweenTwoTags(current.parent(),"hr","hr");
+                this.description = getTextBetweenTwoTags(current.parent(),"hr","hr");
             }
         }
     }

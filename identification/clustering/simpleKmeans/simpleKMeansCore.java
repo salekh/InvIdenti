@@ -31,7 +31,7 @@ public class simpleKMeansCore extends RandomizableClusterer {
     protected int dimension=0;
 
 
-    public simpleKMeansCore(int dimension) {
+    public simpleKMeansCore() {
         this.m_SeedDefault = 10;
         this.setSeed(this.m_SeedDefault);
         this.dimension=dimension;
@@ -202,7 +202,7 @@ public class simpleKMeansCore extends RandomizableClusterer {
 
         for(int i = 0; i < this.m_NumClusters; ++i) {
             double dist = this.m_DistanceFunction.distance(instance, this.m_ClusterCentroids.instance(i),dimension);
-            if(dist < minDist) {
+            if(dist > minDist) {
                 minDist = dist;
                 bestCluster = i;
             }

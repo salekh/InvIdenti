@@ -2,6 +2,7 @@ package clustering.simpleKmeans;
 
 import Base.patent;
 import Base.patentCluster;
+import clustering.patentClustering;
 import clustering.patentDistance;
 
 import org.carrot2.core.LanguageCode;
@@ -12,17 +13,18 @@ import weka.core.Instance;
 import weka.core.Instances;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by sunlei on 15/9/7.
  */
-public class simpleKMeansPatent
+public class simpleKMeansPatent extends patentClustering
 {
-    ArrayList<patent> patents=new ArrayList<>();
+
     private int maxIteration=15;
     private int clusterCount=25;
-    private LanguageCode language=LanguageCode.ENGLISH;
-    ArrayList<patentCluster> clusters=new ArrayList<>();
+
+
     private double oversim;
 
     public void setClusterCount(int number)
@@ -35,14 +37,17 @@ public class simpleKMeansPatent
         this.maxIteration=number;
     }
 
-    public void setLanguage(LanguageCode code)
+    public simpleKMeansPatent(ArrayList<patent> patents,boolean fulltext,boolean abstext,boolean claimtext,boolean destext)
     {
-        this.language=code;
+        super(patents,fulltext,abstext,destext,claimtext);
     }
+
 
     public void Cluster(ArrayList<patent> patents)
     {
         this.patents=patents;
+        //HashMap<String,Instances> instances=new HashMap<>();
+
         patentPreprocessing preprocess=new patentPreprocessing(this.patents);
         preprocess.setClusterCount(this.clusterCount);
         preprocess.setLanguage(this.language);
@@ -50,43 +55,15 @@ public class simpleKMeansPatent
         this.patents=preprocess.getPatents();
 
 
-
-        //prepare for the clustering algorithm
-        int tfDimension=patents.get(0).getTd().rows();
-        FastVector f=new FastVector(tfDimension);
-
-        for(int i=0;i<tfDimension;i++)
-            f.addElement(new Attribute(Integer.toString(i)));
-
-        f.addElement(new Attribute("Assignee",(FastVector)null));
-
-        f.addElement(new Attribute("Category",(FastVector)null));
-
-        Instances instances=new Instances("patent",f,patents.size());
-
-        for(int i=0;i<patents.size();i++)
-        {
-            Instance temp=new Instance(tfDimension+2);
-            temp.setDataset(instances);
-            for(int j=0;j<tfDimension;j++)
-            {
-                temp.setValue(j, patents.get(i).getTd().get(j, 0));
-            }
-
-            temp.setValue(temp.attribute(tfDimension),patents.get(i).getCategory());
-            temp.setValue(temp.attribute(tfDimension+1),patents.get(i).getAssignee());
-            instances.add(temp);
-        }
-
-
         //run the simple k-means clustering
-        simpleKMeansCore km=new simpleKMeansCore(tfDimension);
+        simpleKMeansCore km=new simpleKMeansCore();
 
 
         try {
             km.setMaxIterations(this.maxIteration);
             km.setNumClusters(this.clusterCount);
             km.buildClusterer(instances);
+
             for(int i=0;i<km.numberOfClusters();i++)
             {
                 patentCluster temp=new patentCluster();
@@ -110,7 +87,7 @@ public class simpleKMeansPatent
                     {
                         int temp1=this.getIndex(cluster.getPatents().get(i));
                         int temp2=this.getIndex(cluster.getPatents().get(j));
-                        sim+=new patentDistance().distance(instances.instance(temp1),instances.instance(temp2),tfDimension);
+                        sim+=new patentDistance().distance(this.instances,i,j);
                     }
                     if(cluster.getPatents().size()>1) sim=2*sim/(cluster.getPatents().size()*cluster.getPatents().size()-1);
                 }
@@ -125,44 +102,7 @@ public class simpleKMeansPatent
         }
     }
 
-    public ArrayList<patentCluster> getClusters()
-    {
-        return this.clusters;
-    }
 
-
-    public int getIndex(patent p)
-    {
-
-        for(int i=0;i<this.patents.size();i++)
-        {
-            if(patents.get(i).getPatent_number().equals(p.getPatent_number())) return i;
-        }
-
-        return -1;
-    }
-
-    public String toString()
-    {
-        String str="Cluster Number:"+clusters.size()+"\t"+"Overall Similarity:"+oversim+"\n";
-
-        for(int i=0;i<this.clusters.size();i++)
-        {
-            str+=("Cluster "+i);
-            str+=("\n================================\n");
-            for(patent p:this.clusters.get(i).getPatents())
-            {
-                str+=p.getPatent_number()+"\t"+p.getAuthor();
-                if(p.getAuthor().length()<13)
-                    for(int j=0;j<(13-p.getAuthor().length());j++)
-                    {
-                        str+=" ";
-                    }
-                     str+="\t"+p.getTitle()+"\n";
-            }
-        }
-        return str;
-    }
 
     public static void main(String[] args)
     {
