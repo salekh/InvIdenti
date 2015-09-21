@@ -37,9 +37,9 @@ public class simpleKMeansPatent extends patentClustering
         this.maxIteration=number;
     }
 
-    public simpleKMeansPatent(ArrayList<patent> patents,boolean fulltext,boolean abstext,boolean claimtext,boolean destext)
+    public simpleKMeansPatent(ArrayList<patent> patents)
     {
-        super(patents,fulltext,abstext,destext,claimtext);
+        super(patents);
     }
 
 
@@ -87,7 +87,7 @@ public class simpleKMeansPatent extends patentClustering
                     {
                         int temp1=this.getIndex(cluster.getPatents().get(i));
                         int temp2=this.getIndex(cluster.getPatents().get(j));
-                        sim+=new patentDistance().distance(this.instances,i,j);
+                        sim+=new patentDistance().distance(this.attriInfo,instances.instance(i),instances.instance(j));
                     }
                     if(cluster.getPatents().size()>1) sim=2*sim/(cluster.getPatents().size()*cluster.getPatents().size()-1);
                 }

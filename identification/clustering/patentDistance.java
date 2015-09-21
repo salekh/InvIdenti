@@ -1,13 +1,13 @@
 package clustering;
 
-import org.apache.mahout.math.function.Functions;
-import org.apache.mahout.math.matrix.DoubleMatrix1D;
+
+
 import org.apache.mahout.math.matrix.DoubleMatrix2D;
-import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix1D;
+
 import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.ini4j.Wini;
 import weka.core.*;
-
+import Base.pair;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -58,80 +58,54 @@ public class patentDistance implements Cloneable, TechnicalInformationHandler {
     }
 
 
-    public double distance(HashMap<String,Integer> attrinum,Instance first,Instance second)
+    public double distance(pair<HashMap<String,Integer>,HashMap<String,Integer>>attributes,Instance first,Instance second)
     {
         double result=0.0D;
 
         //Text Compare
-        if(this.fulltextCompare==true) {
-            double[][] dd = new double[dimension][2];
-            for (int i = 0; i < dimension; i++) {
-                dd[i][0] = first.value(i);
-            }
-            for (int i = 0; i < dimension; i++) {
-                dd[i][1] = second.value(i);
-            }
-            DoubleMatrix2D d = new DenseDoubleMatrix2D(dd);
-            DoubleMatrix2D result_m = new DenseDoubleMatrix2D(2, 2);
-            d.zMult(d, result_m, 1.0D, 0.0, true, false);
-            if (result_m.get(0, 0) != 0 && result_m.get(1, 0) != 0)
-                result += 1-result_m.get(0, 1) / (Math.sqrt(result_m.get(0, 0)) * Math.sqrt(result_m.get(1, 1)));
-            else result += 1;
-        }
-        System.out.println("before"+result);
+        if (this.fulltextCompare==true) result+=textCompare("FullText",attributes,first,second);
+        if (this.abstractCompare==true) result+=textCompare("Abstract",attributes,first,second);
+        if (this.claimsCompare==true) result+=textCompare("Claims",attributes,first,second);
+        if (this.desComapre==true) result+=textCompare("Description",attributes,first,second);
+
         //Class Compare
         if(this.categoryCompare==true)
         {
-            if(!first.stringValue(first.attribute(attrinum.get("Category"))).equalsIgnoreCase(second.stringValue(second.attribute(attrinum.get("Category")))))
+            if(!first.stringValue(first.attribute(attributes.firatarg.get("Category"))).equalsIgnoreCase(second.stringValue(second.attribute(attributes.firatarg.get("Category")))))
                 result+=1;
         }
 
         //Assign Compare
         if(this.assigneeCompare==true)
         {
-            if(!first.stringValue(first.attribute(attrinum.get("Assignee"))).equalsIgnoreCase(second.stringValue(second.attribute(attrinum.get("Assignee")))))
+            if(!first.stringValue(first.attribute(attributes.firatarg.get("Assignee"))).equalsIgnoreCase(second.stringValue(second.attribute(attributes.firatarg.get("Assignee")))))
                 result+=1;
         }
+        return result;
     }
 
-
-    public double distance(Instance first,Instance second,int dimension)
+    private double textCompare(String str,pair<HashMap<String,Integer>,HashMap<String,Integer>>attributes,Instance first,Instance second)
     {
-        double result=0.0D;
-
-        //Text Compare
-        if(this.fulltextCompare==true) {
-            double[][] dd = new double[dimension][2];
-            for (int i = 0; i < dimension; i++) {
+       double result=0.0D;
+        int dimension=attributes.secondarg.get(str);
+        double[][] dd = new double[dimension][2];
+        for (int i = 0; i < dimension; i++) {
                 dd[i][0] = first.value(i);
-            }
-            for (int i = 0; i < dimension; i++) {
+        }
+        for (int i = 0; i < dimension; i++) {
                 dd[i][1] = second.value(i);
-            }
-            DoubleMatrix2D d = new DenseDoubleMatrix2D(dd);
-            DoubleMatrix2D result_m = new DenseDoubleMatrix2D(2, 2);
-            d.zMult(d, result_m, 1.0D, 0.0, true, false);
-            if (result_m.get(0, 0) != 0 && result_m.get(1, 0) != 0)
-                result += 1-result_m.get(0, 1) / (Math.sqrt(result_m.get(0, 0)) * Math.sqrt(result_m.get(1, 1)));
+        }
+
+        DoubleMatrix2D d = new DenseDoubleMatrix2D(dd);
+        DoubleMatrix2D result_m = new DenseDoubleMatrix2D(2, 2);
+        d.zMult(d, result_m, 1.0D, 0.0, true, false);
+
+        if (result_m.get(0, 0) != 0 && result_m.get(1, 0) != 0)
+            result += 1-result_m.get(0, 1) / (Math.sqrt(result_m.get(0, 0)) * Math.sqrt(result_m.get(1, 1)));
             else result += 1;
-        }
-        System.out.println("before"+result);
-        //Class Compare
-        if(this.categoryCompare==true)
-        {
-            if(!first.stringValue(first.attribute(dimension)).equalsIgnoreCase(second.stringValue(second.attribute(dimension))))
-                result+=1;
-        }
 
-        //Assign Compare
-
-        if(this.assigneeCompare==true)
-        {
-            if(!first.stringValue(first.attribute(dimension+1)).equalsIgnoreCase(second.stringValue(second.attribute(dimension+1))))
-                result+=1;
-        }
-        System.out.println("after"+result);
         return result;
+
     }
 
     //Initialize the options

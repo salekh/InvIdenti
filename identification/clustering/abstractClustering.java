@@ -1,5 +1,6 @@
 package clustering;
 
+import Base.pair;
 import Base.patent;
 import Base.patentCluster;
 import org.carrot2.core.LanguageCode;
@@ -21,6 +22,7 @@ public abstract class abstractClustering
     protected LanguageCode language=LanguageCode.ENGLISH;
     protected ArrayList<patentCluster> clusters=new ArrayList<>();
     protected HashMap<String,Instances> instances=new HashMap<>();
+    protected pair<HashMap<String,Integer>,HashMap<String,Integer>> attributes;
     protected Instances final_instances;
     protected ArrayList<Integer> dims;
 
