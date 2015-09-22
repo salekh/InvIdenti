@@ -25,10 +25,12 @@ public class patentDistance implements Cloneable, TechnicalInformationHandler {
     private boolean desComapre;
     private boolean assigneeCompare;
     private boolean categoryCompare;
+    pair<HashMap<String,Integer>,HashMap<String,Integer>>attributes;
 
-    public patentDistance()
+    public patentDistance(pair<HashMap<String,Integer>,HashMap<String,Integer>>attributes)
     {
         initialOption();
+        this.attributes=attributes;
     }
 
     public void setInstances(Instances data)
@@ -58,56 +60,62 @@ public class patentDistance implements Cloneable, TechnicalInformationHandler {
     }
 
 
-    public double distance(pair<HashMap<String,Integer>,HashMap<String,Integer>>attributes,Instance first,Instance second)
+    public double distance(Instance first,Instance second)
     {
         double result=0.0D;
+        int numofText=0;
 
         //Text Compare
         if (this.fulltextCompare==true)
         {
 
-            result+=textCompare("FullText",attributes,first,second);
+            result+=textCompare("FullText",first,second);
+            numofText++;
 
         }
         if (this.abstractCompare==true)
         {
 
-            result+=textCompare("Abstract",attributes,first,second);
+            result+=textCompare("Abstract",first,second);
+            numofText++;
 
         }
         if (this.claimsCompare==true)
         {
 
-            result+=textCompare("Claims",attributes,first,second);
+            result+=textCompare("Claims",first,second);
+            numofText++;
 
         }
         if (this.desComapre==true)
         {
 
-            result+=textCompare("Description",attributes,first,second);
+            result+=textCompare("Description",first,second);
+            numofText++;
 
         }
-
+        result=result/numofText;
         //Class Compare
         if(this.categoryCompare==true)
         {
-            if(!first.stringValue(first.attribute(attributes.firatarg.get("Category"))).equalsIgnoreCase(second.stringValue(second.attribute(attributes.firatarg.get("Category")))))
+            if(first.stringValue(first.attribute(attributes.firatarg.get("Category"))).equalsIgnoreCase(second.stringValue(second.attribute(attributes.firatarg.get("Category")))))
                 result+=1;
         }
+
 
         //Assign Compare
         if(this.assigneeCompare==true)
         {
-            if(!first.stringValue(first.attribute(attributes.firatarg.get("Assignee"))).equalsIgnoreCase(second.stringValue(second.attribute(attributes.firatarg.get("Assignee")))))
+            if(first.stringValue(first.attribute(attributes.firatarg.get("Assignee"))).equalsIgnoreCase(second.stringValue(second.attribute(attributes.firatarg.get("Assignee")))))
                 result+=1;
         }
 
-        System.out.println(result);
+        //System.out.println(result);
 
         return result;
     }
 
-    private double textCompare(String str,pair<HashMap<String,Integer>,HashMap<String,Integer>>attributes,Instance first,Instance second)
+    private double textCompare(String str,Instance first,Instance second)
     {
        double result=0.0D;
         int dimension=attributes.secondarg.get(str);

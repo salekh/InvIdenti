@@ -88,7 +88,7 @@ public class simpleKMeansPatent extends patentClustering
                     {
                         int temp1=this.getIndex(cluster.getPatents().get(i));
                         int temp2=this.getIndex(cluster.getPatents().get(j));
-                        sim+=new patentDistance().distance(this.attriInfo,instances.instance(i),instances.instance(j));
+                        sim+=new patentDistance(this.attriInfo).distance(instances.instance(i),instances.instance(j));
                     }
 
                 }
@@ -105,24 +105,5 @@ public class simpleKMeansPatent extends patentClustering
     }
 
 
-
-    public static void main(String[] args)
-    {
-        FastVector f=new FastVector();
-        f.addElement(new Attribute("Ass",(FastVector)null));
-        f.addElement(new Attribute(Integer.toString(1)));
-        Instances dataset=new Instances("patemt",f,1);
-        Instance i=new Instance(1);
-        i.setDataset(dataset);
-
-        Attribute a=new Attribute("Ass",(FastVector)null);
-
-//        System.out.println(a.type());
-
-        i.setValue(i.attribute(0),"asdas");
-        System.out.println(i.stringValue(i.attribute(0)));
-
-
-    }
 
 }

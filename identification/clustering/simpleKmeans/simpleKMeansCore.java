@@ -25,7 +25,7 @@ public class simpleKMeansCore extends RandomizableClusterer {
     private int m_MaxIterations = 500;
     private int m_Iterations = 0;
     private double[] m_squaredErrors;
-    protected patentDistance m_DistanceFunction = new patentDistance();
+    protected patentDistance m_DistanceFunction;
     private boolean m_PreserveOrder = false;
     protected int[] m_Assignments = null;
     //dimension of the patent document tf vector
@@ -38,7 +38,7 @@ public class simpleKMeansCore extends RandomizableClusterer {
     public simpleKMeansCore() {
         this.m_SeedDefault = 10;
         this.setSeed(this.m_SeedDefault);
-        this.dimension=dimension;
+
     }
 
     public void setAttriInfor(pair<HashMap<String,Integer>,HashMap<String,Integer>> info)
@@ -46,8 +46,12 @@ public class simpleKMeansCore extends RandomizableClusterer {
         this.attriInfo=info;
     }
 
-    public void buildClusterer(Instances data) throws Exception {
+    public void buildClusterer(Instances data) throws Exception
+    {
         //this.getCapabilities().testWithFail(data);
+
+        this.m_DistanceFunction=new patentDistance(this.attriInfo);
+
         this.m_Iterations = 0;
 
         Instances instances = new Instances(data);
@@ -61,7 +65,7 @@ public class simpleKMeansCore extends RandomizableClusterer {
             this.m_Assignments = var16;
         }
 
-        this.m_DistanceFunction.setInstances(instances);
+
         Random RandomO = new Random((long)this.getSeed());
         HashMap initC = new HashMap();
         DecisionTableHashKey hk = null;
@@ -178,7 +182,7 @@ public class simpleKMeansCore extends RandomizableClusterer {
             this.m_ClusterSizes[i] = tempI[i].numInstances();
         }
 
-        this.m_DistanceFunction.clean();
+
     }
 
     protected double[] moveCentroid(int centroidIndex, Instances members, boolean updateClusterInfo) {
@@ -208,7 +212,7 @@ public class simpleKMeansCore extends RandomizableClusterer {
         int bestCluster = 0;
 
         for(int i = 0; i < this.m_NumClusters; ++i) {
-            double dist = this.m_DistanceFunction.distance(this.attriInfo,instance,this.m_ClusterCentroids.instance(i));
+            double dist = this.m_DistanceFunction.distance(instance,this.m_ClusterCentroids.instance(i));
             if(dist > minDist) {
                 minDist = dist;
                 bestCluster = i;

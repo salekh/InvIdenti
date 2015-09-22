@@ -1,6 +1,7 @@
 package clustering;
 
 import Base.patent;
+import clustering.hierClustering.hierClusteringPatent;
 import clustering.simpleKmeans.simpleKMeansPatent;
 import preprocessing.USPTOSearch;
 import sun.jvm.hotspot.opto.HaltNode;
@@ -51,13 +52,13 @@ public class testMain
             p.setAuthor(author_1);
             patents.add(p);
             no++;
-            if(no>1) break;
+          //  if(no>2) break;
 
         }
 
 
-        String[] assginees_2=this.patent_assignees_1.split(",");
-        String[] catgories_2=this.patent_cat_1.split(",");
+        String[] assginees_2=this.patent_assignees_2.split(",");
+        String[] catgories_2=this.patent_cat_2.split(",");
         no=0;
         String[] patents_number_2=this.patent_number_2.split(",");
         for(String str:patents_number_2)
@@ -67,13 +68,13 @@ public class testMain
             p.setAuthor(author_2);
             patents.add(p);
             no++;
-            if(no>1) break;
+           // if(no>2) break;
 
         }
+/*
 
-
-        String[] assginees_3=this.patent_assignees_1.split(",");
-        String[] catgories_3=this.patent_cat_1.split(",");
+        String[] assginees_3=this.patent_assignees_3.split(",");
+        String[] catgories_3=this.patent_cat_3.split(",");
         no=0;
         String[] patents_number_3=this.patent_number_3.split(",");
         for(String str:patents_number_3)
@@ -83,10 +84,11 @@ public class testMain
             p.setAuthor(author_3);
             patents.add(p);
             no++;
-            if(no>1) break;
+          //  if(no>2) break;
 
 
         }
+*/
 /*
         String[] patents_number_4=this.patent_number_4.split(",");
         for(String str:patents_number_4)
@@ -97,11 +99,14 @@ public class testMain
             patents.add(p);
         }
 */
-        simpleKMeansPatent km2=new simpleKMeansPatent(patents);
-        km2.setClusterCount(3);
-        km2.Cluster(patents);
-        System.out.println(km2.toString());
-
+        //simpleKMeansPatent km2=new simpleKMeansPatent(patents);
+        //km2.setClusterCount(3);
+        //km2.Cluster(patents);
+        //System.out.println(km2.toString());
+        hierClusteringPatent hi=new hierClusteringPatent(patents);
+        hi.setNumberofCluster(2);
+        hi.Cluster(patents);
+        System.out.println(hi.toString());
 
     }
 

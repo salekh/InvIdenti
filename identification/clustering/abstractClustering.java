@@ -25,10 +25,15 @@ public abstract class abstractClustering
     protected pair<HashMap<String,Integer>,HashMap<String,Integer>> attributes;
     protected Instances final_instances;
     protected ArrayList<Integer> dims;
+    private int number_Cluster=2;
 
     public void setLanguage(LanguageCode code)
     {
         this.language=code;
+    }
+    public void setNumberofCluster(Integer num)
+    {
+        this.number_Cluster=num;
     }
 
 
