@@ -33,7 +33,24 @@ public class hierClusteringPatent extends patentClustering
         preprocess.preprocess();
         this.patents=preprocess.getPatents();
 
+        System.out.println("+++++++++++++");
+        for(int i=0;i<this.patents.get(0).getTd_abs().rows();i++)
+            System.out.print(this.patents.get(0).getTd_abs().get(i,0));
+        System.out.println();
 
+        for(int i=0;i<this.patents.get(0).getTd_claims().rows();i++)
+            System.out.print(this.patents.get(0).getTd_claims().get(i,0));
+        System.out.println();
+
+        for(int i=0;i<this.patents.get(0).getTd_des().rows();i++)
+            System.out.print(this.patents.get(0).getTd_des().get(i,0));
+        System.out.println();
+
+
+
+
+
+        System.out.println("+++++++++++++");
         //run the simple k-means clustering
         hierClusteringCore hc=new hierClusteringCore();
 

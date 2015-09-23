@@ -52,7 +52,7 @@ public class testMain
             p.setAuthor(author_1);
             patents.add(p);
             no++;
-          //  if(no>2) break;
+          if(no>2) break;
 
         }
 
@@ -68,7 +68,7 @@ public class testMain
             p.setAuthor(author_2);
             patents.add(p);
             no++;
-           // if(no>2) break;
+           if(no>2) break;
 
         }
 /*
