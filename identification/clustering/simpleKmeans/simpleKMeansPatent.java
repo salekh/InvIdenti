@@ -1,19 +1,13 @@
 package clustering.simpleKmeans;
 
-import Base.patent;
-import Base.patentCluster;
+import base.patent;
+import base.patentCluster;
 import clustering.patentClustering;
 import clustering.patentDistance;
 
-import org.carrot2.core.LanguageCode;
 import preprocessing.patentPreprocessing;
-import weka.core.Attribute;
-import weka.core.FastVector;
-import weka.core.Instance;
-import weka.core.Instances;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by sunlei on 15/9/7.

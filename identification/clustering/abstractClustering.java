@@ -1,10 +1,14 @@
 package clustering;
 
-import Base.pair;
-import Base.patent;
-import Base.patentCluster;
-import org.carrot2.core.LanguageCode;
+
+
+import base.pair;
+import base.patent;
+import base.patentCluster;
 import preprocessing.patentPreprocessing;
+
+import org.carrot2.core.LanguageCode;
+
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -87,6 +91,7 @@ public abstract class abstractClustering
     {
         patentPreprocessing preprocess=new patentPreprocessing(this.patents);
         preprocess.setLanguage(this.language);
+        preprocess.setUseDimensionalityReduction(false);
         preprocess.preprocess();
         this.patents=preprocess.getPatents();
         instances.clear();

@@ -1,8 +1,7 @@
 package clustering.hierClustering;
 
-import Base.pair;
+import base.pair;
 import clustering.patentDistance;
-import weka.core.Instance;
 import weka.core.Instances;
 
 import java.util.ArrayList;

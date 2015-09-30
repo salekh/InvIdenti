@@ -1,13 +1,11 @@
 package clustering.simpleKmeans;
 
-import Base.pair;
+import base.pair;
 import clustering.patentDistance;
 import weka.classifiers.rules.DecisionTableHashKey;
-import weka.clusterers.NumberOfClustersRequestable;
 import weka.clusterers.RandomizableClusterer;
 import weka.core.*;
-import weka.filters.Filter;
-import weka.filters.unsupervised.attribute.ReplaceMissingValues;
+
 import java.util.HashMap;
 import java.util.Random;
 

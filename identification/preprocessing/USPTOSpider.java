@@ -45,13 +45,18 @@ public class USPTOSpider implements PageProcessor
         e=doc.getElementsMatchingOwnText("Abstract");
 
 
-        String str=e.first().parent().previousElementSibling().previousElementSibling().previousElementSibling().ownText();
-
-        this.title=str;
 
 
 
-        if (e==null||e.size()==0) abs=null; else this.abs=e.first().parent().nextElementSibling().ownText();
+        if (e==null||e.size()==0) {
+            abs=null;
+            this.title=null;
+        } else {
+            this.abs=e.first().parent().nextElementSibling().ownText();
+            String str=e.first().parent().previousElementSibling().previousElementSibling().previousElementSibling().ownText();
+
+            this.title=str;
+        }
 
         e=doc.getElementsContainingOwnText("Claims");
 

@@ -7,7 +7,7 @@ import org.apache.mahout.math.matrix.DoubleMatrix2D;
 import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.ini4j.Wini;
 import weka.core.*;
-import Base.pair;
+import base.pair;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;

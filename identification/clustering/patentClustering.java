@@ -1,8 +1,8 @@
 package clustering;
 
-import Base.pair;
-import Base.patent;
-import Base.patentCluster;
+import base.pair;
+import base.patent;
+import base.patentCluster;
 import org.carrot2.core.LanguageCode;
 import preprocessing.patentPreprocessing;
 import weka.core.Attribute;
@@ -83,8 +83,6 @@ public abstract class patentClustering
     public patentClustering(ArrayList<patent> patents)
     {
         this.patents=patents;
-        //Set Option
-
         preprocess();
     }
 
@@ -98,8 +96,8 @@ public abstract class patentClustering
         preprocess.setLanguage(this.language);
         preprocess.preprocess();
         this.patents = preprocess.getPatents();
-        /**Set dataset format**/
 
+        /**Set dataset format**/
         FastVector var0 = new FastVector();
 
         attributes.add(new Attribute("Assignee", (FastVector) null));

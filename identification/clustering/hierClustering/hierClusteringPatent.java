@@ -1,10 +1,8 @@
 package clustering.hierClustering;
 
-import Base.patent;
-import Base.patentCluster;
+import base.patent;
+import base.patentCluster;
 import clustering.patentClustering;
-import clustering.patentDistance;
-import clustering.simpleKmeans.simpleKMeansCore;
 import preprocessing.patentPreprocessing;
 
 import java.util.ArrayList;

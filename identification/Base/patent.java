@@ -1,6 +1,7 @@
-package Base;
+package base;
 
 import org.apache.mahout.math.matrix.DoubleMatrix2D;
+import preprocessing.USPTOSearch;
 
 import java.util.Locale;
 
@@ -22,9 +23,9 @@ public class patent
     private String author;
     private String title;
     private String category;
-    private String Assignee;
+    private String assignee;
 
-    public patent(String patent_number,String abs,String claims,String description,String title,String category,String Assignee)
+    public patent(String patent_number,String abs,String claims,String description,String title,String category,String Assignee,String name)
     {
         this.patent_number=patent_number;
         this.abs=abs;
@@ -32,14 +33,25 @@ public class patent
         this.description=description;
         this.title=title;
         this.category=category;
-        this.Assignee=Assignee;
+        this.assignee=Assignee;
+        this.author=name;
     }
 
-    public patent(String patent_number,String str)
-    {
-        this.patent_number=patent_number;
-        this.description=str;
-    }
+   public patent(String patent_number,String category,String assignee,String author){
+       this.patent_number=patent_number;
+       this.category=category;
+       this.assignee=assignee;
+       this.author=author;
+
+       USPTOSearch searchPatent=new USPTOSearch(patent_number);
+       this.setAbs(searchPatent.getAbs());
+       this.setClaims(searchPatent.getClaims());
+       this.setDescription(searchPatent.getDescription());
+       this.setTitle(searchPatent.getTitle());
+
+   }
+
+
     /**Set patent attributes value**/
     public void setAuthor(String author)
     {
@@ -66,9 +78,25 @@ public class patent
         this.td_claims=M.copy();
     }
 
-    public void setAssignee(String assignee){this.Assignee=assignee;}
+    public void setAssignee(String assignee){this.assignee=assignee;}
 
-    public void setCategory(String category){this.Assignee= category;}
+    public void setCategory(String category){this.assignee= category;}
+
+    public void setAbs(String abs) {
+        this.abs=abs;
+    }
+
+    public void setClaims(String claims){
+        this.claims=claims;
+    }
+
+    public void setDescription(String description){
+        this.description=description;
+    }
+
+    public void setTitle(String title){
+        this.title=title;
+    }
 
     /**Get the attribute value of the patent**/
 
@@ -119,7 +147,7 @@ public class patent
 
     public String getTitle() {return this.title;}
 
-    public String getAssignee(){return this.Assignee;}
+    public String getAssignee(){return this.assignee;}
 
     public String getCategory(){return this.category;}
 

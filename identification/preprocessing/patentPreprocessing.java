@@ -1,16 +1,14 @@
 package preprocessing;
 
-import Base.patent;
+import base.patent;
 import com.carrotsearch.hppc.IntArrayList;
 import com.carrotsearch.hppc.IntIntHashMap;
 import com.carrotsearch.hppc.cursors.IntIntCursor;
 import org.apache.mahout.math.matrix.DoubleMatrix2D;
 import org.carrot2.core.Document;
 import org.carrot2.core.LanguageCode;
-import org.carrot2.shaded.guava.common.collect.Lists;
 import org.carrot2.text.preprocessing.LabelFormatter;
 import org.carrot2.text.preprocessing.PreprocessingContext;
-import org.carrot2.text.preprocessing.pipeline.BasicPreprocessingPipeline;
 import org.carrot2.text.preprocessing.pipeline.CompletePreprocessingPipeline;
 import org.carrot2.text.preprocessing.pipeline.IPreprocessingPipeline;
 import org.carrot2.text.vsm.ReducedVectorSpaceModelContext;
@@ -128,8 +126,6 @@ public class patentPreprocessing {
                 var19 = var17.termDocumentMatrix;
             }
 
-
-
             IntArrayList intA=new IntArrayList();
 
             for(int i=0;i<var19.columns();i++)
@@ -141,11 +137,7 @@ public class patentPreprocessing {
                 if (str.equalsIgnoreCase("Abstract")) patents.get(i).setTd_abs(var19.viewSelection((int[]) null, intA.toArray()).copy());
                 if (str.equalsIgnoreCase("Claims"))  patents.get(i).setTd_claims(var19.viewSelection((int[]) null, intA.toArray()).copy());
                 if (str.equalsIgnoreCase("Description")) patents.get(i).setTd_des(var19.viewSelection((int[]) null, intA.toArray()).copy());
-
-
             }
-
-
 
         }
     }

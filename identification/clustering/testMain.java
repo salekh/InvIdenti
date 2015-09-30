@@ -1,17 +1,14 @@
 package clustering;
 
-import Base.patent;
-import clustering.hierClustering.hierClusteringPatent;
-import clustering.simpleKmeans.simpleKMeansPatent;
+import base.patent;
+import clustering.distancefunction.CosDistance;
+
+
+import clustering.hierarchy.HierClusteringPatents;
+import preprocessing.SqlitePatents;
 import preprocessing.USPTOSearch;
-import sun.jvm.hotspot.opto.HaltNode;
-import weka.core.Attribute;
-import weka.core.FastVector;
-import weka.core.Instance;
-import weka.core.Instances;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 /**
  * Created by leisun on 15/9/8.
@@ -40,7 +37,7 @@ public class testMain
 
     public void buildPatents()
     {
-
+/*
         String[] patents_number_1=this.patent_number_1.split(",");
         String[] assginees_1=this.patent_assignees_1.split(",");
         String[] catgories_1=this.patent_cat_1.split(",");
@@ -64,9 +61,9 @@ public class testMain
         for(String str:patents_number_2)
         {
             USPTOSearch searchPatent=new USPTOSearch(str);
-            patent p=new patent(str,searchPatent.getAbs(),searchPatent.getClaims(),searchPatent.getDescription(),searchPatent.getTitle(),catgories_2[no],assginees_2[no]);
-            p.setAuthor(author_2);
-            patents.add(p);
+            //patent p=new patent(str,searchPatent.getAbs(),searchPatent.getClaims(),searchPatent.getDescription(),searchPatent.getTitle(),catgories_2[no],assginees_2[no]);
+           // p.setAuthor(author_2);
+            //patents.add(p);
             no++;
            if(no>2) break;
 
@@ -103,24 +100,42 @@ public class testMain
         //km2.setClusterCount(3);
         //km2.Cluster(patents);
         //System.out.println(km2.toString());
-        hierClusteringPatent hi=new hierClusteringPatent(patents);
-        hi.setNumberofCluster(2);
-        hi.Cluster(patents);
-        System.out.println(hi.toString());
+
 
     }
 
     public static void main(String[] args)
     {
 
-        testMain m=new testMain();
-        m.buildPatents();
-         //new USPTOSearch("06393104");
+        //testMain m=new testMain();
+        //m.buildPatents();
+
+        //String number="5";
+
+        //USPTOSearch si=new USPTOSearch(number);
+
+       // patent p=new patent("",si.getAbs(),si.getClaims(),si.getDescription(),si.getTitle(),"","","");
+
+
+
         //Hashtable<Integer,Integer> i=new Hashtable<>();
         //i.put(1,i.size());
+        SqlitePatents s=new SqlitePatents("/Users/leisun/Desktop/PatentData/PatTest.sqlite");
+        ArrayList<patent> p=s.getNumPatents(200, "invpat");
+
+        //ArrayList<patent> p=s.getPatentsTextFromSQL(20, "/Users/leisun/Desktop/PatentData/PatentText/", "invpat");
+        s.writeToTexts("/Users/leisun/Desktop/PatentData/PatentText/");
+        //s.storeText("/Users/leisun/Desktop/PatentData/PatentText/"+number+"/"+"Abstract.txt",p.getAbs());
+        //s.storeText("/Users/leisun/Desktop/PatentData/PatentText/"+number+"/"+"Claims.txt",p.getClaims());
+        //s.storeText("/Users/leisun/Desktop/PatentData/PatentText/"+number+"/"+"Description.txt",p.getDescription());
+        //s.storeText("/Users/leisun/Desktop/PatentData/PatentText/"+number+"/"+"Title.txt",p.getTitle());
+        //s.readText("/Users/leisun/Desktop/PatentData/PatentText/04105099/Abstract.txt");
+        //   HierClusteringPatents hi=new HierClusteringPatents(p);
 
 
-
+        //   hi.setEps(1.1);
+        // hi.Cluster();
+        //System.out.println(hi.toString());
     }
 
 }
