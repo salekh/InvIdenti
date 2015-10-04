@@ -2,62 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab209d6b-4348-46b0-8871-b774722eae25" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/identification/clustering/distancefunction/AbstractDistance.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/identification/clustering/distancefunction/CosDistance.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCluster.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_xerial_sqlite_jdbc_3_8_11_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/identification/preprocessing/SqlitePatents.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/identification/preprocessing/patParser.form" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/identification/preprocessing/patParser.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/identification/preprocessing/preProcessing.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/preprocessing/patParser$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/preprocessing/patParser$2.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/preprocessing/patParser.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/preprocessing/preProcessing.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/AbstractLayout.class" afterPath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/AbstractLayout.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/DimensionInfo.class" afterPath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/DimensionInfo.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/GridConstraints.class" afterPath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/GridConstraints.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/GridLayoutManager.class" afterPath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/GridLayoutManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/HorizontalInfo.class" afterPath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/HorizontalInfo.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/LayoutState.class" afterPath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/LayoutState.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/Spacer.class" afterPath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/Spacer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/SupportCode$TextWithMnemonic.class" afterPath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/SupportCode$TextWithMnemonic.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/SupportCode.class" afterPath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/SupportCode.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/Util.class" afterPath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/Util.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/VerticalInfo.class" afterPath="$PROJECT_DIR$/target/classes/com/intellij/uiDesigner/core/VerticalInfo.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/abstractClustering.class" afterPath="$PROJECT_DIR$/target/classes/clustering/abstractClustering.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/hierClustering/hierCluster.class" afterPath="$PROJECT_DIR$/target/classes/clustering/hierClustering/hierCluster.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/hierClustering/hierClusteringCore.class" afterPath="$PROJECT_DIR$/target/classes/clustering/hierClustering/hierClusteringCore.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/hierClustering/hierClusteringPatent.class" afterPath="$PROJECT_DIR$/target/classes/clustering/hierClustering/hierClusteringPatent.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/base/pair.class" afterPath="$PROJECT_DIR$/target/classes/base/pair.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/base/patent.class" afterPath="$PROJECT_DIR$/target/classes/base/patent.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/base/patentCluster.class" afterPath="$PROJECT_DIR$/target/classes/base/patentCluster.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/patentClustering.class" afterPath="$PROJECT_DIR$/target/classes/clustering/patentClustering.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/patentDistance.class" afterPath="$PROJECT_DIR$/target/classes/clustering/patentDistance.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/patentPreprocessing.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/patentPreprocessing.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/simpleKmeans/simpleKMeansCore.class" afterPath="$PROJECT_DIR$/target/classes/clustering/simpleKmeans/simpleKMeansCore.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/simpleKmeans/simpleKMeansPatent.class" afterPath="$PROJECT_DIR$/target/classes/clustering/simpleKmeans/simpleKMeansPatent.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/testMain.class" afterPath="$PROJECT_DIR$/target/classes/clustering/testMain.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/InvIdenti.iml" afterPath="$PROJECT_DIR$/InvIdenti.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/USPTOSearch.java" afterPath="$PROJECT_DIR$/identification/preprocessing/USPTOSearch.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/USPTOSpider.java" afterPath="$PROJECT_DIR$/identification/preprocessing/USPTOSpider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/abstractClustering.java" afterPath="$PROJECT_DIR$/identification/clustering/abstractClustering.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/hierClustering/hierCluster.java" afterPath="$PROJECT_DIR$/identification/clustering/hierClustering/hierCluster.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/hierClustering/hierClusteringCore.java" afterPath="$PROJECT_DIR$/identification/clustering/hierClustering/hierClusteringCore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/hierClustering/hierClusteringPatent.java" afterPath="$PROJECT_DIR$/identification/clustering/hierClustering/hierClusteringPatent.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/invidenti.ini" afterPath="$PROJECT_DIR$/invidenti.ini" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/base/pair.java" afterPath="$PROJECT_DIR$/identification/base/pair.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/base/patent.java" afterPath="$PROJECT_DIR$/identification/base/patent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/base/patentCluster.java" afterPath="$PROJECT_DIR$/identification/base/patentCluster.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/patentClustering.java" afterPath="$PROJECT_DIR$/identification/clustering/patentClustering.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/patentDistance.java" afterPath="$PROJECT_DIR$/identification/clustering/patentDistance.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/patentPreprocessing.java" afterPath="$PROJECT_DIR$/identification/preprocessing/patentPreprocessing.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/simpleKmeans/simpleKMeansCore.java" afterPath="$PROJECT_DIR$/identification/clustering/simpleKmeans/simpleKMeansCore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/simpleKmeans/simpleKMeansPatent.java" afterPath="$PROJECT_DIR$/identification/clustering/simpleKmeans/simpleKMeansPatent.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/testMain.java" afterPath="$PROJECT_DIR$/identification/clustering/testMain.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -81,34 +27,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="patent.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/base/patent.java">
+      <file leaf-file-name="patentPreprocessing.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/preprocessing/patentPreprocessing.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="36" column="25" selection-start-line="36" selection-start-column="25" selection-end-line="36" selection-end-column="25" />
+              <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SqlitePatents.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/preprocessing/SqlitePatents.java">
+      <file leaf-file-name="patentClustering.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/clustering/patentClustering.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-55.333332">
-              <caret line="103" column="109" selection-start-line="103" selection-start-column="109" selection-end-line="103" selection-end-column="109" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="97" column="47" selection-start-line="97" selection-start-column="47" selection-end-line="97" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="patentDistance.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/clustering/patentDistance.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="145" column="64" selection-start-line="145" selection-start-column="12" selection-end-line="145" selection-end-column="64" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="patentCluster.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/base/patentCluster.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -117,7 +63,7 @@
         <entry file="file://$PROJECT_DIR$/identification/clustering/testMain.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="126" column="8" selection-start-line="126" selection-start-column="8" selection-end-line="126" selection-end-column="8" />
+              <caret line="48" column="50" selection-start-line="48" selection-start-column="50" selection-end-line="48" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -125,7 +71,33 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="faillist.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="IniFileReader.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/identification/base/IniFileReader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.8499157">
+              <caret line="51" column="20" selection-start-line="51" selection-start-column="20" selection-end-line="51" selection-end-column="20" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#384#385#0" expanded="true" />
+                <element signature="e#417#418#0" expanded="true" />
+                <element signature="e#512#513#0" expanded="true" />
+                <element signature="e#547#548#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="InvIdenti.iml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/InvIdenti.iml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="faillist.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/faillist.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
@@ -145,36 +117,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="hierClusteringPatent.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/clustering/hierClustering/hierClusteringPatent.java">
+      <file leaf-file-name="invidenti.ini" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/invidenti.ini">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="57" column="52" selection-start-line="57" selection-start-column="52" selection-end-line="57" selection-end-column="52" />
+              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="8" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HierClusteringPatents.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="41" column="13" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HierCore.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="59" column="35" selection-start-line="59" selection-start-column="35" selection-end-line="59" selection-end-column="35" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -242,13 +190,15 @@
         <option value="$PROJECT_DIR$/identification/clustering/distancefunction/AbstractDistance.java" />
         <option value="$PROJECT_DIR$/identification/clustering/distancefunction/CosDistance.java" />
         <option value="$PROJECT_DIR$/identification/base/patent.java" />
-        <option value="$PROJECT_DIR$/invidenti.ini" />
         <option value="$PROJECT_DIR$/identification/clustering/hierClustering/hierClusteringPatent.java" />
         <option value="$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java" />
         <option value="$PROJECT_DIR$/identification/preprocessing/USPTOSpider.java" />
         <option value="$PROJECT_DIR$/identification/preprocessing/SqlitePatents.java" />
         <option value="$PROJECT_DIR$/identification/preprocessing/USPTOSearch.java" />
+        <option value="$PROJECT_DIR$/invidenti.ini" />
+        <option value="$PROJECT_DIR$/identification/IniFileReader.java" />
         <option value="$PROJECT_DIR$/identification/clustering/testMain.java" />
+        <option value="$PROJECT_DIR$/identification/base/IniFileReader.java" />
       </list>
     </option>
   </component>
@@ -292,6 +242,7 @@
     <panes>
       <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -323,10 +274,6 @@
               <option name="myItemId" value="identification" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="preprocessing" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -343,72 +290,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="clustering" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InvIdenti" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InvIdenti" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="identification" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="clustering" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hierClustering" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InvIdenti" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InvIdenti" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="identification" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="clustering" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hierarchy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InvIdenti" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="InvIdenti" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="identification" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="clustering" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="distancefunction" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -432,7 +313,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -803,30 +683,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/identification/preprocessing/USPTOSearch.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="9" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3075#3076#0" expanded="true" />
-            <element signature="e#3101#3102#0" expanded="true" />
-            <element signature="e#3138#3139#0" expanded="true" />
-            <element signature="e#3167#3168#0" expanded="true" />
-            <element signature="e#3209#3210#0" expanded="true" />
-            <element signature="e#3243#3244#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/invidenti.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="12" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/identification/clustering/simpleKmeans/simpleKMeansCore.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -992,26 +848,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="688" column="0" selection-start-line="688" selection-start-column="0" selection-end-line="688" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#26959#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#4492#4493#0" expanded="false" />
-            <element signature="e#4528#4529#0" expanded="false" />
-            <element signature="e#17838#17839#0" expanded="false" />
-            <element signature="e#17876#17877#0" expanded="false" />
-            <element signature="e#18136#18137#0" expanded="false" />
-            <element signature="e#18173#18174#0" expanded="false" />
-            <element signature="e#19826#19827#0" expanded="false" />
-            <element signature="e#19858#19859#0" expanded="false" />
-            <element signature="e#21404#21405#0" expanded="false" />
-            <element signature="e#21485#21486#0" expanded="false" />
-            <element signature="e#26755#26756#0" expanded="false" />
-            <element signature="e#26795#26796#0" expanded="false" />
-            <element signature="e#26841#26842#0" expanded="false" />
-            <element signature="e#26901#26902#0" expanded="false" />
-            <element signature="e#26930#26931#0" expanded="false" />
-            <element signature="e#26955#26956#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1075,17 +911,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="28" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
-          <folding>
-            <element signature="e#590#591#0" expanded="false" />
-            <element signature="e#625#626#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/clustering/patentDistance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="137" column="22" selection-start-line="129" selection-start-column="8" selection-end-line="137" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -1093,13 +918,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="38" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#404#405#0" expanded="false" />
-            <element signature="e#446#447#0" expanded="false" />
-            <element signature="e#568#569#0" expanded="false" />
-            <element signature="e#608#609#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1107,14 +925,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="93" column="54" selection-start-line="93" selection-start-column="54" selection-end-line="93" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/clustering/patentClustering.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="97" column="47" selection-start-line="97" selection-start-column="47" selection-end-line="97" selection-end-column="47" />
           <folding />
         </state>
       </provider>
@@ -1137,22 +947,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.1851852">
           <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/preprocessing/patentPreprocessing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/invidenti.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="12" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1202,7 +996,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/identification/preprocessing/SqlitePatents.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-55.333332">
+        <state vertical-scroll-proportion="0.0">
           <caret line="103" column="109" selection-start-line="103" selection-start-column="109" selection-end-line="103" selection-end-column="109" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1234,21 +1028,77 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/clustering/testMain.java">
+    <entry file="file://$PROJECT_DIR$/faillist.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="126" column="8" selection-start-line="126" selection-start-column="8" selection-end-line="126" selection-end-column="8" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/InvIdenti.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/preprocessing/patentPreprocessing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/clustering/patentClustering.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="97" column="47" selection-start-line="97" selection-start-column="47" selection-end-line="97" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/clustering/patentDistance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="145" column="64" selection-start-line="145" selection-start-column="12" selection-end-line="145" selection-end-column="64" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/faillist.txt">
+    <entry file="file://$PROJECT_DIR$/invidenti.ini">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="8" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/clustering/testMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="48" column="50" selection-start-line="48" selection-start-column="50" selection-end-line="48" selection-end-column="50" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/base/IniFileReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8499157">
+          <caret line="51" column="20" selection-start-line="51" selection-start-column="20" selection-end-line="51" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#384#385#0" expanded="true" />
+            <element signature="e#417#418#0" expanded="true" />
+            <element signature="e#512#513#0" expanded="true" />
+            <element signature="e#547#548#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
