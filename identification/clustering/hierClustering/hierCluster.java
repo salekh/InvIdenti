@@ -14,18 +14,16 @@ public class hierCluster
 {
     private ArrayList<Integer> instances=new ArrayList<>();
 
-    public void addInstance(int num)
-    {
+    public void addInstance(int num) {
         this.instances.add(num);
     }
 
-    public void addInstances(ArrayList<Integer> instances)
-    {
+    public void addInstances(ArrayList<Integer> instances) {
         this.instances.addAll(instances);
     }
 
-    public ArrayList<Integer> getInstancesIndex()
-    {
+    public ArrayList<Integer> getInstancesIndex() {
+
         return this.instances;
     }
 
@@ -44,7 +42,6 @@ public class hierCluster
             }
 
         }
-
         return maxdistance;
     }
 }

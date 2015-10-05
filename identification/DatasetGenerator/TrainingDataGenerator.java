@@ -4,6 +4,10 @@ import base.patent;
 import org.ini4j.Wini;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -59,10 +63,9 @@ public class TrainingDataGenerator {
      * @return the arraylist of the patent in the
      */
     public ArrayList<patent> buildPatentInfDataSet() {
+
         ArrayList<patent> patents=new ArrayList<>();
 
-
-        System.out.println(this.inputPath);
         File var0=new File(inputPath);
 
         try {
@@ -79,24 +82,34 @@ public class TrainingDataGenerator {
                 System.out.println("Benchmark file format is not right.");
                 return patents;
             }
+            System.out.println(inputPath);
+            Connection connection=null;
+            Statement stmt=null;
 
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:"+outputPath+"/trainingData.db");
+
+            stmt = connection.createStatement();
+            String sql = "CREATE TABLE COMPANY" +
+                    "(ID INT PRIMARY KEY       NOT NULL," +
+                    " Patent           TEXT    NOT NULL, " +
+                    " LastName         TEXT    NOT NULL, " +
+                    " FirstName        TEXT    NOT NULL)";
+
+            stmt.execute(sql);
+            stmt.close();
+            connection.close();
             var2=var1.readLine();
             int var4=size;
 
-            while (var2!=null) {
-                //Control the dataset Size
-                if (var4>=0)
-                {
+            while (var2!=null) { //Control the dataset Size
+                if (var4>=0) {
                     if (var4<1) {
                         break;
-                    }
-                    else {
+                    } else {
                         var4--;
                     }
                 }
-                var3=var2.split(",");
-                System.out.println(var3[0]+" "+var3[1]+" "+var3[2]+" "+var3[3]);
-                var2=var1.readLine();
             }
 
             System.out.println("Patent information dataset is finished building");
@@ -105,6 +118,10 @@ public class TrainingDataGenerator {
         } catch (FileNotFoundException e) {
             System.out.println("Benchmark file not found!");
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

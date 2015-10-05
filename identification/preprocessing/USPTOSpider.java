@@ -39,14 +39,9 @@ public class USPTOSpider implements PageProcessor
 
         Elements e=doc.getElementsByTag("Title");
 
-
         if(e==null||e.size()==0) this.head=null; else this.head=e.first().toString();
 
         e=doc.getElementsMatchingOwnText("Abstract");
-
-
-
-
 
         if (e==null||e.size()==0) {
             abs=null;
@@ -64,8 +59,7 @@ public class USPTOSpider implements PageProcessor
         if (e==null||e.size()==0) claims=null; else
         {
             int claims_number=0;
-            for(Element temp:e)
-            {
+            for(Element temp:e) {
                 if (temp.ownText().equalsIgnoreCase("Claims")) break;
                 claims_number++;
             }
