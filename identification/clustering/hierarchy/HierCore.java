@@ -1,13 +1,9 @@
 package clustering.hierarchy;
 
-import base.pair;
-
 import base.patent;
 import clustering.distancefunction.AbstractDistance;
-import clustering.patentDistance;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by leisun on 15/9/29.

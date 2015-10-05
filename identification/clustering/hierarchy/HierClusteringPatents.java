@@ -5,7 +5,6 @@ import base.patentCluster;
 
 import clustering.distancefunction.CosDistance;
 import clustering.patentClustering;
-import preprocessing.patentPreprocessing;
 
 import java.util.ArrayList;
 

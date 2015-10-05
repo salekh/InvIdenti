@@ -1,8 +1,10 @@
 package clustering;
 
 
+import DatasetGenerator.TrainingDataGenerator;
 import base.IniFileReader;
-import preprocessing.SqlitePatents;
+
+import java.io.*;
 
 
 /**
@@ -45,8 +47,10 @@ public class testMain
         // hi.Cluster();
         //System.out.println(hi.toString());
 
-        IniFileReader r=new IniFileReader();
-        System.out.println(r.getValue("Weights"));
+        TrainingDataGenerator dg=new TrainingDataGenerator();
+        dg.setSize(300);
+        dg.buildData();
+
     }
 
 }
