@@ -2,12 +2,11 @@ package DatasetGenerator;
 
 import base.patent;
 import org.ini4j.Wini;
+import org.sqlite.ExtendedCommand;
+import preprocessing.USPTOSearch;
 
 import java.io.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -24,7 +23,6 @@ public class TrainingDataGenerator {
         try {
             Wini iniFile=new Wini(new File("invidenti.ini"));
             this.inputPath=iniFile.get("DataSet","TrainingDataInputPath");
-            System.out.println(this.inputPath);
             this.outputPath=iniFile.get("DataSet","TrainingDataOutputPath");
         } catch (IOException e) {
             System.out.println("Initial File not Found");
@@ -53,7 +51,34 @@ public class TrainingDataGenerator {
     public void buildData() {
         System.out.println("Start to build the training dataset");
 
-        this.buildPatentInfDataSet();
+        ArrayList<String> patentsIndex=this.buildPatentInfDataSet();
+
+
+        System.out.println("Start to extract the training patent texts");
+        File var0=new File(outputPath+"/PatentsText");
+
+        if (!var0.exists()) {
+            var0.mkdirs();
+        }
+
+
+        for(String var1:patentsIndex) {
+            USPTOSearch var2=new USPTOSearch(var1);
+            String var3=outputPath+"/PatentsText/"+var1;
+            var0=new File(var3);
+
+            if (!var0.exists()) {
+                var0.mkdirs();
+            }
+
+            this.storeText(var3+"/Abstract.txt",var2.getAbs());
+            this.storeText(var3+"/Claims.txt",var2.getClaims());
+            this.storeText(var3+"/Description.txt",var2.getDescription());
+            this.storeText(var3+"/Title.txt",var2.getTitle());
+        }
+
+        System.out.println("Finish extracting the texts");
+
 
         System.out.println("Finish building the training dataset");
     }
@@ -62,9 +87,9 @@ public class TrainingDataGenerator {
      *
      * @return the arraylist of the patent in the
      */
-    public ArrayList<patent> buildPatentInfDataSet() {
+    public ArrayList<String> buildPatentInfDataSet() {
 
-        ArrayList<patent> patents=new ArrayList<>();
+        ArrayList<String> patents=new ArrayList<>();
 
         File var0=new File(inputPath);
 
@@ -82,35 +107,56 @@ public class TrainingDataGenerator {
                 System.out.println("Benchmark file format is not right.");
                 return patents;
             }
-            System.out.println(inputPath);
+
             Connection connection=null;
             Statement stmt=null;
 
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:"+outputPath+"/trainingData.db");
-
+            connection.setAutoCommit(false);
             stmt = connection.createStatement();
-            String sql = "CREATE TABLE COMPANY" +
-                    "(ID INT PRIMARY KEY       NOT NULL," +
-                    " Patent           TEXT    NOT NULL, " +
-                    " LastName         TEXT    NOT NULL, " +
-                    " FirstName        TEXT    NOT NULL)";
 
-            stmt.execute(sql);
-            stmt.close();
-            connection.close();
+            try {
+                String var4 = "select count(*) from TrainingData";
+                stmt.execute(var4);
+            } catch (SQLException e) {
+                System.out.println("TrainingData Table not exist, now creating the database!");
+                String sql = "CREATE TABLE TrainingData" +
+                        "(ID TEXT NOT NULL," +
+                        " Patent           TEXT    NOT NULL, " +
+                        " LastName         TEXT    NOT NULL, " +
+                        " FirstName        TEXT    NOT NULL," +
+                        "UNIQUE(ID,Patent,LastName,FirstName))";
+                stmt.executeUpdate(sql);
+            }
+
             var2=var1.readLine();
-            int var4=size;
+            int var5=this.size;
 
             while (var2!=null) { //Control the dataset Size
-                if (var4>=0) {
-                    if (var4<1) {
+                if (var5>=0) {
+                    if (var5<1) {
                         break;
                     } else {
-                        var4--;
+                        var5--;
                     }
                 }
+                String[] var6=var2.split(",");;
+                try {
+                    String var7 = "insert into TrainingData (ID,Patent,LastName,FirstName)" + "Values ('"+var6[0]+"','"+
+                            var6[1]+"','"+var6[2]+"','"+var6[3]+"');";
+                    stmt.executeUpdate(var7);
+
+                } catch(SQLException e) {
+
+                }
+                patents.add(var6[1]);
+                var2=var1.readLine();
             }
+
+            stmt.close();
+            connection.commit();
+            connection.close();
 
             System.out.println("Patent information dataset is finished building");
 
@@ -128,5 +174,24 @@ public class TrainingDataGenerator {
         return patents;
     }
 
+    /**
+     *
+     * @param path store path
+     * @param str the test to store
+     */
+    public void storeText(String path,String str){
+        try {
+            FileWriter f=new FileWriter(path);
+            if(str!=null) {
+                f.write(str);
+            }
+            else {
+                f.write("");
+            }
 
+            f.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
