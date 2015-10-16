@@ -16,6 +16,7 @@ public class CosDistance extends AbstractDistance {
      * @param second second patent
      * @return return the similarity between the two patents
      */
+
     public double distance(patent first,patent second) {
         double result=0.0D;
 

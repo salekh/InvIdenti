@@ -28,7 +28,7 @@ public class patentPreprocessing {
     ArrayList<patent> patents = new ArrayList<>();
     LanguageCode language = LanguageCode.ENGLISH;
     public int clusterCount = 15;
-    public boolean useDimensionalityReduction = true;
+    public boolean useDimensionalityReduction = false;
 
     public IPreprocessingPipeline preprocessingPipeline = new CompletePreprocessingPipeline();
     public final TermDocumentMatrixBuilder matrixBuilder = new TermDocumentMatrixBuilder();
@@ -68,14 +68,9 @@ public class patentPreprocessing {
     public void generateTextVector(String str)
     {
         docs.clear();
-
-
-
         //Build arrayList of docs
         for (patent p : patents)
         {
-
-
             String temp=" ";
 
             if (str.equalsIgnoreCase("FullText")) temp=p.getAbs() + " " + p.getClaims() + " " + p.getDescription();

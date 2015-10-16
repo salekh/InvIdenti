@@ -76,6 +76,7 @@ public abstract class abstractClustering
                     }
                 str+="\t"+p.getTitle()+"\n";
             }
+            str+="=============================================================================\n";
         }
         return str;
     }

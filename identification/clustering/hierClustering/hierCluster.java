@@ -16,6 +16,7 @@ public class hierCluster
 
     public void addInstance(int num) {
         this.instances.add(num);
+
     }
 
     public void addInstances(ArrayList<Integer> instances) {
@@ -26,6 +27,8 @@ public class hierCluster
 
         return this.instances;
     }
+
+
 
     public static double maxDitanceBetweenClusters(Instances data,hierCluster c1,hierCluster c2, pair<HashMap<String,Integer>,HashMap<String,Integer>> attriInfo)
     {

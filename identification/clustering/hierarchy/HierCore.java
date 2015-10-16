@@ -45,6 +45,11 @@ public class HierCore {
         return this.m_Clusters;
     }
 
+
+    public void setM_Distance(AbstractDistance distance) {
+        this.m_Distance=distance;
+    }
+
     /**
      * Run the patent clustering
      * @param patents the arraylist of the patents
@@ -53,7 +58,7 @@ public class HierCore {
     public void buildCluster(ArrayList<patent> patents,AbstractDistance distance)
     {
 
-        System.out.println(this.eps);
+
 
         this.m_Distance=distance;
         initializeCluster(patents);
@@ -61,8 +66,6 @@ public class HierCore {
 
         while(current_NumClusters>m_NumClusters)
         {
-
-
             if (!mergeCluster(patents)) {
 
                 break;
@@ -94,16 +97,17 @@ public class HierCore {
      */
     public boolean mergeCluster(ArrayList<patent> patents)
     {
-        double mostSim=HierCluster.maxDitanceBetweenClusters(patents,this.m_Clusters.get(0),this.m_Clusters.get(1));
+        double mostSim=HierCluster.maxDitanceBetweenClusters(patents,this.m_Clusters.get(0),this.m_Clusters.get(1),this.m_Distance);
+
         int most_i=0;
         int most_j=1;
 
         for(int i=0;i<this.m_Clusters.size()-1;i++)
             for(int j=i+1;j<this.m_Clusters.size();j++)
             {
-                double temp=HierCluster.maxDitanceBetweenClusters(patents,m_Clusters.get(i), m_Clusters.get(j));
+                double temp=HierCluster.maxDitanceBetweenClusters(patents,m_Clusters.get(i), m_Clusters.get(j),this.m_Distance);
 
-                //      System.out.print(temp+" ");
+
 
                 if (temp>mostSim)
                 {
@@ -115,7 +119,7 @@ public class HierCore {
                 }
             }
 
-        if (mostSim>eps){
+        if ((mostSim/eps)>1){
         m_Clusters.get(most_i).getPatentsIndex().addAll(m_Clusters.get(most_j).getPatentsIndex());
 
         m_Clusters.remove(most_j);

@@ -3,6 +3,7 @@ package clustering.hierarchy;
 import base.patent;
 import base.patentCluster;
 
+import clustering.distancefunction.AbstractDistance;
 import clustering.distancefunction.CosDistance;
 import clustering.patentClustering;
 
@@ -39,10 +40,43 @@ public class HierClusteringPatents extends patentClustering
         hc.setEps(this.eps);
 
         try {
-            System.out.println(this.number_Cluster);
+
             hc.set_NumClusters(this.number_Cluster);
 
             hc.buildCluster(patents,new CosDistance());
+
+            ArrayList<HierCluster> hier_clusters=hc.get_Clusters();
+
+            for(int i=0;i<hc.numberOfClusters();i++)
+            {
+                patentCluster temp=new patentCluster();
+                temp.setSerial(i);
+                for(Integer j:hier_clusters.get(i).getPatentsIndex())
+                {
+                    temp.addPatent(patents.get(j));
+                }
+                clusters.add(temp);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Clustering based on a specific function
+     * @param distance distance function
+     */
+    public void Cluster(AbstractDistance distance) {
+        HierCore hc=new HierCore();
+        hc.setEps(this.eps);
+
+        try {
+
+            hc.set_NumClusters(this.number_Cluster);
+
+            hc.buildCluster(patents,distance);
+
             ArrayList<HierCluster> hier_clusters=hc.get_Clusters();
 
             for(int i=0;i<hc.numberOfClusters();i++)

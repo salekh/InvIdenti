@@ -5,6 +5,7 @@ import org.ini4j.Wini;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 /**
@@ -27,6 +28,7 @@ public abstract class AbstractDistance {
     protected double weightAssignee=1.0;
     protected double weightCategory=1.0;
 
+    protected int numofOptions = 6;
 
     public AbstractDistance(){
         this.initialOption();
@@ -95,9 +97,25 @@ public abstract class AbstractDistance {
         if (str1==null || str2==null) {
             return 0;
         }
-        String[] strs1=str1.split("/");
-        String[] strs2=str2.split("/");
+        String[] strs_1=str1.split("/");
+        String[] strs_2=str2.split("/");
 
+        ArrayList<String> strs1=new ArrayList<>();
+        ArrayList<String> strs2=new ArrayList<>();
+
+        for (String var3:strs_1) {
+            String[] var4=var3.split("-");
+            for (String var5:var4) {
+                strs1.add(var5);
+            }
+        }
+
+        for (String var3:strs_2) {
+            String[] var4=var3.split("-");
+            for (String var5:var4) {
+                strs2.add(var5);
+            }
+        }
 
         for (String var1:strs1) {
             for (String var2:strs2) {
@@ -111,4 +129,44 @@ public abstract class AbstractDistance {
         return result;
     }
 
+    /**
+     * Set the options of the distance
+     * @param options the boolean array for the options
+     * @return true if the functions set the options correctly
+     */
+    public boolean setOptions(boolean[] options) {
+
+        if (options.length<this.numofOptions) {
+            return false;
+        }
+
+        this.fulltextCompare=options[0];
+        this.abstractCompare=options[1];
+        this.claimsCompare=options[2];
+        this.desComapre=options[3];
+        this.assigneeCompare=options[4];
+        this.categoryCompare=options[5];
+
+        return true;
+    }
+
+
+    public boolean setWeights(double[] options) {
+        if (options.length<this.numofOptions) {
+            return false;
+        }
+        this.weightFullText=options[0];
+        this.weightAbstract=options[1];
+        this.weightClaims=options[2];
+        this.weightDes=options[3];
+        this.weightAssignee=options[4];
+        this.weightCategory=options[5];
+
+        return true;
+    }
+
+
+    public void getWeight() {
+        System.out.println(this.weightAbstract);
+    }
 }
