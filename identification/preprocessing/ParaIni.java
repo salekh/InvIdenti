@@ -76,7 +76,7 @@ public class ParaIni {
             this.patents = preprocess.getPatents();
             //System.out.println(this.patents.size());
             this.estimatePara();
-            double[] weight={0,this.weights.get(0),this.weights.get(1),this.weights.get(2),this.weights.get(3),this.weights.get(4)};
+            double[] weight={0,this.weights.get(0),this.weights.get(1),this.weights.get(2),this.weights.get(3),this.weights.get(4),this.weights.get(5)};
 
             //patent test=this.getOnePatent("7865343","invpat");
             //String str=test.getAbs()+test.getClaims()+test.getDescription();
@@ -210,29 +210,32 @@ public class ParaIni {
 
 
     public void estimatePara() {
-        double d1,d2,d3,d4,d5;
-        d1=d2=d3=d4=d5=0.0;
+        double d1,d2,d3,d4,d5,d6;
+        d1=d2=d3=d4=d5=d6=0.0;
         CosDistance distance=new CosDistance();
         for(int i=0;i<patents.size()-1;i++)
         {
             for (int j=i+1;j<patents.size();j++) {
-                if (!patentsID.get(i).equalsIgnoreCase(patentsID.get(j))) {
+                if (patentsID.get(i).equalsIgnoreCase(patentsID.get(j))) {
 
-                    boolean[] dd1={false,true,false,false,false,false};
+                    boolean[] dd1={false,true,false,false,false,false,false};
                     distance.setOptions(dd1);
                     d1+=distance.distance(patents.get(i),patents.get(j));
-                    boolean[] dd2={false,false,true,false,false,false};
+                    boolean[] dd2={false,false,true,false,false,false,false};
                     distance.setOptions(dd2);
                     d2+=distance.distance(patents.get(i),patents.get(j));
-                    boolean[] dd3={false,false,false,true,false,false};
+                    boolean[] dd3={false,false,false,true,false,false,false};
                     distance.setOptions(dd3);
                     d3+=distance.distance(patents.get(i),patents.get(j));
-                    boolean[] dd4={false,false,false,false,true,false};;
+                    boolean[] dd4={false,false,false,false,true,false,false};;
                     distance.setOptions(dd4);
                     d4+=distance.distance(patents.get(i),patents.get(j));
-                    boolean[] dd5={false,false,false,false,false,true};
+                    boolean[] dd5={false,false,false,false,false,true,false};
                     distance.setOptions(dd5);
                     d5+=distance.distance(patents.get(i),patents.get(j));
+                    boolean[] dd6={false,false,false,false,false,false,true};
+                    distance.setOptions(dd6);
+                    d6+=distance.distance(patents.get(i),patents.get(j));
                 }
             }
         }
@@ -243,7 +246,9 @@ public class ParaIni {
         var0.add(d3);
         var0.add(d4);
         var0.add(d5);
-        log.info("d:"+d1+" "+d2+" "+d3+" "+d4+" "+d5);
+        var0.add(d6);
+
+        log.info("d:"+d1+" "+d2+" "+d3+" "+d4+" "+d5+" "+d6);
         for (Double var1:var0) {
             double var2=0;
             for (Double var3:var0) {
@@ -252,6 +257,7 @@ public class ParaIni {
             this.weights.add(Math.pow(1/var2,beta));
 
         }
+        log.error("Weights:");
         for (double w:weights) {
             log.error(w);
         }
@@ -262,28 +268,31 @@ public class ParaIni {
             for (int j=i+1;j<patents.size();j++) {
                 if (!patentsID.get(i).equalsIgnoreCase(patentsID.get(j))) {
                     double sum=0;
-                    boolean[] dd1={false,true,false,false,false,false};
+                    boolean[] dd1={false,true,false,false,false,false,false};
                     distance.setOptions(dd1);
                     sum+=distance.distance(patents.get(i),patents.get(j))*this.weights.get(0);
-                    boolean[] dd2={false,false,true,false,false,false};
+                    boolean[] dd2={false,false,true,false,false,false,false};
                     distance.setOptions(dd2);
                     sum+=distance.distance(patents.get(i),patents.get(j))*this.weights.get(1);
-                    boolean[] dd3={false,false,false,true,false,false};
+                    boolean[] dd3={false,false,false,true,false,false,false};
                     distance.setOptions(dd3);
                     sum+=distance.distance(patents.get(i),patents.get(j))*this.weights.get(2);
-                    boolean[] dd4={false,false,false,false,true,false};;
+                    boolean[] dd4={false,false,false,false,true,false,false};
                     distance.setOptions(dd4);
                     sum+=distance.distance(patents.get(i),patents.get(j))*this.weights.get(3);
-                    boolean[] dd5={false,false,false,false,false,true};
+                    boolean[] dd5={false,false,false,false,false,true,false};
                     distance.setOptions(dd5);
+                    sum+=distance.distance(patents.get(i),patents.get(j))*this.weights.get(4);
+                    boolean[] dd6={false,false,false,false,false,false,true};
+                    distance.setOptions(dd6);
                     sum+=distance.distance(patents.get(i),patents.get(j))*this.weights.get(4);
                     if (sum>max) max=sum;
                     if (sum<min) min=sum;
                 }
             }
         }
-        this.threshold=max;
-        log.info(this.threshold);
+        this.threshold=min;
+        log.info("threshold:"+this.threshold);
     }
 
     public static void main(String[] args) {

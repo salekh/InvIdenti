@@ -1,6 +1,7 @@
 package clustering.distancefunction;
 
 import base.patent;
+import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.ini4j.Wini;
 
 import java.io.File;
@@ -20,6 +21,8 @@ public abstract class AbstractDistance {
     protected boolean desComapre=true;
     protected boolean assigneeCompare=true;
     protected boolean categoryCompare=true;
+    protected boolean nameCompare=true;
+    protected boolean pCorrelation=true;
 
     protected double weightFullText=1.0;
     protected double weightAbstract=1.0;
@@ -27,6 +30,7 @@ public abstract class AbstractDistance {
     protected double weightDes=1.0;
     protected double weightAssignee=1.0;
     protected double weightCategory=1.0;
+    protected double weightName=1.0;
 
     protected int numofOptions = 6;
 
@@ -56,12 +60,15 @@ public abstract class AbstractDistance {
             this.abstractCompare=initalFile.get("DistanceOption","AbstractCompare").equalsIgnoreCase("true");;
             this.claimsCompare=initalFile.get("DistanceOption","ClaimsCompare").equalsIgnoreCase("true");
             this.desComapre=initalFile.get("DistanceOption","DescriptionCompare").equalsIgnoreCase("true");
+            this.nameCompare=initalFile.get("DistanceOption","NameCompare").equalsIgnoreCase("true");
             this.weightFullText=Double.parseDouble(initalFile.get("Weights", "FullText"));
             this.weightAbstract=Double.parseDouble(initalFile.get("Weights","Abstract"));
             this.weightClaims=Double.parseDouble(initalFile.get("Weights","Claims"));
             this.weightDes=Double.parseDouble(initalFile.get("Weights","Description"));
             this.weightAssignee=Double.parseDouble(initalFile.get("Weights","Assignee"));
             this.weightCategory=Double.parseDouble(initalFile.get("Weights","Category"));
+            this.weightName=Double.parseDouble(initalFile.get("Weights","Name"));
+            this.pCorrelation=initalFile.get("DistanceOption","PCorrelation").equalsIgnoreCase("true");
 
         } catch (IOException e)
         {
@@ -70,20 +77,30 @@ public abstract class AbstractDistance {
     }
 
     /**
-     * compare two patents assignees
+     * compare two patents assignees by using the levenshtein distance between two string
      * @param str1 first assignee name
      * @param str2 second assignee name
      * @return the comparison result of two assignees;
      */
     protected double compareAssignee (String str1,String str2) {
         if (str1==null || str2==null) {
-            return 0;
+          if (this.pCorrelation)  {
+              return 0;
+          } else {
+              return 1;
+          }
         }
-        if (str1.equalsIgnoreCase(str2)) {
-            return 1.0;
+
+        NormalizedLevenshtein var0 = new NormalizedLevenshtein();
+
+        if (this.pCorrelation)
+        {
+            return (1-var0.distance(str1,str2));
         } else {
-            return 0.0;
+            return var0.distance(str1,str2);
         }
+
+
     }
 
     /**
@@ -126,8 +143,46 @@ public abstract class AbstractDistance {
             }
         }
         result=result/4;
-        return result;
+
+        /**
+         * Need Change here
+         */
+
+        if (result>1) result=1;
+
+        if (this.pCorrelation) {return result;}
+        else
+        {
+            return 1-result;
+        }
     }
+
+    /**
+     * Compare the names
+     * @param name1 first name
+     * @param name2 second name
+     * @return the levenshtein distance between two names according to the pCorrelation
+     */
+    public double compareName(String name1,String name2) {
+        if (name1==null || name2==null) {
+            if (this.pCorrelation)  {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+
+        NormalizedLevenshtein var0 = new NormalizedLevenshtein();
+
+        if (this.pCorrelation)
+        {
+            return (1-var0.distance(name1,name2));
+        } else {
+            return var0.distance(name1,name2);
+        }
+    }
+
+
 
     /**
      * Set the options of the distance
@@ -146,11 +201,16 @@ public abstract class AbstractDistance {
         this.desComapre=options[3];
         this.assigneeCompare=options[4];
         this.categoryCompare=options[5];
+        this.nameCompare=options[6];
 
         return true;
     }
 
-
+    /**
+     * Set the weights of the scores
+     * @param options a double array for the weights of the scores
+     * @return true if the setting is successful
+     */
     public boolean setWeights(double[] options) {
         if (options.length<this.numofOptions) {
             return false;
@@ -161,6 +221,7 @@ public abstract class AbstractDistance {
         this.weightDes=options[3];
         this.weightAssignee=options[4];
         this.weightCategory=options[5];
+        this.weightName=options[6];
 
         return true;
     }

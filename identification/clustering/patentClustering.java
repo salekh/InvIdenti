@@ -4,12 +4,15 @@ import base.pair;
 import base.patent;
 import base.patentCluster;
 import org.carrot2.core.LanguageCode;
+import org.ini4j.Wini;
 import preprocessing.patentPreprocessing;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,6 +27,7 @@ public abstract class patentClustering
     protected ArrayList<patentCluster> clusters=new ArrayList<>();
     protected Instances instances;
     protected int number_Cluster=4;
+    protected boolean pCorrelation=true;
 
     protected Instances final_instances;
     protected ArrayList<Integer> dims;
@@ -85,6 +89,14 @@ public abstract class patentClustering
 
     public patentClustering(ArrayList<patent> patents)
     {
+        try {
+            Wini initalFile=new Wini(new File("invidenti.ini"));
+            this.pCorrelation=initalFile.get("DistanceOption","PCorrelation").equalsIgnoreCase("true");
+
+        } catch (IOException e)
+        {
+            System.out.println("Initial File 'invidenti.ini not found',distance function will use default options");
+        }
         this.patents=patents;
         preprocess();
     }

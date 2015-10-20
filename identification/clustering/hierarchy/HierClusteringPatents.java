@@ -70,6 +70,7 @@ public class HierClusteringPatents extends patentClustering
     public void Cluster(AbstractDistance distance) {
         HierCore hc=new HierCore();
         hc.setEps(this.eps);
+        hc.setpCorrelation(this.pCorrelation);
 
         try {
 

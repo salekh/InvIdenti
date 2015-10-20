@@ -41,7 +41,7 @@ public class hierCluster
             for(Integer j:c2.getInstancesIndex())
             {
                 double temp=distance.distance(data.instance(i),data.instance(j));
-                if (temp>maxdistance) maxdistance=temp;
+                if (temp<maxdistance) maxdistance=temp;
             }
 
         }

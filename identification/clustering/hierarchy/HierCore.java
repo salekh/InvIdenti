@@ -13,7 +13,7 @@ public class HierCore {
     private ArrayList<HierCluster> m_Clusters=new ArrayList<>();
     protected AbstractDistance m_Distance;
     protected int current_NumClusters;
-
+    protected boolean pCorrelation=true;
     protected double eps=0;
     /**
      * set the number of the clusters
@@ -22,6 +22,11 @@ public class HierCore {
     public void set_NumClusters(int number) {
         this.m_NumClusters=number;
     }
+
+
+
+    public void setpCorrelation(boolean pCorrelation) {this.pCorrelation=pCorrelation;}
+
 
     /**
      *
@@ -108,17 +113,27 @@ public class HierCore {
                 double temp=HierCluster.maxDitanceBetweenClusters(patents,m_Clusters.get(i), m_Clusters.get(j),this.m_Distance);
 
 
+                if(pCorrelation) {
 
-                if (temp>mostSim)
-                {
+                    if (temp>mostSim)
+                        {
+                            mostSim=temp;
+                            most_i=i;
+                            most_j=j;
+                        }
+                } else {
 
-                    mostSim=temp;
-                    most_i=i;
-                    most_j=j;
-
+                    if (temp<mostSim)
+                    {
+                        mostSim=temp;
+                        most_i=i;
+                        most_j=j;
+                    }
                 }
             }
 
+        System.out.println(most_i+" "+most_j+" "+mostSim);
+        if (this.pCorrelation){
         if ((mostSim/eps)>1){
         m_Clusters.get(most_i).getPatentsIndex().addAll(m_Clusters.get(most_j).getPatentsIndex());
 
@@ -129,6 +144,21 @@ public class HierCore {
         else
         {
             return false;
+        }
+        }
+        else {
+            if ((mostSim/eps)<1){
+                m_Clusters.get(most_i).getPatentsIndex().addAll(m_Clusters.get(most_j).getPatentsIndex());
+
+                m_Clusters.remove(most_j);
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
     }
 }

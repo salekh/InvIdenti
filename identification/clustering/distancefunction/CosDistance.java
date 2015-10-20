@@ -43,6 +43,9 @@ public class CosDistance extends AbstractDistance {
         if (this.categoryCompare==true) {
             result+=(this.comapreCategories(first.getCategory(),second.getCategory())*this.weightCategory);
         }
+        if (this.nameCompare==true) {
+            result+=(this.compareName(first.getCategory(),second.getCategory())*this.weightName);
+        }
 
         return result;
     }
@@ -71,11 +74,13 @@ public class CosDistance extends AbstractDistance {
         DoubleMatrix2D result_m = new DenseDoubleMatrix2D(2, 2);
         d.zMult(d, result_m, 1.0D, 0.0, true, false);
 
-        if (result_m.get(0, 0) != 0 && result_m.get(1, 0) != 0)
-            result += (result_m.get(0, 1) / (Math.sqrt(result_m.get(0, 0)) * Math.sqrt(result_m.get(1, 1))));
-        else result += 1;
+        if (result_m.get(0, 0) != 0 && result_m.get(1, 1) != 0)
+            result = (result_m.get(0, 1) / (Math.sqrt(result_m.get(0, 0)) * Math.sqrt(result_m.get(1, 1))));
+        else result =0 ;
 
-        return result;
+        if (this.pCorrelation)
+             return result;
+        else return (1-result);
     }
 
 }

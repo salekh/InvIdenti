@@ -7,6 +7,7 @@ import base.patent;
 import clustering.distancefunction.CosDistance;
 import clustering.hierarchy.HierClusteringPatents;
 
+import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import preprocessing.SqlitePatents;
@@ -51,6 +52,7 @@ public class testMain
          * Clustering process
          */
         //boolean[] var_b={false,false,false,false,false,true};
+        /*
         HierClusteringPatents hi=new HierClusteringPatents(p);
         hi.setEps(0.003726864190953778);
         double[] weight={1.0,
@@ -66,6 +68,10 @@ public class testMain
         hi.Cluster(var0);
         //System.out.println(hi.toString());
         l.info(hi.toString());
+*/
+
+
+        NormalizedLevenshtein l1 = new NormalizedLevenshtein();
 
         /**
         TrainingDataGenerator dg=new TrainingDataGenerator();
