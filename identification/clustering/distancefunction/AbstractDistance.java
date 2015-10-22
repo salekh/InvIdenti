@@ -234,6 +234,10 @@ public abstract class AbstractDistance {
         return true;
     }
 
+    public void setpCorrelation(boolean pCorrelation){
+        this.pCorrelation=pCorrelation;
+    }
+
     public String toString() {
         String var0="Distance Type:"+this.distanceType+"\n";
 

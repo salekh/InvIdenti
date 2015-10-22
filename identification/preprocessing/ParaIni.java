@@ -25,7 +25,7 @@ public class ParaIni {
     String trainingDataPath;
     String trainingTextPath;
     String infoDataPath;
-    int size=200;
+    int size=50;
     Connection connectionTraining=null;
     Statement stmtTraining=null;
     Connection connectionInfo=null;
@@ -37,7 +37,7 @@ public class ParaIni {
      */
 
 
-    double beta=4;
+    double beta=7;
 
     ArrayList<patent> patents=new ArrayList<>();
     ArrayList<patent> testP=new ArrayList<>();
@@ -69,10 +69,20 @@ public class ParaIni {
             logger.info(patentsID.size());
 
 
-            patentPreprocessing preprocess = new patentPreprocessing(this.patents);
+
+
+            patentPreprocessingTF preprocess = new patentPreprocessingTF(this.patents);
             preprocess.setLanguage(this.language);
             preprocess.preprocess();
             this.patents = preprocess.getPatents();
+
+
+            for(int i=0;i<this.patents.get(0).getTd_abs().rows();i++) {
+                System.out.print(this.patents.get(0).getTd_abs().get(i,0)+" ");
+            }
+            System.out.println();
+
+
 
             CosDistance distance=this.estimatePara();
 
@@ -256,51 +266,22 @@ public class ParaIni {
         for(int i=0;i<patents.size()-1;i++)
         {
             for (int j=i+1;j<patents.size();j++) {
-                if (!patentsID.get(i).equalsIgnoreCase(patentsID.get(j))) {
+                if (patentsID.get(i).equalsIgnoreCase(patentsID.get(j))) {
                     double var5=estimatedDistance.distance(patents.get(i),patents.get(j));
-                   sum+=var5;
+                    sum+=var5;
                     n++;
                     if (var5>max) max=var5;
                     if (var5<min) min=var5;
                 }
             }
         }
-        this.threshold=min;
+        this.threshold=max*1.15;
+                //=min+(max-min)*0.61;
 
         logger.info("threshold:"+this.threshold);
 
-        for(int i=0;i<patents.size()-1;i++)
-        {
-            for (int j=i+1;j<patents.size();j++) {
-                if (!patentsID.get(i).equalsIgnoreCase(patentsID.get(j))) {
-                    double var5=estimatedDistance.distance(patents.get(i),patents.get(j));
-                   if (var5==min) {
 
 
-                           for(int h=0;h<patents.get(i).getTd_des().rows();h++)
-                           {
-                               System.out.print(patents.get(i).getTd_des().get(h, 0) + " ");
-                           }
-                       logger.info("asdasd"+i);
-                       logger.info(patents.get(i).getPatent_number());
-                       logger.error(patents.get(i).getTd_des().rows());
-                        System.out.println();
-                       for(int h=0;h<patents.get(j).getTd_des().rows();h++)
-                       {
-                           System.out.print(patents.get(j).getTd_des().get(h,0)+" ");
-
-                       }
-                       logger.info(patents.get(j).getPatent_number());
-                       logger.error(patents.get(j).getTd_des().rows());
-                       System.out.println();
-
-                           logger.warn(distances.get(3).distance(patents.get(i),patents.get(j)));
-
-
-                   }
-                }
-            }
-        }
         return estimatedDistance;
     }
 

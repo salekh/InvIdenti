@@ -12,8 +12,7 @@ public class CosDistance extends AbstractDistance {
 
     /**
      * calculate the distance between two patents as the similarity
-     * @param first first patent
-     * @param second second patent
+
      * @return return the similarity between the two patents
      */
 
@@ -84,9 +83,23 @@ public class CosDistance extends AbstractDistance {
             result = (result_m.get(0, 1) / (Math.sqrt(result_m.get(0, 0)) * Math.sqrt(result_m.get(1, 1))));
         else result =0 ;
 
-        if (this.pCorrelation)
-             return result;
-        else return (1-result);
+        if (this.pCorrelation) {
+            if (result<0) {
+                result=0;
+            } else if (result>1) {
+                result=1;
+            }
+            return result;
+        }
+        else
+        {
+            if ((1-result)<0) {
+                result=1;
+            } else if ((1-result)>1) {
+                result=0;
+            }
+            return (1-result);
+        }
     }
 
 }
