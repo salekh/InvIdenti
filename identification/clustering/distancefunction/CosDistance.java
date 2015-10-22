@@ -17,6 +17,12 @@ public class CosDistance extends AbstractDistance {
      * @return return the similarity between the two patents
      */
 
+    public CosDistance()
+    {
+        super();
+        this.distanceType="Cosine Distance";
+    }
+
     public double distance(patent first,patent second) {
         double result=0.0D;
 

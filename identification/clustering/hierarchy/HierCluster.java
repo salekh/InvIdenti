@@ -57,8 +57,8 @@ public class HierCluster {
             }
 
         }
-    return maxdistance;
-       // return sum/(c1.getPatentsIndex().size()*c2.getPatentsIndex().size());
+     return maxdistance;
+    //    return sum/(c1.getPatentsIndex().size()*c2.getPatentsIndex().size());
     }
 
     public void computeCentroid(ArrayList<patent> pts,AbstractDistance distance) {

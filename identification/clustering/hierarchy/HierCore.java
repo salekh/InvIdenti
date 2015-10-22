@@ -132,7 +132,7 @@ public class HierCore {
                 }
             }
 
-        System.out.println(most_i+" "+most_j+" "+mostSim);
+
         if (this.pCorrelation){
         if ((mostSim/eps)>1){
         m_Clusters.get(most_i).getPatentsIndex().addAll(m_Clusters.get(most_j).getPatentsIndex());

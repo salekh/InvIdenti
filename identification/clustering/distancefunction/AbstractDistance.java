@@ -2,11 +2,13 @@ package clustering.distancefunction;
 
 import base.patent;
 import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
+import org.apache.logging.log4j.Logger;
 import org.ini4j.Wini;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.LogManager;
 
 
 /**
@@ -32,7 +34,11 @@ public abstract class AbstractDistance {
     protected double weightCategory=1.0;
     protected double weightName=1.0;
 
-    protected int numofOptions = 6;
+    protected int numofOptions = 7;
+
+    protected String distanceType="AbstractDistance";
+
+    private static Logger logger= org.apache.logging.log4j.LogManager.getLogger(AbstractDistance.class.getName());
 
     public AbstractDistance(){
         this.initialOption();
@@ -72,7 +78,7 @@ public abstract class AbstractDistance {
 
         } catch (IOException e)
         {
-            System.out.println("Initial File 'invidenti.ini not found',distance function will use default options");
+           logger.info("Initial File 'invidenti.ini not found',distance function will use default options");
         }
     }
 
@@ -85,9 +91,9 @@ public abstract class AbstractDistance {
     protected double compareAssignee (String str1,String str2) {
         if (str1==null || str2==null) {
           if (this.pCorrelation)  {
-              return 0;
+              return 0.5;
           } else {
-              return 1;
+              return 0.3;
           }
         }
 
@@ -192,6 +198,7 @@ public abstract class AbstractDistance {
     public boolean setOptions(boolean[] options) {
 
         if (options.length<this.numofOptions) {
+            logger.warn("Option setting fails!");
             return false;
         }
 
@@ -213,6 +220,7 @@ public abstract class AbstractDistance {
      */
     public boolean setWeights(double[] options) {
         if (options.length<this.numofOptions) {
+            logger.warn("Weights Setting fails");
             return false;
         }
         this.weightFullText=options[0];
@@ -226,8 +234,21 @@ public abstract class AbstractDistance {
         return true;
     }
 
+    public String toString() {
+        String var0="Distance Type:"+this.distanceType+"\n";
 
-    public void getWeight() {
-        System.out.println(this.weightAbstract);
+        var0+="Options:\n";
+
+        var0+="\t"+"FullText    |"+fulltextCompare+"\n";
+        var0+="\t"+"Abstract    |"+abstractCompare+"\n";
+        var0+="\t"+"Claims      |"+claimsCompare+"\n";
+        var0+="\t"+"Description |"+desComapre+"\n";
+        var0+="\t"+"Assignee    |"+assigneeCompare+"\n";
+        var0+="\t"+"Categories  |"+categoryCompare+"\n";
+        var0+="\t"+"Name        |"+nameCompare+"\n";
+
+        var0+="Weights:"+this.weightFullText+","+this.weightAbstract+","+weightClaims+","+weightDes+","+weightAssignee+","+weightCategory+","+weightName+"\n";
+
+        return var0;
     }
 }
