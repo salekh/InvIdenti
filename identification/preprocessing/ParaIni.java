@@ -3,6 +3,7 @@ package preprocessing;
 import base.patent;
 import clustering.distancefunction.AbstractDistance;
 import clustering.distancefunction.CosDistance;
+import clustering.hierarchy.HierCluster;
 import clustering.hierarchy.HierClusteringPatents;
 import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +26,8 @@ public class ParaIni {
     String trainingDataPath;
     String trainingTextPath;
     String infoDataPath;
-    int size=50;
+    int trainingSize=100;
+    int tesingSize=50;
     Connection connectionTraining=null;
     Statement stmtTraining=null;
     Connection connectionInfo=null;
@@ -37,11 +39,12 @@ public class ParaIni {
      */
 
 
-    double beta=7;
+    double beta=4;
 
     ArrayList<patent> patents=new ArrayList<>();
-    ArrayList<patent> testP=new ArrayList<>();
+    ArrayList<patent> testingPatents=new ArrayList<>();
     ArrayList<String> patentsID= new ArrayList<>();
+    ArrayList<String> testingPatentsID=new ArrayList<>();
 
     ArrayList<Double> weights=new ArrayList<>();
 
@@ -66,8 +69,8 @@ public class ParaIni {
             logger.info("Opened database successfully");
 
             this.getTrainingPatents("TrainingData");
+            this.getTestingPatents("TrainingData");
             logger.info(patentsID.size());
-
 
 
 
@@ -76,23 +79,44 @@ public class ParaIni {
             preprocess.preprocess();
             this.patents = preprocess.getPatents();
 
-
-            for(int i=0;i<this.patents.get(0).getTd_abs().rows();i++) {
-                System.out.print(this.patents.get(0).getTd_abs().get(i,0)+" ");
-            }
-            System.out.println();
-
-
-
             CosDistance distance=this.estimatePara();
 
 
+            patentPreprocessingTF preprocessTest = new patentPreprocessingTF(this.testingPatents);
+            preprocessTest.setLanguage(this.language);
+            preprocessTest.preprocess();
+            this.testingPatents = preprocessTest.getPatents();
+            HierClusteringPatents hi=new HierClusteringPatents(this.testingPatents);
 
-            HierClusteringPatents hi=new HierClusteringPatents(this.patents);
-            hi.setEps(this.threshold);
+            double dmax=0;
+            double maxf=0;
+
+
+
+            ArrayList<Double> matlab=new ArrayList<>();
+           for(double d=0.0;d<3.1;d+=0.1) {
+
+               hi.setEps(this.threshold*d);
+               hi.Cluster(distance);
+                double tempf=evaluateClustering(hi.getHier_clusters(), testingPatentsID);
+                if (tempf>maxf) {
+                    maxf=tempf;
+                    dmax=d;
+                }
+               matlab.add(tempf);
+               logger.info("F-Measure for " + d  + " :" + tempf);
+
+           }
+
+
+            for(double d1:matlab){
+                System.out.print(d1+" ");
+            }
+            System.out.println();
+            hi.setEps(this.threshold*dmax);
             hi.Cluster(distance);
+            logger.error(hi);
 
-            logger.info(hi.toString());
 
 
             this.stmtInfo.close();
@@ -141,7 +165,12 @@ public class ParaIni {
                 String title=readText(this.trainingTextPath+patentNumber+"/"+"Title.txt");
                 if (authorLastName.equalsIgnoreCase(lastname))
                 {
-                patent var2=new patent(patent,abs,claims,description,title,category,assignee,authorLastName);
+                    if(abs.length()==0||claims.length()==0||description.length()==0) {
+                        System.out.println(patent);
+                }
+
+
+                    patent var2=new patent(patent,abs,claims,description,title,category,assignee,authorLastName);
 
                 return var2;
                 }
@@ -186,7 +215,20 @@ public class ParaIni {
         String sql="select * from "+table;
         try {
             ResultSet var0=stmtTraining.executeQuery(sql);
-            int var1=size;
+            int var10=0;
+
+            while (var0.next()) {
+                if (var10 < 1) {
+                    break;
+
+                } else {
+                    var10--;
+                }
+            }
+
+
+
+            int var1=trainingSize;
             while (var0.next()) {
                 if (var1<1) {
                    break;
@@ -212,6 +254,52 @@ public class ParaIni {
 
 
     }
+
+
+    public void getTestingPatents(String table)  {
+        String sql="select * from "+table;
+        try {
+            ResultSet var0=stmtTraining.executeQuery(sql);
+            int var1=0;
+
+            while (var0.next()) {
+                if (var1 < 1) {
+                    break;
+
+                } else {
+                    var1--;
+                }
+            }
+
+            int var3=tesingSize;
+            while(var0.next())
+            {
+                if (var3 < 1) {
+                    break;
+
+                } else {
+                    var3--;
+                }
+                patent var2=this.getOnePatent(var0.getString("Patent"), "invpat",var0.getString("LastName"));
+                if (var2!=null)
+                {
+                    this.testingPatents.add(var2);
+
+                    this.testingPatentsID.add(var0.getString("ID"));
+                } else {
+                    var3++;
+                }
+
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
 
 
     public CosDistance estimatePara() {
@@ -275,7 +363,7 @@ public class ParaIni {
                 }
             }
         }
-        this.threshold=max*1.15;
+        this.threshold=max;
                 //=min+(max-min)*0.61;
 
         logger.info("threshold:"+this.threshold);
@@ -310,6 +398,60 @@ public class ParaIni {
         return var0;
     }
 
+
+    public double evaluateClustering(ArrayList<HierCluster> clusters,ArrayList<String> patentsID) {
+        int TN, TP, FN, FP;
+        TP = FP = 0;
+        for (HierCluster c : clusters) {
+            for (int i = 0; i < c.getPatentsIndex().size(); i++) {
+                for (int j = i + 1; j < c.getPatentsIndex().size(); j++) {
+                    if (patentsID.get(c.getPatentsIndex().get(i)).equalsIgnoreCase(patentsID.get(c.getPatentsIndex().get(j)))) {
+                        TP++;
+                    }
+                    FP++;
+                }
+            }
+        }
+
+        FP = FP - TP;
+        TN = FN = 0;
+        for (int i = 0; i < clusters.size(); i++) {
+            for (int j = i + 1; j < clusters.size(); j++) {
+                for (Integer var1 : clusters.get(i).getPatentsIndex()) {
+                    for (Integer var2 : clusters.get(j).getPatentsIndex()) {
+                        if (patentsID.get(var1).equalsIgnoreCase(patentsID.get(var2))) {
+                            FN++;
+                        }
+                        TN++;
+                    }
+                }
+            }
+        }
+        TN = TN - FN;
+
+
+        double precision;
+        double recall;
+        System.out.println(TP + " " + FP + " " + " " + TN + " " + FN);
+        if ((TP + FP) != 0) {
+            precision = (double) TP / (TP + FP);
+        } else {
+            precision = 0;
+        }
+        if ((TP + FN) != 0) {
+            recall = (double) TP / (TP + FN);
+
+        } else {
+            recall = 0;
+        }
+
+        if ((precision + recall) != 0) {
+            return (double) 2 * precision * recall / (precision + recall);
+        }
+        else {
+            return 0;
+        }
+    }
 
     public static void main(String[] args) {
         new ParaIni();

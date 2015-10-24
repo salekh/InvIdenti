@@ -93,7 +93,7 @@ public abstract class AbstractDistance {
           if (this.pCorrelation)  {
               return 0.5;
           } else {
-              return 0.3;
+              return 0.5;
           }
         }
 
@@ -115,28 +115,28 @@ public abstract class AbstractDistance {
      * @param str2 second category
      * @return the comparison result of two patent categories
      */
-    protected double comapreCategories (String str1,String str2) {
+    public double comapreCategories (String str1,String str2) {
         double result=0.0;
         if (str1==null || str2==null) {
             return 0;
         }
-        String[] strs_1=str1.split("/");
-        String[] strs_2=str2.split("/");
+        String[] strs_1=str1.split("-");
+        String[] strs_2=str2.split("-");
 
         ArrayList<String> strs1=new ArrayList<>();
         ArrayList<String> strs2=new ArrayList<>();
 
         for (String var3:strs_1) {
-            String[] var4=var3.split("-");
+            String[] var4=var3.split("/");
             for (String var5:var4) {
-                strs1.add(var5);
+                if (!strs1.contains(var5)) strs1.add(var5);
             }
         }
 
         for (String var3:strs_2) {
-            String[] var4=var3.split("-");
+            String[] var4=var3.split("/");
             for (String var5:var4) {
-                strs2.add(var5);
+                if (!strs2.contains(var5)) strs2.add(var5);
             }
         }
 
@@ -148,7 +148,11 @@ public abstract class AbstractDistance {
                 }
             }
         }
+
+
         result=result/4;
+
+
 
         /**
          * Need Change here

@@ -60,6 +60,7 @@ public class hierClusteringPatent extends patentClustering
             hc.buildCluster(instances);
             ArrayList<hierCluster> hier_clusters=hc.get_Clusters();
 
+            clusters.clear();
             for(int i=0;i<hc.numberOfClusters();i++)
             {
                 patentCluster temp=new patentCluster();

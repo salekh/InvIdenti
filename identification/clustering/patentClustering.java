@@ -26,7 +26,7 @@ public abstract class patentClustering
     protected LanguageCode language=LanguageCode.ENGLISH;
     protected ArrayList<patentCluster> clusters=new ArrayList<>();
     protected Instances instances;
-    protected int number_Cluster=4;
+    protected int number_Cluster=1;
     protected boolean pCorrelation=true;
 
     protected Instances final_instances;

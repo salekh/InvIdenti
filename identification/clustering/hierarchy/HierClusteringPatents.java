@@ -16,6 +16,7 @@ public class HierClusteringPatents extends patentClustering
 {
 
     private double eps=0;
+    ArrayList<HierCluster> hier_clusters;
 
     public HierClusteringPatents(ArrayList<patent> patents) {
         super(patents);
@@ -44,8 +45,9 @@ public class HierClusteringPatents extends patentClustering
             hc.set_NumClusters(this.number_Cluster);
 
             hc.buildCluster(patents,new CosDistance());
+            clusters.clear();
 
-            ArrayList<HierCluster> hier_clusters=hc.get_Clusters();
+          hier_clusters=hc.get_Clusters();
 
             for(int i=0;i<hc.numberOfClusters();i++)
             {
@@ -74,11 +76,15 @@ public class HierClusteringPatents extends patentClustering
 
         try {
 
+
+
             hc.set_NumClusters(this.number_Cluster);
 
             hc.buildCluster(patents,distance);
+            clusters.clear();
 
-            ArrayList<HierCluster> hier_clusters=hc.get_Clusters();
+
+            hier_clusters=hc.get_Clusters();
 
             for(int i=0;i<hc.numberOfClusters();i++)
             {
@@ -94,5 +100,9 @@ public class HierClusteringPatents extends patentClustering
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<HierCluster> getHier_clusters() {
+        return this.hier_clusters;
     }
 }

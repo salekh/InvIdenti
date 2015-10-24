@@ -128,7 +128,16 @@ public class patentPreprocessingTF {
             }
         }
 
+      for(int i=0;i<docs.size();i++) {
+          double sum=0;
+          for(Double var0:tfMatrix.get(i)) {
+              sum+=var0;
+          }
 
+          for(int j=0;j<stemIndex.size();j++) {
+              tfMatrix.get(i).set(j,tfMatrix.get(i).get(j)/sum);
+          }
+      }
 
 
 

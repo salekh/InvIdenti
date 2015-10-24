@@ -29,7 +29,7 @@ public abstract class abstractClustering
     protected pair<HashMap<String,Integer>,HashMap<String,Integer>> attributes;
     protected Instances final_instances;
     protected ArrayList<Integer> dims;
-    protected int number_Cluster=2;
+    protected int number_Cluster=1;
 
     public void setLanguage(LanguageCode code)
     {

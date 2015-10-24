@@ -103,7 +103,6 @@ public class HierCore {
     public boolean mergeCluster(ArrayList<patent> patents)
     {
         double mostSim=HierCluster.maxDitanceBetweenClusters(patents,this.m_Clusters.get(0),this.m_Clusters.get(1),this.m_Distance);
-
         int most_i=0;
         int most_j=1;
 
@@ -134,7 +133,7 @@ public class HierCore {
 
 
         if (this.pCorrelation){
-        if ((mostSim/eps)>1){
+        if (mostSim>eps) {
         m_Clusters.get(most_i).getPatentsIndex().addAll(m_Clusters.get(most_j).getPatentsIndex());
 
         m_Clusters.remove(most_j);
@@ -147,7 +146,8 @@ public class HierCore {
         }
         }
         else {
-            if ((mostSim/eps)<1){
+            if (mostSim<eps){
+
                 m_Clusters.get(most_i).getPatentsIndex().addAll(m_Clusters.get(most_j).getPatentsIndex());
 
                 m_Clusters.remove(most_j);
@@ -156,6 +156,7 @@ public class HierCore {
             }
             else
             {
+
                 return false;
             }
 
