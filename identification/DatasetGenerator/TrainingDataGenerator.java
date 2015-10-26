@@ -1,8 +1,6 @@
 package DatasetGenerator;
 
-import base.patent;
 import org.ini4j.Wini;
-import org.sqlite.ExtendedCommand;
 import preprocessing.USPTOSearch;
 
 import java.io.*;

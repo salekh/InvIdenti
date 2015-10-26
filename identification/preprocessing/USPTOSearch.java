@@ -1,7 +1,6 @@
 package preprocessing;
 import us.codecraft.webmagic.Spider;
 
-import java.net.SocketTimeoutException;
 
 /**
  * Created by leisun on 15/8/20.

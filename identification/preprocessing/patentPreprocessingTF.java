@@ -2,8 +2,6 @@ package preprocessing;
 
 import base.patent;
 import com.carrotsearch.hppc.IntArrayList;
-import com.carrotsearch.hppc.IntIntHashMap;
-import com.carrotsearch.hppc.cursors.IntIntCursor;
 import org.apache.mahout.math.matrix.DoubleMatrix2D;
 import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.carrot2.core.Document;
@@ -12,13 +10,11 @@ import org.carrot2.text.preprocessing.LabelFormatter;
 import org.carrot2.text.preprocessing.PreprocessingContext;
 import org.carrot2.text.preprocessing.pipeline.CompletePreprocessingPipeline;
 import org.carrot2.text.preprocessing.pipeline.IPreprocessingPipeline;
-import org.carrot2.text.vsm.ReducedVectorSpaceModelContext;
 import org.carrot2.text.vsm.TermDocumentMatrixBuilder;
 import org.carrot2.text.vsm.TermDocumentMatrixReducer;
-import org.carrot2.text.vsm.VectorSpaceModelContext;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+
 
 /**
  * Created by leisun on 15/10/22.

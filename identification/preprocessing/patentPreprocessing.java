@@ -79,7 +79,7 @@ public class patentPreprocessing {
             if (str.equalsIgnoreCase("Description")) temp=p.getDescription();
 
 
-            docs.add(new Document(temp));
+            docs.add(new Document("",temp));
         }
 
 
@@ -120,6 +120,10 @@ public class patentPreprocessing {
             } else {
                 var19 = var17.termDocumentMatrix;
             }
+
+            System.out.println("Stem:"+preprocessingContext.allStems.tf.length);
+            System.out.println(var19.rows());
+
 
             IntArrayList intA=new IntArrayList();
 

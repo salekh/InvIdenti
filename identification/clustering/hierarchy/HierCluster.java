@@ -3,7 +3,6 @@ package clustering.hierarchy;
 
 import base.patent;
 import clustering.distancefunction.AbstractDistance;
-import clustering.distancefunction.CosDistance;
 
 
 import java.util.ArrayList;

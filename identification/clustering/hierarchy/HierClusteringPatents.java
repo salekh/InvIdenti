@@ -20,6 +20,10 @@ public class HierClusteringPatents extends patentClustering
 
     public HierClusteringPatents(ArrayList<patent> patents) {
         super(patents);
+        for(int i=0;i<patents.get(0).getTd_abs().rows();i++) {
+            System.out.print(patents.get(0).getTd_abs().get(i,0)+",");
+        }
+        System.out.println();
     }
 
 

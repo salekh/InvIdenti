@@ -1,20 +1,17 @@
 package clustering;
 
 
-import DatasetGenerator.TrainingDataGenerator;
-import base.IniFileReader;
 import base.patent;
 import clustering.distancefunction.CosDistance;
-import clustering.hierarchy.HierClusteringPatents;
-
 import com.carrotsearch.hppc.IntArrayList;
 import com.carrotsearch.hppc.IntIntHashMap;
 import com.carrotsearch.hppc.cursors.IntIntCursor;
-import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.mahout.math.matrix.DoubleMatrix2D;
 import org.carrot2.core.Document;
 import org.carrot2.core.LanguageCode;
+import org.carrot2.text.preprocessing.LabelFormatter;
 import org.carrot2.text.preprocessing.PreprocessingContext;
 import org.carrot2.text.preprocessing.pipeline.CompletePreprocessingPipeline;
 import org.carrot2.text.preprocessing.pipeline.IPreprocessingPipeline;
@@ -22,9 +19,8 @@ import org.carrot2.text.vsm.ReducedVectorSpaceModelContext;
 import org.carrot2.text.vsm.TermDocumentMatrixBuilder;
 import org.carrot2.text.vsm.TermDocumentMatrixReducer;
 import org.carrot2.text.vsm.VectorSpaceModelContext;
-import preprocessing.SqlitePatents;
 
-import java.io.*;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -91,16 +87,28 @@ public class testMain
          dg.buildData();
          **/
 
-        String str1 = "student,study,invent,inventation,inventation,a,an";
-        String str2 = "apple,pear,invent,invent,study,a,an";
-        ArrayList<Document> docs = new ArrayList<>();
-        docs.add(new Document(str1));
-        docs.add(new Document(str2));
+        /*
+        patent p1=new patent("123","123","123","123","123","123","123","123");
+        patent p2=new patent("123","123","123","123","123","123","123","123");
+        CosDistance c=new CosDistance();
+        l.error(c.distance(p1,p2));
+*/
 
-        IPreprocessingPipeline preprocessingPipeline = new CompletePreprocessingPipeline();
-        final TermDocumentMatrixBuilder matrixBuilder = new TermDocumentMatrixBuilder();
-        final TermDocumentMatrixReducer matrixReducer = new TermDocumentMatrixReducer();
+      int clusterCount = 15;
+       boolean useDimensionalityReduction = false;
+
+       IPreprocessingPipeline preprocessingPipeline = new CompletePreprocessingPipeline();
+         TermDocumentMatrixBuilder matrixBuilder = new TermDocumentMatrixBuilder();
+         TermDocumentMatrixReducer matrixReducer = new TermDocumentMatrixReducer();
+
+
+        ArrayList<Document> docs = new ArrayList<>();
+        docs.add(new Document("","invent,inventation,invent,apple,apple,apply"));
+        docs.add(new Document("","Invent,invent,apple,asdasd"));
+
+
         PreprocessingContext preprocessingContext = preprocessingPipeline.preprocess(docs, (String) null, LanguageCode.ENGLISH);
+
 
 
         int[] stemsMfow = preprocessingContext.allStems.mostFrequentOriginalWordIndex;
@@ -114,39 +122,41 @@ public class testMain
             }
         }
 
+        preprocessingContext.allLabels.featureIndex = featureIndices.toArray();
+        preprocessingContext.allLabels.firstPhraseIndex = -1;
+        if (preprocessingContext.hasLabels()) {
+            VectorSpaceModelContext var17 = new VectorSpaceModelContext(preprocessingContext);
+            ReducedVectorSpaceModelContext var18 = new ReducedVectorSpaceModelContext(var17);
+            matrixBuilder.buildTermDocumentMatrix(var17);
+            matrixBuilder.buildTermPhraseMatrix(var17);
+            IntIntHashMap rowToStemIndex = new IntIntHashMap();
+            Iterator tdMatrix = var17.stemToRowIndex.iterator();
 
-
-        ArrayList<Integer> stemIndex=new ArrayList<>();
-
-        for(Integer i:featureIndices.toArray()) {
-            stemIndex.add(i);
-        }
-
-
-        ArrayList<ArrayList<Double>> tfMatrix=new ArrayList<>();
-
-        for(int i=0;i<docs.size();i++) {
-            ArrayList<Double> var2=new ArrayList<>();
-            for(int j=0;j<stemIndex.size();j++) {
-                var2.add(0.0);
+            while (tdMatrix.hasNext()) {
+                IntIntCursor columns = (IntIntCursor) tdMatrix.next();
+                rowToStemIndex.put(columns.value, columns.key);
             }
-            tfMatrix.add(var2);
-        }
 
 
-        int index=0;
-        for(int i=0;i<preprocessingContext.allStems.tf.length;i++) {
-            if (stemIndex.contains(i)) {
-                for(int j=0;j<preprocessingContext.allStems.tfByDocument[i].length;j+=2) {
-                    tfMatrix.get(preprocessingContext.allStems.tfByDocument[i][j]).set(index, tfMatrix.get(preprocessingContext.allStems.tfByDocument[i][j]).get(index)+preprocessingContext.allStems.tfByDocument[i][j+1]);
+            DoubleMatrix2D var19;
+            if (useDimensionalityReduction && clusterCount * 2 < preprocessingContext.documents.size()) {
+               matrixReducer.reduce(var18, clusterCount * 2);
+                var19 = var18.coefficientMatrix.viewDice();
+            } else {
+                var19 = var17.termDocumentMatrix;
+
+            }
+
+            l.error(preprocessingContext.allStems);
+
+            l.info(var19.rows());
+            for(int i=0;i<var19.rows();i++) {
+                for(int j=0;j<var19.columns();j++) {
+                    System.out.print(var19.get(i,j)+" ");
                 }
-                index++;
+                System.out.println();
             }
-        }
 
-        for (int i=0;i<stemIndex.size();i++) {
-            System.out.print(tfMatrix.get(0).get(i)+" ");
-            System.out.println(tfMatrix.get(1).get(i)+" ");
         }
     }
 

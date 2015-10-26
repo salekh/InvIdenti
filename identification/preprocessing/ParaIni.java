@@ -1,14 +1,11 @@
 package preprocessing;
 
 import base.patent;
-import clustering.distancefunction.AbstractDistance;
 import clustering.distancefunction.CosDistance;
 import clustering.hierarchy.HierCluster;
 import clustering.hierarchy.HierClusteringPatents;
-import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.carrot2.core.Document;
 import org.carrot2.core.LanguageCode;
 import org.ini4j.Wini;
 
@@ -26,8 +23,8 @@ public class ParaIni {
     String trainingDataPath;
     String trainingTextPath;
     String infoDataPath;
-    int trainingSize=100;
-    int tesingSize=50;
+    int trainingSize=50;
+    int tesingSize=100;
     Connection connectionTraining=null;
     Statement stmtTraining=null;
     Connection connectionInfo=null;
@@ -41,6 +38,7 @@ public class ParaIni {
 
     double beta=4;
 
+    IniFile ini;
     ArrayList<patent> patents=new ArrayList<>();
     ArrayList<patent> testingPatents=new ArrayList<>();
     ArrayList<String> patentsID= new ArrayList<>();
@@ -51,14 +49,15 @@ public class ParaIni {
     double threshold=-Double.MAX_VALUE;
 
     public ParaIni() {
-        Wini iniFile= null;
+
         try {
-            iniFile = new Wini(new File("invidenti.ini"));
-            this.trainingDataPath=iniFile.get("DataSet","TrainingDataOutputPath")+"/trainingData.db";
-            this.trainingTextPath=iniFile.get("DataSet","TrainingDataOutputPath")+"/PatentsText/";
-            this.infoDataPath=iniFile.get("DataSet","InfoDataPath");
-            logger.info(this.trainingDataPath);
-            logger.info("Initial File Loaded!");
+
+            ini=new IniFile();
+
+            this.trainingDataPath=ini.getTrainingDataOutputPath()+"/trainingData.db";
+            this.trainingTextPath=ini.getTrainingDataOutputPath()+"/PatentsText/";
+            this.infoDataPath=ini.getInfoDataPath();
+
             Class.forName("org.sqlite.JDBC");
             this.connectionTraining = DriverManager.getConnection("jdbc:sqlite:" + this.trainingDataPath);
             this.connectionTraining.setAutoCommit(false);
@@ -74,7 +73,7 @@ public class ParaIni {
 
 
 
-            patentPreprocessingTF preprocess = new patentPreprocessingTF(this.patents);
+            patentPreprocessing preprocess = new patentPreprocessing(this.patents);
             preprocess.setLanguage(this.language);
             preprocess.preprocess();
             this.patents = preprocess.getPatents();
@@ -82,11 +81,12 @@ public class ParaIni {
             CosDistance distance=this.estimatePara();
 
 
-            patentPreprocessingTF preprocessTest = new patentPreprocessingTF(this.testingPatents);
-            preprocessTest.setLanguage(this.language);
-            preprocessTest.preprocess();
-            this.testingPatents = preprocessTest.getPatents();
+
             HierClusteringPatents hi=new HierClusteringPatents(this.testingPatents);
+
+
+
+
 
             double dmax=0;
             double maxf=0;
@@ -94,7 +94,7 @@ public class ParaIni {
 
 
             ArrayList<Double> matlab=new ArrayList<>();
-           for(double d=0.0;d<3.1;d+=0.1) {
+           for(double d=0.0;d<2.1;d+=0.1) {
 
                hi.setEps(this.threshold*d);
                hi.Cluster(distance);
@@ -113,6 +113,7 @@ public class ParaIni {
                 System.out.print(d1+" ");
             }
             System.out.println();
+            logger.error("d:"+dmax);
             hi.setEps(this.threshold*dmax);
             hi.Cluster(distance);
             logger.error(hi);
@@ -124,9 +125,6 @@ public class ParaIni {
             this.connectionInfo.close();
             this.connectionTraining.close();
 
-
-        } catch (IOException e) {
-            logger.error("Initial File fail");
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -303,46 +301,59 @@ public class ParaIni {
 
 
     public CosDistance estimatePara() {
-        double[] sums=new double[7];
+        ArrayList<String> optionsName=ini.getOptionsNames();
+        double[] sums=new double[optionsName.size()];
+
         for(double var0:sums) {
             var0=0;
         }
 
         ArrayList<CosDistance> distances=new ArrayList<>();
-        for(int i=0;i<7;i++) {
+
+        for(int i=0;i<optionsName.size();i++) {
             ArrayList<Integer> var1=new ArrayList<>();
             var1.add(i);
             distances.add(this.generateDistanceFunction(var1,null));
         }
 
+
+
+
         for(int i=0;i<patents.size()-1;i++)
         {
             for (int j=i+1;j<patents.size();j++) {
                 if (patentsID.get(i).equalsIgnoreCase(patentsID.get(j))) {
-                    for(int m=1;m<7;m++) {
-                        sums[m]+=distances.get(m).distance(patents.get(i),patents.get(j));
+                    for(int m=0;m<optionsName.size();m++) {
+                        if(ini.getOptionValue(optionsName.get(m))) {
+                            sums[m] += distances.get(m).distance(patents.get(i), patents.get(j));
+                        }
                     }
                 }
             }
         }
 
 
-        this.weights.add(0.0);
-        for(int i=1;i<7;i++) {
-            double var2=0;
-            for (int j=1;j<7;j++) {
-                var2+=Math.pow(sums[i]/sums[j],(1/(beta-1)));
+        for(int i=0;i<optionsName.size();i++) {
+            if (ini.getOptionValue(optionsName.get(i))) {
+                double var2 = 0;
+                for (int j = 0; j < optionsName.size(); j++) {
+                    if (ini.getOptionValue(optionsName.get(j))) {
+                        var2 += Math.pow(sums[i] / sums[j], (1 / (beta - 1)));
+                    }
+                }
+                logger.warn(1 / var2);
+                this.weights.add(Math.pow(1 / var2, beta));
+            } else {
+                this.weights.add(0.0);
             }
-            logger.warn(1/var2);
-            this.weights.add(Math.pow(1/var2,beta));
         }
-
 
 
         for(Double d:this.weights) {
             logger.info(d);
 
         }
+
         CosDistance estimatedDistance=this.generateDistanceFunction(null,this.weights);
         logger.error(estimatedDistance);
 
@@ -364,7 +375,7 @@ public class ParaIni {
             }
         }
         this.threshold=max;
-                //=min+(max-min)*0.61;
+
 
         logger.info("threshold:"+this.threshold);
 
@@ -377,8 +388,8 @@ public class ParaIni {
     public  CosDistance generateDistanceFunction(ArrayList<Integer> attrIndex,ArrayList<Double> weights) {
         CosDistance var0=new CosDistance();
         if (attrIndex!=null) {
-            boolean[] var1=new  boolean[7];
-            for(int i=0;i<7;i++) {
+            boolean[] var1=new  boolean[this.ini.getOptionsNames().size()];
+            for(int i=0;i<this.ini.getOptionsNames().size();i++) {
                 if (attrIndex.contains(i)) {
                     var1[i]=true;
                 } else {
@@ -387,9 +398,9 @@ public class ParaIni {
             }
             var0.setOptions(var1);
         }
-        if (weights!=null&&weights.size()>=7) {
-            double[] var2=new double[7];
-            for(int i=0;i<7;i++) {
+        if (weights!=null&&weights.size()>=this.ini.getOptionsNames().size()) {
+            double[] var2=new double[this.ini.getOptionsNames().size()];
+            for(int i=0;i<this.ini.getOptionsNames().size();i++) {
                 var2[i]=weights.get(i);
             }
 
