@@ -52,6 +52,13 @@ public class CosDistance extends AbstractDistance {
             result+=(this.compareName(first.getCategory(),second.getCategory())*this.weightName);
         }
 
+        if (this.coAuthorCompare==true) {
+            result+=(this.compareCoAuthor(first.getCoAuthor(),second.getCoAuthor())*this.weightCoAuthor);
+        }
+
+        if (this.locationCompare==true) {
+            result+=(this.compareLocation(first.getCountry(),first.getLat(),first.getLng(),second.getCountry(),second.getLat(),second.getLng())*this.weightLocation);
+        }
         return result;
     }
 

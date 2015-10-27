@@ -28,9 +28,6 @@ public abstract class patentClustering
     protected int number_Cluster=1;
     protected boolean pCorrelation=true;
 
-    protected Instances final_instances;
-    protected ArrayList<Integer> dims;
-
     protected pair<HashMap<String,Integer>,HashMap<String,Integer>> attriInfo;
 
     public void setLanguage(LanguageCode code)
@@ -64,9 +61,14 @@ public abstract class patentClustering
     public String toString()
     {
         String str="Cluster Number:"+clusters.size()+"\n";
-        str+=("=================================================================================================================\n");
+        int var0=2000;
+        String var1="";
+        while(var0>1) {
+            var1+="-";
+            var0--;
+        }
 
-
+        str+=var1+"\n";
         for(int i=0;i<this.clusters.size();i++)
         {
             str+=("Cluster "+i);
@@ -81,7 +83,7 @@ public abstract class patentClustering
                     }
                 str+="\t"+p.getTitle()+"\n";
             }
-            str+=("=================================================================================================================\n");
+            str+=var1+"\n";
         }
         return str;
     }
@@ -102,9 +104,6 @@ public abstract class patentClustering
 
     /**Preprocessing for the clustering**/
     protected void preprocess() {
-        ArrayList<Attribute> attributes=new ArrayList<>();
-        HashMap<String,Integer> attributeIndex=new HashMap<>();
-        HashMap<String,Integer> attributesNumber=new HashMap<>();
 
         patentPreprocessing preprocess = new patentPreprocessing(this.patents);
         preprocess.setLanguage(this.language);

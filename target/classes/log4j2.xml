@@ -2,7 +2,7 @@
 <Configuration status="WARN">
     <Appenders>
         <Console name="ColoredConsole" target="SYSTEM_OUT">
-            <PatternLayout pattern="%highlight{%msg%n%throwable}{FATAL=Blinking bright red, ERROR=bright red, WARN=orange, INFO=blue, DEBUG=green, TRACE=bright black}"/>
+            <PatternLayout pattern="%highlight{%msg%n%throwable}{FATAL=Blinking bright red, ERROR=bright red, WARN=green, INFO=blue, DEBUG=orange, TRACE=bright black}"/>
             <filters>
 
 

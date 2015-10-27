@@ -136,9 +136,11 @@ public class PatentsGenerator {
 
                 if (authorLastName.equalsIgnoreCase(lastname))
                 {
+                   /*
                     if(abs.length()==0||claims.length()==0||description.length()==0) {
                         System.out.println(patent);
                     }
+                    */
 
 
                     var2=new patent(patent,abs,claims,description,title,category,assignee,authorLastName,lat,lng,"",country);

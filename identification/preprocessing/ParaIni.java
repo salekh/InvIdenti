@@ -3,6 +3,7 @@ package preprocessing;
 import DatasetGenerator.PatentsGenerator;
 import base.pair;
 import base.patent;
+import clustering.distancefunction.AbstractDistance;
 import clustering.distancefunction.CosDistance;
 import clustering.hierarchy.HierCluster;
 import clustering.hierarchy.HierClusteringPatents;
@@ -64,16 +65,30 @@ public class ParaIni {
             this.patents=var0.firstarg;
             this.patentsID=var0.secondarg;
 
-            pair<ArrayList<patent>,ArrayList<String>> var1=patentGenerator.getTrainingPatents("TrainingData",51,50);
+            pair<ArrayList<patent>,ArrayList<String>> var1=patentGenerator.getTrainingPatents("TrainingData",51,100);
             this.testingPatents=var1.firstarg;
             this.testingPatentsID=var1.secondarg;
 
+
             patentGenerator.closeDatabase();
 
-            logger.info(patentsID.size());
 
+
+
+
+
+            logger.info("Training Data Size:"+patentsID.size());
+
+            String var2="";
+            int var3=1000;
+            for(;var3>1;var3--) {
+                var2+="=";
+            }
+
+            logger.error("");
+            logger.info("Patent Sample" + var2);
             logger.error(this.patents.get(0));
-
+            logger.info(var2);
 
 
             patentPreprocessing preprocess = new patentPreprocessing(this.patents);
@@ -83,6 +98,15 @@ public class ParaIni {
 
             CosDistance distance=this.estimatePara();
 
+            logger.error("");
+            logger.info("Distance Function"+var2);
+            logger.error(distance);
+            logger.info(var2);
+
+            logger.info("");
+            logger.info("Evaluation: " + var2);
+            logger.warn("Base Threshold: "+this.threshold);
+            logger.warn("Testing Data Size: "+this.testingPatents.size());
 
 
             HierClusteringPatents hi=new HierClusteringPatents(this.testingPatents);
@@ -95,7 +119,9 @@ public class ParaIni {
 
             ArrayList<Double> matlab=new ArrayList<>();
 
-            for(double d=0.7;d<0.9;d+=0.02) {
+
+        logger.warn("Rate From 0.8 to 0.9");
+            for(double d=0.3;d<1.0;d+=0.6) {
 
                hi.setEps(this.threshold*d);
                hi.Cluster(distance);
@@ -105,22 +131,30 @@ public class ParaIni {
                     dmax=d;
                 }
                matlab.add(tempf);
-               logger.info("F-Measure for " + d  + " :" + tempf);
+               logger.error("F-Measure for " + d + " :" + tempf);
 
            }
 
 
+
+/*
             for(double d1:matlab){
                 System.out.print(d1+" ");
             }
 
             System.out.println();
-            logger.error("d:"+dmax);
+  */
+
+        logger.info(var2);
+            logger.error(" ");
 
 
+        logger.info(var2);
+        logger.warn("Best Rate:"+dmax);
             hi.setEps(this.threshold*dmax);
             hi.Cluster(distance);
-            logger.error(hi);
+        logger.warn(hi);
+
 
     }
 
@@ -166,21 +200,21 @@ public class ParaIni {
                         var2 += Math.pow(sums[i] / sums[j], (1 / (beta - 1)));
                     }
                 }
-                logger.warn(1 / var2);
+               // logger.warn(1 / var2);
                 this.weights.add(Math.pow(1 / var2, beta));
             } else {
                 this.weights.add(0.0);
             }
         }
 
-
+/*
         for(Double d:this.weights) {
             logger.info(d);
 
         }
-
+*/
         CosDistance estimatedDistance=this.generateDistanceFunction(null,this.weights);
-        logger.error(estimatedDistance);
+
 
 
         double min=Double.MAX_VALUE;
@@ -202,7 +236,7 @@ public class ParaIni {
         this.threshold=max;
 
 
-        logger.info("threshold:"+this.threshold);
+      //  logger.info("threshold:"+this.threshold);
 
 
 
@@ -284,12 +318,13 @@ public class ParaIni {
         if ((precision + recall) != 0) {
             return (double) 2 * precision * recall / (precision + recall);
         }
-        else {
+        else  {
             return 0;
         }
     }
 
     public static void main(String[] args) {
+
         new ParaIni();
         //logger.info(new NormalizedLevenshtein().distance("DE JONGHE","DEJONGHE"));
         //logger.info(new NormalizedLevenshtein().distance("DE JONGHE","CRAWFORD"));

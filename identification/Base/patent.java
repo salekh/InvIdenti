@@ -187,7 +187,7 @@ public class patent
         str+="Category: "+this.getCategory()+"\n";
         str+="Lat: "+this.getLat()+"\n";
         str+="Lng: "+this.getLng()+"\n";
-        str+="coAuthor: "+this.getCoAuthor()+"\n";
+        str+="coAuthor: "+this.getCoAuthor();
         return str;
     }
 

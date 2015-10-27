@@ -24,6 +24,8 @@ public abstract class AbstractDistance {
     protected boolean assigneeCompare=true;
     protected boolean categoryCompare=true;
     protected boolean nameCompare=true;
+    protected boolean locationCompare=true;
+    protected boolean coAuthorCompare=true;
     protected boolean pCorrelation=true;
 
     protected double weightFullText=1.0;
@@ -33,8 +35,11 @@ public abstract class AbstractDistance {
     protected double weightAssignee=1.0;
     protected double weightCategory=1.0;
     protected double weightName=1.0;
+    protected double weightLocation=1.0;
+    protected double weightCoAuthor=1.0;
 
-    protected int numofOptions = 7;
+
+    protected int numofOptions=9;
 
     protected String distanceType="AbstractDistance";
 
@@ -60,13 +65,18 @@ public abstract class AbstractDistance {
         try {
             Wini initalFile=new Wini(new File("invidenti.ini"));
 
+
             this.fulltextCompare=initalFile.get("DistanceOption","FullTextCompare").equalsIgnoreCase("true");
             this.categoryCompare=initalFile.get("DistanceOption","CategoryCompare").equalsIgnoreCase("true");
             this.assigneeCompare=initalFile.get("DistanceOption","AssigneeCompare").equalsIgnoreCase("true");
-            this.abstractCompare=initalFile.get("DistanceOption","AbstractCompare").equalsIgnoreCase("true");;
+            this.abstractCompare=initalFile.get("DistanceOption","AbstractCompare").equalsIgnoreCase("true");
             this.claimsCompare=initalFile.get("DistanceOption","ClaimsCompare").equalsIgnoreCase("true");
             this.desComapre=initalFile.get("DistanceOption","DescriptionCompare").equalsIgnoreCase("true");
             this.nameCompare=initalFile.get("DistanceOption","NameCompare").equalsIgnoreCase("true");
+            this.coAuthorCompare=initalFile.get("DistanceOption","CoAuthorCompare").equalsIgnoreCase("true");
+            this.locationCompare=initalFile.get("DistanceOption","LocationCompare").equalsIgnoreCase("true");
+
+
             this.weightFullText=Double.parseDouble(initalFile.get("Weights", "FullText"));
             this.weightAbstract=Double.parseDouble(initalFile.get("Weights","Abstract"));
             this.weightClaims=Double.parseDouble(initalFile.get("Weights","Claims"));
@@ -74,6 +84,10 @@ public abstract class AbstractDistance {
             this.weightAssignee=Double.parseDouble(initalFile.get("Weights","Assignee"));
             this.weightCategory=Double.parseDouble(initalFile.get("Weights","Category"));
             this.weightName=Double.parseDouble(initalFile.get("Weights","Name"));
+            this.weightCoAuthor= Double.parseDouble(initalFile.get("Weights","CoAuthor"));
+            this.weightLocation = Double.parseDouble(initalFile.get("Weights","Location"));
+
+
             this.pCorrelation=initalFile.get("DistanceOption","PCorrelation").equalsIgnoreCase("true");
 
         } catch (IOException e)
@@ -192,8 +206,95 @@ public abstract class AbstractDistance {
         }
     }
 
+    /**
+     * Calculate the similarity by using the coAuthors
+     * @param coAuthor1 first patent coAuthor1
+     * @param coAuthor2 second patent coAuthor2
+     * @return the similarity between coAuthor1 and coAuthor2
+     */
+    public double compareCoAuthor(String coAuthor1,String coAuthor2) {
+        double result=0.0;
+
+        if (coAuthor1.equalsIgnoreCase("")||coAuthor2.equalsIgnoreCase(" ")) {
+            return 1.0;
+        }
+        String[] coAuthorNames1=coAuthor1.split(";");
+        String[] coAuthorNames2=coAuthor2.split(";");
+        String[] lessNames;
+        String[] moreNames;
+        if (coAuthorNames1.length>coAuthorNames2.length) {
+            lessNames=coAuthorNames2;
+            moreNames=coAuthorNames1;
+        } else {
+            moreNames=coAuthorNames2;
+            lessNames=coAuthorNames1;
+        }
+
+        NormalizedLevenshtein var0 = new NormalizedLevenshtein();
+
+        for(String var1:lessNames) {
+            double max=-1;
+            for (String var2: moreNames) {
+                double temp=(1-var0.distance(var1,var2));
+                if (temp>max) max=temp;
+            }
+            result+=max;
+        }
+        if (result>6) {
+            result=6;
+        }
+        if (this.pCorrelation) {
+            return result/6;
+        } else {
+        return (1-result/6);
+        }
+    }
 
 
+    public  double compareLocation(String country1,String lat1,String lng1,String country2,String lat2,String lng2) {
+        double result=0;
+        if (country1.equalsIgnoreCase(country2)) {
+            if (lat1==null||lat2==null||lng1==null||lng2==null) {
+                result=1;
+            } else {
+                double lat1_d = Double.parseDouble(lat1)/180;
+                double lng1_d = Double.parseDouble(lng1)/180;
+                double lat2_d = Double.parseDouble(lat2)/180;
+                double lng2_d = Double.parseDouble(lng2)/180;
+                double distance = getDistance(lat1_d,lng1_d,lat2_d,lng2_d);
+                if ( distance < 1.0 )
+                    result = 5;
+                else if ( distance < 10 )
+                    result = 4;
+                else if ( distance < 25)
+                    result = 3;
+                else if ( distance < 50 )
+                    result = 2;
+                else
+                    result = 1;
+
+            }
+
+        }
+
+        if (this.pCorrelation) {
+            return result/5;
+        } else {
+            return (1-result/5);
+        }
+    }
+
+
+    public  double getDistance(double lat1, double lng1, double lat2, double lng2) {
+
+        double a = lat1 - lat2;
+        double b = lng1 - lng2;
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
+                Math.cos(lat1)*Math.cos(lat2)*Math.pow(Math.sin(b/2),2)));
+        s = s * 6371;
+        s = Math.round(s * 10000) / 10000;
+        return s;
+    }
     /**
      * Set the options of the distance
      * @param options the boolean array for the options
@@ -213,6 +314,8 @@ public abstract class AbstractDistance {
         this.assigneeCompare=options[4];
         this.categoryCompare=options[5];
         this.nameCompare=options[6];
+        this.coAuthorCompare=options[7];
+        this.locationCompare=options[8];
 
         return true;
     }
@@ -234,9 +337,13 @@ public abstract class AbstractDistance {
         this.weightAssignee=options[4];
         this.weightCategory=options[5];
         this.weightName=options[6];
+        this.weightCoAuthor=options[7];
+        this.weightLocation=options[8];
 
         return true;
     }
+
+
 
     public void setpCorrelation(boolean pCorrelation){
         this.pCorrelation=pCorrelation;
@@ -254,8 +361,10 @@ public abstract class AbstractDistance {
         var0+="\t"+"Assignee    |"+assigneeCompare+"\n";
         var0+="\t"+"Categories  |"+categoryCompare+"\n";
         var0+="\t"+"Name        |"+nameCompare+"\n";
+        var0+="\t"+"CoAuthor    |"+coAuthorCompare+"\n";
+        var0+="\t"+"Location    |"+locationCompare+"\n";
 
-        var0+="Weights:"+this.weightFullText+","+this.weightAbstract+","+weightClaims+","+weightDes+","+weightAssignee+","+weightCategory+","+weightName+"\n";
+        var0+="Weights:"+this.weightFullText+","+this.weightAbstract+","+weightClaims+","+weightDes+","+weightAssignee+","+weightCategory+","+weightName+" "+weightCoAuthor+" "+weightLocation;
 
         return var0;
     }
