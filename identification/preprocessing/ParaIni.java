@@ -1,5 +1,7 @@
 package preprocessing;
 
+import DatasetGenerator.PatentsGenerator;
+import base.pair;
 import base.patent;
 import clustering.distancefunction.CosDistance;
 import clustering.hierarchy.HierCluster;
@@ -7,7 +9,6 @@ import clustering.hierarchy.HierClusteringPatents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.carrot2.core.LanguageCode;
-import org.ini4j.Wini;
 
 import java.io.*;
 import java.sql.*;
@@ -50,26 +51,28 @@ public class ParaIni {
 
     public ParaIni() {
 
-        try {
-
             ini=new IniFile();
 
             this.trainingDataPath=ini.getTrainingDataOutputPath()+"/trainingData.db";
             this.trainingTextPath=ini.getTrainingDataOutputPath()+"/PatentsText/";
             this.infoDataPath=ini.getInfoDataPath();
 
-            Class.forName("org.sqlite.JDBC");
-            this.connectionTraining = DriverManager.getConnection("jdbc:sqlite:" + this.trainingDataPath);
-            this.connectionTraining.setAutoCommit(false);
-            this.stmtTraining=connectionTraining.createStatement();
-            this.connectionInfo = DriverManager.getConnection("jdbc:sqlite:" + this.infoDataPath);
-            this.connectionInfo.setAutoCommit(false);
-            this.stmtInfo=connectionInfo.createStatement();
-            logger.info("Opened database successfully");
+            PatentsGenerator patentGenerator=new PatentsGenerator(this.infoDataPath,this.trainingTextPath,this.trainingDataPath);
 
-            this.getTrainingPatents("TrainingData");
-            this.getTestingPatents("TrainingData");
+            pair<ArrayList<patent>,ArrayList<String>> var0=patentGenerator.getTrainingPatents("TrainingData",1,50);
+
+            this.patents=var0.firstarg;
+            this.patentsID=var0.secondarg;
+
+            pair<ArrayList<patent>,ArrayList<String>> var1=patentGenerator.getTrainingPatents("TrainingData",51,50);
+            this.testingPatents=var1.firstarg;
+            this.testingPatentsID=var1.secondarg;
+
+            patentGenerator.closeDatabase();
+
             logger.info(patentsID.size());
+
+            logger.error(this.patents.get(0));
 
 
 
@@ -85,16 +88,14 @@ public class ParaIni {
             HierClusteringPatents hi=new HierClusteringPatents(this.testingPatents);
 
 
-
-
-
             double dmax=0;
             double maxf=0;
 
 
 
             ArrayList<Double> matlab=new ArrayList<>();
-           for(double d=0.0;d<2.1;d+=0.1) {
+
+            for(double d=0.7;d<0.9;d+=0.02) {
 
                hi.setEps(this.threshold*d);
                hi.Cluster(distance);
@@ -112,192 +113,16 @@ public class ParaIni {
             for(double d1:matlab){
                 System.out.print(d1+" ");
             }
+
             System.out.println();
             logger.error("d:"+dmax);
+
+
             hi.setEps(this.threshold*dmax);
             hi.Cluster(distance);
             logger.error(hi);
 
-
-
-            this.stmtInfo.close();
-            this.stmtTraining.close();
-            this.connectionInfo.close();
-            this.connectionTraining.close();
-
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-           logger.error("Database Initialization fail");
-        }
-
     }
-
-    public patent getOnePatent(String patentNumber,String table,String lastname) {
-
-        String var1;
-        var1=patentNumber;
-        if (patentNumber.length()<8) {
-            for(int i=0;i<8-patentNumber.length();i++) {
-                var1="0"+var1;
-            }
-        }
-
-        String sql="Select * from "+table+" where "+table+".patent"+"='"+var1+"';";
-
-
-        try {
-            ResultSet var0=stmtInfo.executeQuery(sql);
-            while (var0.next()) {
-
-                String patent=var0.getString("Patent");
-                String authorLastName=var0.getString("Lastname");
-                String assignee=var0.getString("Assignee");
-                String category=var0.getString("Class");
-
-
-                String abs=readText(this.trainingTextPath + patentNumber + "/" + "Abstract.txt");
-                String claims=readText(this.trainingTextPath + patentNumber + "/" + "Claims.txt");
-                String description=readText(this.trainingTextPath+patentNumber+"/"+"Description.txt");
-                String title=readText(this.trainingTextPath+patentNumber+"/"+"Title.txt");
-                if (authorLastName.equalsIgnoreCase(lastname))
-                {
-                    if(abs.length()==0||claims.length()==0||description.length()==0) {
-                        System.out.println(patent);
-                }
-
-
-                    patent var2=new patent(patent,abs,claims,description,title,category,assignee,authorLastName);
-
-                return var2;
-                }
-            }
-            return null;
-        } catch (SQLException e) {
-           logger.error("No Information found for patent:"+patentNumber);
-        }
-
-        return null;
-    }
-
-
-    public String readText(String path){
-        File f= null;
-        try {
-            f = new File(path);
-            if (!f.exists()) {
-                return null;
-            } else {
-                BufferedReader r=new BufferedReader(new FileReader(path));
-                String str="";
-                String line=r.readLine();
-                while(line!=null){
-                    str+=line;
-                    line=r.readLine();
-                }
-
-                //System.out.println(str);
-                return str;
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    public void getTrainingPatents(String table)  {
-        String sql="select * from "+table;
-        try {
-            ResultSet var0=stmtTraining.executeQuery(sql);
-            int var10=0;
-
-            while (var0.next()) {
-                if (var10 < 1) {
-                    break;
-
-                } else {
-                    var10--;
-                }
-            }
-
-
-
-            int var1=trainingSize;
-            while (var0.next()) {
-                if (var1<1) {
-                   break;
-
-                } else {
-                    var1--;
-                }
-                patent var2=this.getOnePatent(var0.getString("Patent"), "invpat",var0.getString("LastName"));
-                if (var2!=null)
-                {
-                    this.patents.add(var2);
-
-                    this.patentsID.add(var0.getString("ID"));
-                } else {
-                    var1++;
-                }
-
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-
-    public void getTestingPatents(String table)  {
-        String sql="select * from "+table;
-        try {
-            ResultSet var0=stmtTraining.executeQuery(sql);
-            int var1=0;
-
-            while (var0.next()) {
-                if (var1 < 1) {
-                    break;
-
-                } else {
-                    var1--;
-                }
-            }
-
-            int var3=tesingSize;
-            while(var0.next())
-            {
-                if (var3 < 1) {
-                    break;
-
-                } else {
-                    var3--;
-                }
-                patent var2=this.getOnePatent(var0.getString("Patent"), "invpat",var0.getString("LastName"));
-                if (var2!=null)
-                {
-                    this.testingPatents.add(var2);
-
-                    this.testingPatentsID.add(var0.getString("ID"));
-                } else {
-                    var3++;
-                }
-
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-
 
 
     public CosDistance estimatePara() {

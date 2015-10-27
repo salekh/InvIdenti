@@ -32,11 +32,16 @@ public class patentPreprocessing {
 
     public IPreprocessingPipeline preprocessingPipeline = new CompletePreprocessingPipeline();
     public final TermDocumentMatrixBuilder matrixBuilder = new TermDocumentMatrixBuilder();
+
     public final TermDocumentMatrixReducer matrixReducer = new TermDocumentMatrixReducer();
     public final LabelFormatter labelFormatter = new LabelFormatter();
 
     public patentPreprocessing(ArrayList<patent> Pts) {
         this.patents = Pts;
+        /**
+         * Set the matrix size to build the term frequency.
+         */
+        this.matrixBuilder.maximumMatrixSize=250*150*4;
     }
 
     public void setLanguage(LanguageCode code) {

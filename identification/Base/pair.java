@@ -5,12 +5,12 @@ package base;
  */
 public class pair<T1,T2>
 {
-   public T1 firatarg;
+   public T1 firstarg;
    public T2 secondarg;
 
    public pair(T1 arg1,T2 arg2)
    {
-       this.firatarg=arg1;
+       this.firstarg=arg1;
        this.secondarg=arg2;
    }
 

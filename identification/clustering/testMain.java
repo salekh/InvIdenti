@@ -94,70 +94,8 @@ public class testMain
         l.error(c.distance(p1,p2));
 */
 
-      int clusterCount = 15;
-       boolean useDimensionalityReduction = false;
-
-       IPreprocessingPipeline preprocessingPipeline = new CompletePreprocessingPipeline();
-         TermDocumentMatrixBuilder matrixBuilder = new TermDocumentMatrixBuilder();
-         TermDocumentMatrixReducer matrixReducer = new TermDocumentMatrixReducer();
-
-
-        ArrayList<Document> docs = new ArrayList<>();
-        docs.add(new Document("","invent,inventation,invent,apple,apple,apply"));
-        docs.add(new Document("","Invent,invent,apple,asdasd"));
-
-
-        PreprocessingContext preprocessingContext = preprocessingPipeline.preprocess(docs, (String) null, LanguageCode.ENGLISH);
-
-
-
-        int[] stemsMfow = preprocessingContext.allStems.mostFrequentOriginalWordIndex;
-        short[] wordsType = preprocessingContext.allWords.type;
-        IntArrayList featureIndices = new IntArrayList(stemsMfow.length);
-
-        for (int vsmContext = 0; vsmContext < stemsMfow.length; ++vsmContext) {
-            short reducedVsmContext = wordsType[stemsMfow[vsmContext]];
-            if ((reducedVsmContext & 12290) == 0) {
-                featureIndices.add(stemsMfow[vsmContext]);
-            }
-        }
-
-        preprocessingContext.allLabels.featureIndex = featureIndices.toArray();
-        preprocessingContext.allLabels.firstPhraseIndex = -1;
-        if (preprocessingContext.hasLabels()) {
-            VectorSpaceModelContext var17 = new VectorSpaceModelContext(preprocessingContext);
-            ReducedVectorSpaceModelContext var18 = new ReducedVectorSpaceModelContext(var17);
-            matrixBuilder.buildTermDocumentMatrix(var17);
-            matrixBuilder.buildTermPhraseMatrix(var17);
-            IntIntHashMap rowToStemIndex = new IntIntHashMap();
-            Iterator tdMatrix = var17.stemToRowIndex.iterator();
-
-            while (tdMatrix.hasNext()) {
-                IntIntCursor columns = (IntIntCursor) tdMatrix.next();
-                rowToStemIndex.put(columns.value, columns.key);
-            }
-
-
-            DoubleMatrix2D var19;
-            if (useDimensionalityReduction && clusterCount * 2 < preprocessingContext.documents.size()) {
-               matrixReducer.reduce(var18, clusterCount * 2);
-                var19 = var18.coefficientMatrix.viewDice();
-            } else {
-                var19 = var17.termDocumentMatrix;
-
-            }
-
-            l.error(preprocessingContext.allStems);
-
-            l.info(var19.rows());
-            for(int i=0;i<var19.rows();i++) {
-                for(int j=0;j<var19.columns();j++) {
-                    System.out.print(var19.get(i,j)+" ");
-                }
-                System.out.println();
-            }
-
-        }
+      int m=500*300;
+        l.error(m);
     }
 
 }

@@ -24,8 +24,11 @@ public class patent
     private String title;
     private String category;
     private String assignee;
-
-    public patent(String patent_number,String abs,String claims,String description,String title,String category,String Assignee,String name)
+    /**Inventor information**/
+    private String lat,lng;
+    private String coAuthor;
+    private String country;
+    public patent(String patent_number,String abs,String claims,String description,String title,String category,String Assignee,String name,String lat,String lng,String coAuthor,String country)
     {
         this.patent_number=patent_number;
         this.abs=abs;
@@ -35,6 +38,11 @@ public class patent
         this.category=category;
         this.assignee=Assignee;
         this.author=name;
+        this.lat=lat;
+        this.lng=lng;
+        this.coAuthor=coAuthor;
+        this.country=country;
+
     }
 
    public patent(String patent_number,String category,String assignee,String author){
@@ -98,6 +106,14 @@ public class patent
         this.title=title;
     }
 
+    public void setLat(String lat) {this.lat=lat;}
+
+    public void setLng(String lng) {this.lng=lng;}
+
+    public void setCountry(String country) {this.country=country;}
+
+    public void setCoAuthor(String coAuthor) {this.coAuthor=coAuthor;}
+
     /**Get the attribute value of the patent**/
 
     public String getAuthor()
@@ -150,5 +166,29 @@ public class patent
     public String getAssignee(){return this.assignee;}
 
     public String getCategory(){return this.category;}
+
+    public String getLat() {return this.lat;}
+
+    public String getLng() {return this.lng;}
+
+    public String getCoAuthor() {return this.coAuthor;}
+
+    public String getCountry() {return this.country;}
+
+
+    public String toString() {
+        String str="Patent Number: "+this.patent_number+"\n";
+        str+="Author: "+this.getAuthor()+"\n";
+        str+="Country: "+ this.getCountry()+"\n";
+        str+="Abstract: "+this.getAbs()+"\n";
+        str+="Claims: "+this.getClaims()+"\n";
+        str+="Description: "+this.getDescription()+"\n";
+        str+="Assignee: "+this.getAssignee()+"\n";
+        str+="Category: "+this.getCategory()+"\n";
+        str+="Lat: "+this.getLat()+"\n";
+        str+="Lng: "+this.getLng()+"\n";
+        str+="coAuthor: "+this.getCoAuthor()+"\n";
+        return str;
+    }
 
 }
