@@ -1,6 +1,8 @@
 package clustering.hierarchy;
 
+import base.pair;
 import base.patent;
+import clustering.SimMatrix;
 import clustering.distancefunction.AbstractDistance;
 
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ public class HierCore {
     protected int current_NumClusters;
     protected boolean pCorrelation=true;
     protected double eps=0;
+    protected SimMatrix simMatrix;
+    protected ArrayList<pair<ArrayList<HierCluster>,Double>> resultClustering=new ArrayList<>();
     /**
      * set the number of the clusters
      * @param number the number of the cluster
@@ -64,20 +68,38 @@ public class HierCore {
     {
 
 
-
+        this.simMatrix=new SimMatrix(patents,distance);
         this.m_Distance=distance;
         initializeCluster(patents);
+
         current_NumClusters=m_Clusters.size();
 
         while(current_NumClusters>m_NumClusters)
         {
             if (!mergeCluster(patents)) {
-
                 break;
             } else {
                 current_NumClusters=m_Clusters.size();
+                ArrayList<HierCluster> temp_result=new ArrayList<>();
+                temp_result.addAll(this.get_Clusters());
+                System.out.println("Number of Clusters:"+this.numberOfClusters());
+                resultClustering.add(new pair<ArrayList<HierCluster>, Double>(temp_result,getWithinSmilarity(temp_result,simMatrix)));
             }
+        }
 
+
+
+
+        double min=Double.MIN_VALUE;
+        for (pair<ArrayList<HierCluster>, Double> p:this.resultClustering) {
+
+            System.out.println(p.firstarg.size());
+            System.out.println(p.secondarg);
+            if (min>p.secondarg) {
+                min=p.secondarg;
+                this.m_Clusters=p.firstarg;
+
+            }
         }
 
     }
@@ -102,14 +124,14 @@ public class HierCore {
      */
     public boolean mergeCluster(ArrayList<patent> patents)
     {
-        double mostSim=HierCluster.maxDitanceBetweenClusters(patents,this.m_Clusters.get(0),this.m_Clusters.get(1),this.m_Distance);
+        double mostSim=HierCluster.maxDitanceBetweenClusters(this.m_Clusters.get(0),this.m_Clusters.get(1),simMatrix);
         int most_i=0;
         int most_j=1;
 
         for(int i=0;i<this.m_Clusters.size()-1;i++)
             for(int j=i+1;j<this.m_Clusters.size();j++)
             {
-                double temp=HierCluster.maxDitanceBetweenClusters(patents,m_Clusters.get(i), m_Clusters.get(j),this.m_Distance);
+                double temp=HierCluster.maxDitanceBetweenClusters(m_Clusters.get(i), m_Clusters.get(j),simMatrix);
 
 
                 if(pCorrelation) {
@@ -161,5 +183,20 @@ public class HierCore {
             }
 
         }
+    }
+
+    public double getWithinSmilarity(ArrayList<HierCluster> clusters,SimMatrix simMatrix) {
+        double result=0.0;
+
+        for(HierCluster c:clusters) {
+            double temp=0;
+            for(int i=0;i<c.getPatentsIndex().size()-1;i++) {
+                for(int j=i+1;j<c.getPatentsIndex().size();j++) {
+                    temp+=simMatrix.getSimbetweenPatents(c.getPatentsIndex().get(i),c.getPatentsIndex().get(j));
+                }
+            }
+            result+=temp;
+        }
+        return result;
     }
 }

@@ -2,6 +2,7 @@ package clustering.hierarchy;
 
 
 import base.patent;
+import clustering.SimMatrix;
 import clustering.distancefunction.AbstractDistance;
 
 
@@ -32,25 +33,25 @@ public class HierCluster {
 
     /**
      * Calculate the max distance between two clusters
-     * @param patents patents list
+     * @param simMatrix similarity matrix
      * @param c1 first patent cluster
      * @param c2 second patent cluster
      * @return the maxDistance between two patent clusters
      */
-    public static double maxDitanceBetweenClusters(ArrayList<patent> patents,HierCluster c1,HierCluster c2,AbstractDistance distance)
+    public static double maxDitanceBetweenClusters(HierCluster c1,HierCluster c2, SimMatrix simMatrix)
     {
 
         //c1.computeCentroid(patents,distance);
         //c2.computeCentroid(patents,distance);
        // double maxdistance=distance.distance(patents.get(c1.getPatentsIndex().get(c1.getCentroidIndex())),patents.get(c2.getPatentsIndex().get(c2.getCentroidIndex())));
-        double maxdistance=distance.distance(patents.get(c1.getPatentsIndex().get(0)),patents.get(c2.getPatentsIndex().get(0)));
+        double maxdistance=simMatrix.getSimbetweenPatents(c1.getPatentsIndex().get(0),c2.getPatentsIndex().get(0));
 
         double sum=0;
         for(Integer i:c1.getPatentsIndex()) {
 
             for(Integer j:c2.getPatentsIndex())
             {
-               double temp=distance.distance(patents.get(i),patents.get(j));
+               double temp=simMatrix.getSimbetweenPatents(i,j);
                 sum+=temp;
                 if (temp<maxdistance) maxdistance=temp;
             }
@@ -81,4 +82,5 @@ public class HierCluster {
     public int getCentroidIndex() {
         return this.centroidIndex;
     }
+
 }
