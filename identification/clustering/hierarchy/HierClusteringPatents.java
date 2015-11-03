@@ -15,17 +15,11 @@ import java.util.ArrayList;
 public class HierClusteringPatents extends patentClustering
 {
 
-    private double eps=0;
+    private double eps=Double.MAX_VALUE;
     ArrayList<HierCluster> hier_clusters;
 
     public HierClusteringPatents(ArrayList<patent> patents) {
         super(patents);
-        /*
-        for(int i=0;i<patents.get(0).getTd_abs().rows();i++) {
-            System.out.print(patents.get(0).getTd_abs().get(i,0)+",");
-        }
-        System.out.println();
-        */
     }
 
 
@@ -87,10 +81,13 @@ public class HierClusteringPatents extends patentClustering
             hc.set_NumClusters(this.number_Cluster);
 
             hc.buildCluster(patents,distance);
+
             clusters.clear();
 
-
             hier_clusters=hc.get_Clusters();
+
+           // System.out.println(hier_clusters.size());
+
 
             for(int i=0;i<hc.numberOfClusters();i++)
             {

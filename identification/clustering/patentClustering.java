@@ -3,6 +3,7 @@ package clustering;
 import base.pair;
 import base.patent;
 import base.patentCluster;
+import clustering.distancefunction.AbstractDistance;
 import org.carrot2.core.LanguageCode;
 import org.ini4j.Wini;
 import preprocessing.patentPreprocessing;
@@ -101,6 +102,9 @@ public abstract class patentClustering
         this.patents=patents;
         preprocess();
     }
+
+
+    public abstract void Cluster(AbstractDistance distance);
 
     /**Preprocessing for the clustering**/
     protected void preprocess() {

@@ -10,6 +10,8 @@ import clustering.hierarchy.HierCluster;
 import clustering.hierarchy.HierClusteringPatents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.mahout.math.matrix.DoubleMatrix2D;
+import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.carrot2.core.LanguageCode;
 
 import java.io.*;
@@ -22,192 +24,197 @@ import java.util.Collections;
  * Using a training dataset to initialize the parameter value
  * Created by sunlei on 15/10/16.
  */
-public class ParaIni {
+public class ParaIni extends ParameterLearning{
 
     private static Logger logger= LogManager.getLogger(ParaIni.class.getName());
-    String trainingDataPath;
-    String trainingTextPath;
-    String infoDataPath;
-    int trainingSize=50;
-    int tesingSize=100;
-    Connection connectionTraining=null;
-    Statement stmtTraining=null;
-    Connection connectionInfo=null;
-    Statement stmtInfo=null;
-    LanguageCode language = LanguageCode.ENGLISH;
 
     /**
      * @beta used for guess the parametervalue
      */
 
+    double beta=-1;
 
-    double beta=2;
 
-    IniFile ini;
-    ArrayList<patent> patents=new ArrayList<>();
-    ArrayList<patent> testingPatents=new ArrayList<>();
-    ArrayList<String> patentsID= new ArrayList<>();
-    ArrayList<String> testingPatentsID=new ArrayList<>();
-    ArrayList<patent> trainingPatents=new ArrayList<>();
-    ArrayList<String> trainingPatentsID=new ArrayList<>();
-    ArrayList<Double> weights=new ArrayList<>();
+
+    ArrayList<pair<int[],Double>> logisticRTrainingData=new ArrayList<>();
 
     double threshold=-Double.MAX_VALUE;
 
-    public ParaIni() {
+    public ParaIni(ArrayList<patent> patents,ArrayList<String> patentsID) {
 
-            ini=new IniFile();
-
-            this.trainingDataPath=ini.getTrainingDataOutputPath()+"/trainingData.db";
-            this.trainingTextPath=ini.getTrainingDataOutputPath()+"/PatentsText/";
-            this.infoDataPath=ini.getInfoDataPath();
-
-            PatentsGenerator patentGenerator=new PatentsGenerator(this.infoDataPath,this.trainingTextPath,this.trainingDataPath);
-
-            pair<ArrayList<patent>,ArrayList<String>> var0=patentGenerator.getTrainingPatents("TrainingData",1,250);
-
-            this.patents=var0.firstarg;
-            this.patentsID=var0.secondarg;
-
-            pair<ArrayList<patent>,ArrayList<String>> var1=patentGenerator.getTrainingPatents("TrainingData",201,50);
-            this.testingPatents=var1.firstarg;
-            this.testingPatentsID=var1.secondarg;
-
-
-            patentGenerator.closeDatabase();
-
-            ArrayList<Integer> shuffleIndex=new ArrayList<>();
-            for(int i=0;i<250;i++) {
-                shuffleIndex.add(i);
-            }
-            Collections.shuffle(shuffleIndex);
-
-
-            for (int i=0;i<100;i++) {
-                this.trainingPatents.add(patents.get(shuffleIndex.get(i)));
-                this.trainingPatentsID.add(patentsID.get(shuffleIndex.get(i)));
-            }
-
-
-
-            logger.info("Training Data Size:"+patentsID.size());
-
-            String var2="";
-            int var3=1000;
-            for(;var3>1;var3--) {
-                var2+="=";
-            }
-
-            logger.error("");
-            logger.info("Patent Sample" + var2);
-            logger.error(this.patents.get(0));
-            logger.info(var2);
-
-
-            patentPreprocessing preprocess = new patentPreprocessing(this.trainingPatents);
-            preprocess.setLanguage(this.language);
-            preprocess.preprocess();
-            this.trainingPatents = preprocess.getPatents();
-
-            CosDistance distance=this.estimatePara();
-
-
-
-
-
-            logger.error("");
-            logger.info("Distance Function"+var2);
-            logger.error(distance);
-            logger.info(var2);
-
-            logger.info("");
-            logger.info("Threshold Learning: " + var2);
-            logger.warn("Base Threshold: "+this.threshold);
-            logger.warn("Testing Data Size: "+this.testingPatents.size());
-
-/*
-            HierClusteringPatents hi=new HierClusteringPatents(this.trainingPatents);
-
-
-            double dmax=0;
-            double maxf=0;
-
-
-
-            ArrayList<Double> matlab=new ArrayList<>();
-
-
-        logger.warn("Rate From 0.8 to 0.9");
-            for(double d=0.0;d<1.1;d+=0.01) {
-
-               hi.setEps(this.threshold*d);
-               hi.Cluster(distance);
-                double tempf=evaluateClustering(hi.getHier_clusters(), trainingPatentsID);
-                if (tempf>maxf) {
-                    maxf=tempf;
-                    dmax=d;
-                }
-               matlab.add(tempf);
-               logger.error("F-Measure for " + d + " :" + tempf);
-
-           }
-
-
-
-/*
-            for(double d1:matlab){
-                System.out.print(d1+" ");
-            }
-
-            System.out.println();
-  */
-
-//        logger.warn("Best Threshold: "+threshold*dmax);
-        logger.info(var2);
-        logger.error(" ");
-
-        logger.error("Evaluation"+var2);
-        HierClusteringPatents hiT=new HierClusteringPatents(this.testingPatents);
-
-
-
-
-        logger.info(var2);
-        hiT.setEps(Double.MAX_VALUE);
-        hiT.Cluster(distance);
-        logger.warn(hiT);
-        logger.warn("F measure: "+evaluateClustering(hiT.getHier_clusters(), testingPatentsID));
-
+        super(patents,patentsID);
 
     }
 
+/*
 
-    public CosDistance estimatePara() {
+
+
+    public pair<CosDistance,Double> estimateParabyLR(int lamda) {
+
         ArrayList<String> optionsName=ini.getOptionsNames();
         double[] sums=new double[optionsName.size()];
 
-        for(double var0:sums) {
-            var0=0;
-        }
-
-        ArrayList<CosDistance> distances=new ArrayList<>();
+        ArrayList<AbstractDistance> distances=new ArrayList<>();
+        int numberofOptions=0;
 
         for(int i=0;i<optionsName.size();i++) {
-            ArrayList<Integer> var1=new ArrayList<>();
-            var1.add(i);
-            distances.add(this.generateDistanceFunction(var1,null));
+            if(ini.getOptionValue(optionsName.get(i))) {
+                ArrayList<Integer> var1 = new ArrayList<>();
+                var1.add(i);
+                distances.add(this.generateDistanceFunction(var1, null));
+                numberofOptions++;
+            }
+        }
+        logger.error(distances.size()+" "+numberofOptions);
+
+        for(int i=0;i<this.trainingPatents.size()-1;i++) {
+            for (int j=i+1;j<this.trainingPatents.size();j++)
+            {
+                int[] tempint=new int[2];
+                tempint[0]=i;
+                tempint[1]=j;
+                double result;
+                if (trainingPatentsID.get(i).equalsIgnoreCase(trainingPatentsID.get(j))) {
+                    result=1.0;
+                }
+                 else {
+                    result=0.0;
+                }
+                this.logisticRTrainingData.add(new pair<>(tempint,result));
+            }
+        }
+
+        pair<double[][],double[]> computation=logisticRTrainingDataGenerator(distances,numberofOptions);
+        double[][] X=computation.firstarg;
+        double[] YY=computation.secondarg;
+        double[][] Y=new double[this.logisticRTrainingData.size()][1];
+
+        for(int i=0;i<this.logisticRTrainingData.size();i++) {
+            Y[i][0]=YY[i];
+        }
+
+        double[][] xx=new double[8][8];
+        for(int i=0;i<8;i++) {
+            double sum=0.0;
+            for(int j=0;j<8;j++) {
+                for(int m=0;m<this.logisticRTrainingData.size();m++) {
+                    sum+=X[m][i]*X[m][j];
+                }
+                xx[i][j]=sum;
+            }
+        }
+
+        for(int i=0;i<8;i++) {
+
+            for(int j=0;j<8;j++) {
+                System.out.print(xx[i][j]+" ");
+                }
+               System.out.println(";");
+            }
+
+
+        double[] yy=new double[8];
+
+        for(int i=0;i<8;i++) {
+           double sum=0.0;
+
+            for(int m=0;m<this.logisticRTrainingData.size();m++) {
+                sum+=X[m][i]*YY[m];
+            }
+
+            yy[i]=sum;
+
+
         }
 
 
+        for(int i=0;i<8;i++) {
 
 
-        for(int i=0;i<trainingPatents.size()-1;i++)
+            System.out.println(yy[i]+" ");
+        }
+
+        System.out.println(";");
+
+        /*
+        DoubleMatrix2D x=new DenseDoubleMatrix2D(X);
+        DoubleMatrix2D y=new DenseDoubleMatrix2D(Y);
+        DoubleMatrix2D z=new DenseDoubleMatrix2D(numberofOptions+1,numberofOptions+1);
+        z.assign(0.0);
+
+        for (int i=1;i<numberofOptions+1;i++) {
+            z.set(i,i,1.0);
+        }
+
+        for (int i=0;i<this.logisticRTrainingData.size();i++) {
+            for (int j=0;j<numberofOptions+1;j++) {
+                System.out.print(x.get(i,j)+" ");
+            }
+            System.out.println(";");
+        }
+
+        for (int i=0;i<this.logisticRTrainingData.size();i++) {
+
+                System.out.print(y.get(i,0)+",");
+
+        }
+        System.out.println(";");
+
+        double sum=0;
+        for(int i=0;i<this.logisticRTrainingData.size();i++) {
+            sum+=X[i][4]*X[i][4];
+            logger.warn(sum+" "+i);
+        }
+
+        logger.warn(sum);
+
+        return new pair<>(new CosDistance(),0.0);
+
+    }
+
+    public pair<double[][],double[]> logisticRTrainingDataGenerator(ArrayList<AbstractDistance> distances,int optionNumber) {
+        double[][] X=new double[this.logisticRTrainingData.size()][optionNumber+1];
+        double[] Y=new double[this.logisticRTrainingData.size()];
+
+        int i=0;
+
+
+        for(pair<int[],Double> p:this.logisticRTrainingData) {
+            X[i][0]=1.0;
+            for(int j=0;j<optionNumber;j++) {
+                X[i][j+1]=distances.get(j).distance(trainingPatents.get(p.firstarg[0]),trainingPatents.get(p.firstarg[1]));
+                if(X[i][j+1]==0.0) X[i][j+1]=0.001;
+            }
+            Y[i]=p.secondarg;
+            i++;
+        }
+
+        return new pair<>(X,Y);
+    }
+
+*/
+
+    public AbstractDistance estimateDistanceFunction() {
+        return estimatePara(4);
+
+    }
+
+    public CosDistance estimatePara(double beta) {
+        ArrayList<Double> weights=new ArrayList<>();
+        double[] sums=new double[numberofOptions];
+        for(double var0:sums){
+            var0=0.0;
+        }
+
+
+        for(int i=0;i<patents.size()-1;i++)
         {
-            for (int j=i+1;j<trainingPatents.size();j++) {
-                if (trainingPatentsID.get(i).equalsIgnoreCase(trainingPatentsID.get(j))) {
+            for (int j=i+1;j<patents.size();j++) {
+                if (patentsID.get(i).equalsIgnoreCase(patentsID.get(j))) {
                     for(int m=0;m<optionsName.size();m++) {
                         if(ini.getOptionValue(optionsName.get(m))) {
-                            sums[m] += distances.get(m).distance(trainingPatents.get(i), trainingPatents.get(j));
+                            sums[m] += distances.get(m).distance(patents.get(i), patents.get(j));
                         }
                     }
                 }
@@ -224,9 +231,9 @@ public class ParaIni {
                     }
                 }
                // logger.warn(1 / var2);
-                this.weights.add(Math.pow(1 / var2, beta));
+                weights.add(Math.pow(1 / var2, beta));
             } else {
-                this.weights.add(0.0);
+                weights.add(0.0);
             }
         }
 
@@ -236,7 +243,9 @@ public class ParaIni {
 
         }
 */
-        CosDistance estimatedDistance=this.generateDistanceFunction(null,this.weights);
+
+        //weights.set(8,weights.get(8)/5);
+        CosDistance estimatedDistance=this.generateDistanceFunction(null,weights);
 
 
 
@@ -244,11 +253,11 @@ public class ParaIni {
         double max=-Double.MAX_VALUE;
         double sum=0;
         double n=0;
-        for(int i=0;i<trainingPatents.size()-1;i++)
+        for(int i=0;i<patents.size()-1;i++)
         {
-            for (int j=i+1;j<trainingPatents.size();j++) {
-                if (trainingPatentsID.get(i).equalsIgnoreCase(trainingPatentsID.get(j))) {
-                    double var5=estimatedDistance.distance(trainingPatents.get(i),trainingPatents.get(j));
+            for (int j=i+1;j<patents.size();j++) {
+                if (patentsID.get(i).equalsIgnoreCase(patentsID.get(j))) {
+                    double var5=estimatedDistance.distance(patents.get(i),patents.get(j));
                     sum+=var5;
                     n++;
                     if (var5>max) max=var5;
@@ -267,32 +276,10 @@ public class ParaIni {
     }
 
 
-    public  CosDistance generateDistanceFunction(ArrayList<Integer> attrIndex,ArrayList<Double> weights) {
-        CosDistance var0=new CosDistance();
-        if (attrIndex!=null) {
-            boolean[] var1=new  boolean[this.ini.getOptionsNames().size()];
-            for(int i=0;i<this.ini.getOptionsNames().size();i++) {
-                if (attrIndex.contains(i)) {
-                    var1[i]=true;
-                } else {
-                    var1[i]=false;
-                }
-            }
-            var0.setOptions(var1);
-        }
-        if (weights!=null&&weights.size()>=this.ini.getOptionsNames().size()) {
-            double[] var2=new double[this.ini.getOptionsNames().size()];
-            for(int i=0;i<this.ini.getOptionsNames().size();i++) {
-                var2[i]=weights.get(i);
-            }
-
-            var0.setWeights(var2);
-        }
-        return var0;
-    }
 
 
-    public double evaluateClustering(ArrayList<HierCluster> clusters,ArrayList<String> patentsID) {
+
+    public static double evaluateClustering(ArrayList<HierCluster> clusters,ArrayList<String> patentsID) {
         int TN, TP, FN, FP;
         TP = FP = 0;
         for (HierCluster c : clusters) {
@@ -325,7 +312,7 @@ public class ParaIni {
 
         double precision;
         double recall;
-        System.out.println(TP + " " + FP + " " + " " + TN + " " + FN);
+       // System.out.println(TP + " " + FP + " " + " " + TN + " " + FN);
         if ((TP + FP) != 0) {
             precision = (double) TP / (TP + FP);
         } else {
@@ -348,11 +335,174 @@ public class ParaIni {
 
     public static void main(String[] args) {
 
+        IniFile ini=new IniFile();
+        String trainingDataPath=ini.getTrainingDataOutputPath()+"/trainingData.db";
+        String trainingTextPath=ini.getTrainingDataOutputPath()+"/PatentsText/";
+        String infoDataPath=ini.getInfoDataPath();
+
+        PatentsGenerator patentGenerator=new PatentsGenerator(infoDataPath,trainingTextPath,trainingDataPath);
+
+        pair<ArrayList<patent>,ArrayList<String>> var0=patentGenerator.getTrainingPatents("TrainingData",1,290);
+
+        ArrayList<patent>patentsI=var0.firstarg;
+        ArrayList<String> patentsIDI=var0.secondarg;
+
+        ArrayList<patent> patents=new ArrayList<>();
+        ArrayList<String> patentsID=new ArrayList<>();
+
+        ArrayList<patent> trainingPatents=new ArrayList<>();
+        ArrayList<String> trainingPatentsID=new ArrayList<>();
 
 
-       new ParaIni();
-        //logger.info(new NormalizedLevenshtein().distance("DE JONGHE","DEJONGHE"));
-        //logger.info(new NormalizedLevenshtein().distance("DE JONGHE","CRAWFORD"));
+/*
+        pair<ArrayList<patent>,ArrayList<String>> var1=patentGenerator.getTrainingPatents("TrainingData",1,290);
+        this.testingPatents=var1.firstarg;
+        this.testingPatentsID=var1.secondarg;
+*/
+
+        patentGenerator.closeDatabase();
+
+        ArrayList<Integer> shuffleIndex=new ArrayList<>();
+        for(int i=0;i<290;i++) {
+            shuffleIndex.add(i);
+        }
+
+
+        Collections.shuffle(shuffleIndex);
+        for (int i=0;i<290;i++) {
+            patents.add(patentsI.get(shuffleIndex.get(i)));
+            patentsID.add(patentsIDI.get(shuffleIndex.get(i)));
+        }
+
+/*
+            patentPreprocessing preprocess = new patentPreprocessing(this.trainingPatents);
+            preprocess.setLanguage(this.language);
+            preprocess.preprocess();
+            this.trainingPatents = preprocess.getPatents();
+
+
+            estimateParabyLR(2);
+*/
+
+
+        logger.info("Training Data Size:"+patentsID.size());
+
+        String var2="";
+        int var3=1000;
+        for(;var3>1;var3--) {
+            var2+="=";
+        }
+
+        logger.error("");
+        logger.info("Patent Sample" + var2);
+        logger.error(patents.get(0));
+        logger.info(var2);
+
+
+        trainingPatents.clear();
+        trainingPatentsID.clear();
+
+        ArrayList<patent> testingP = new ArrayList<>();
+        ArrayList<String> testingID = new ArrayList<>();
+
+        for(int i=0;i<290;i++) {
+
+
+            if (i >120&&i<181) {
+                testingP.add(patents.get(i));
+                testingID.add(patentsID.get(i));
+            } else {
+
+                trainingPatents.add(patents.get(i));
+                trainingPatentsID.add(patentsID.get(i));
+            }
+        }
+
+        patentPreprocessing preprocess = new patentPreprocessing(trainingPatents);
+        preprocess.setLanguage(LanguageCode.ENGLISH);
+        preprocess.preprocess();
+        trainingPatents = preprocess.getPatents();
+
+
+
+        CosDistance d= (CosDistance)new ParaIni(trainingPatents,trainingPatentsID).estimateDistanceFunction();
+
+        logger.error("");
+        logger.info("Distance Function"+var2);
+        logger.error(d);
+        logger.info(var2);
+
+        logger.warn(testingP.size()+" "+testingID.size());
+
+        HierClusteringPatents hiT=new HierClusteringPatents(testingP);
+
+        hiT.Cluster(d);
+        hiT.setEps(Double.MAX_VALUE);
+        logger.warn(hiT);
+        logger.warn("F measure: "+ParaIni.evaluateClustering(hiT.getHier_clusters(), testingID));
+
+
+           /*
+            double dmax=0;
+            double maxf=0;
+
+
+
+            ArrayList<Double> matlab=new ArrayList<>();
+             HierClusteringPatents hi= new HierClusteringPatents(testingPatents);
+
+            logger.warn("Rate From 0.8 to 0.9");
+            for(double d=1.2;d>0.2;d-=0.1) {
+
+               hi.setEps(threshold*d);
+               hi.Cluster(distance);
+                double tempf=evaluateClustering(hi.getHier_clusters(), testingPatentsID);
+                if (tempf>maxf) {
+                    maxf=tempf;
+                    dmax=d;
+                }
+               matlab.add(tempf);
+               logger.error("F-Measure for " + d + " :" + tempf);
+
+           }
+
+
+
+
+            for(double d1:matlab){
+                System.out.print(d1+" ");
+            }
+
+            System.out.println();
+
+
+
+
+
+        logger.warn("Best Threshold: "+threshold*dmax);
+        logger.info(var2);
+        logger.error(" ");
+
+      //  logger.error("Evaluation"+var2);
+
+
+ /*       HierClusteringPatents hiT=new HierClusteringPatents(this.testingPatents);
+
+        for(int i=2;i<3;i++) {
+            logger.warn("beta "+i+" "+betaEvaluation(i,hiT));
+        }
+        CosDistance distance=new CosDistance();
+
+
+        logger.info(var2);
+        hiT.setEps(Double.MAX_VALUE);
+         //hiT.setNumberofCluster(7);
+        hiT.Cluster(distance);
+        logger.warn(hiT);
+        logger.warn("F measure: "+evaluateClustering(hiT.getHier_clusters(), testingPatentsID));
+**/
+
+
     }
 
 

@@ -31,7 +31,7 @@ public class SimMatrix {
         for(int i=0;i<this.patents.size();i++) {
             ArrayList<Double> temp=new ArrayList<>();
             for (int j=0;j<this.patents.size();j++) {
-                temp.add(-1.0);
+                temp.add(0.0);
             }
             simMatrix.add(temp);
         }
@@ -39,12 +39,17 @@ public class SimMatrix {
         for(int i=0;i<this.patents.size()-1;i++) {
             for (int j=i+1;j<this.patents.size();j++) {
                 double temp=distance.distance(this.patents.get(i),this.patents.get(j));
+
                 simMatrix.get(i).set(j,temp);
                 simMatrix.get(j).set(i,temp);
             }
         }
     }
 
+
+    public  ArrayList<ArrayList<Double>> getSimMatrix() {
+        return simMatrix;
+    }
     /**
      *
      * @param i patents i

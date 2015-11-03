@@ -6,6 +6,7 @@ import clustering.SimMatrix;
 import clustering.distancefunction.AbstractDistance;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by leisun on 15/9/29.
@@ -16,9 +17,10 @@ public class HierCore {
     protected AbstractDistance m_Distance;
     protected int current_NumClusters;
     protected boolean pCorrelation=true;
+    protected boolean silCoeEnable=true;
     protected double eps=0;
     protected SimMatrix simMatrix;
-    protected ArrayList<pair<ArrayList<HierCluster>,Double>> resultClustering=new ArrayList<>();
+    protected ArrayList<ArrayList<HierCluster>> resultClustering=new ArrayList<>();
     /**
      * set the number of the clusters
      * @param number the number of the cluster
@@ -27,7 +29,9 @@ public class HierCore {
         this.m_NumClusters=number;
     }
 
+    public HierCore() {
 
+    }
 
     public void setpCorrelation(boolean pCorrelation) {this.pCorrelation=pCorrelation;}
 
@@ -51,6 +55,7 @@ public class HierCore {
      */
     public ArrayList<HierCluster> get_Clusters()
     {
+
         return this.m_Clusters;
     }
 
@@ -67,12 +72,14 @@ public class HierCore {
     public void buildCluster(ArrayList<patent> patents,AbstractDistance distance)
     {
 
-
+        this.eps=Double.MAX_VALUE;
         this.simMatrix=new SimMatrix(patents,distance);
         this.m_Distance=distance;
         initializeCluster(patents);
+        ArrayList<Double> silCoes=new ArrayList<>();
 
         current_NumClusters=m_Clusters.size();
+
 
         while(current_NumClusters>m_NumClusters)
         {
@@ -80,26 +87,26 @@ public class HierCore {
                 break;
             } else {
                 current_NumClusters=m_Clusters.size();
-                ArrayList<HierCluster> temp_result=new ArrayList<>();
-                temp_result.addAll(this.get_Clusters());
-                System.out.println("Number of Clusters:"+this.numberOfClusters());
-                resultClustering.add(new pair<ArrayList<HierCluster>, Double>(temp_result,getWithinSmilarity(temp_result,simMatrix)));
+
+
+                double temp=this.totalAvaverageSilHouette(this.m_Clusters, simMatrix);
+
+                resultClustering.add(cloneClusters(this.m_Clusters));
+
+                silCoes.add(temp);
+
             }
         }
 
 
+        if (silCoeEnable==true) {
+            Double max = Collections.max(silCoes);
 
 
-        double min=Double.MIN_VALUE;
-        for (pair<ArrayList<HierCluster>, Double> p:this.resultClustering) {
 
-            System.out.println(p.firstarg.size());
-            System.out.println(p.secondarg);
-            if (min>p.secondarg) {
-                min=p.secondarg;
-                this.m_Clusters=p.firstarg;
+            this.m_Clusters = resultClustering.get(silCoes.indexOf(max));
 
-            }
+            current_NumClusters = this.m_Clusters.size();
         }
 
     }
@@ -185,18 +192,63 @@ public class HierCore {
         }
     }
 
-    public double getWithinSmilarity(ArrayList<HierCluster> clusters,SimMatrix simMatrix) {
-        double result=0.0;
+    public double avaerageSimilarityFromCluster (int index,HierCluster C,SimMatrix simMatrix,boolean within) {
+       double result=0.0;
+        if (within&&C.getPatentsIndex().size()<2) return 0;
+        for (int i:C.getPatentsIndex()) {
+            result+=simMatrix.getSimbetweenPatents(index,i);
+        }
+        return result/C.getPatentsIndex().size();
+     }
 
-        for(HierCluster c:clusters) {
-            double temp=0;
-            for(int i=0;i<c.getPatentsIndex().size()-1;i++) {
-                for(int j=i+1;j<c.getPatentsIndex().size();j++) {
-                    temp+=simMatrix.getSimbetweenPatents(c.getPatentsIndex().get(i),c.getPatentsIndex().get(j));
-                }
+    public double getSilhouetteofAPatent (int index,int clusterIndex,ArrayList<HierCluster> clusters,SimMatrix simMatrix) {
+
+
+        double a = avaerageSimilarityFromCluster(index, clusters.get(clusterIndex), simMatrix,true);
+
+        if (a==0) return 0;
+
+        double b = Double.MAX_VALUE;
+
+        for (int i = 0; i < clusters.size(); i++) {
+            if (i != clusterIndex) {
+                double temp= avaerageSimilarityFromCluster(index, clusters.get(i), simMatrix,false);
+
+                if (temp<b) b=temp;
             }
-            result+=temp;
+        }
+
+
+
+
+        if (b==Double.MAX_VALUE) b=0;
+
+
+
+        return (b-a)/Math.max(a,b);
+    }
+
+    public double totalAvaverageSilHouette(ArrayList<HierCluster> clusters,SimMatrix simMatrix){
+        double result=0;
+
+        for (int i=0;i<clusters.size();i++) {
+
+            for(int j:clusters.get(i).getPatentsIndex()) {
+                result+=getSilhouetteofAPatent(j,i,clusters,simMatrix);
+            }
+        }
+
+        return result/simMatrix.getSimMatrix().size();
+    }
+
+    public ArrayList<HierCluster> cloneClusters(ArrayList<HierCluster> clusters) {
+        ArrayList<HierCluster> result=new ArrayList<>();
+
+        for (HierCluster c:clusters) {
+            result.add(new HierCluster(c));
         }
         return result;
+
     }
+
 }

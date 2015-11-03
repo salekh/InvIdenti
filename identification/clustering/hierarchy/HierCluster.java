@@ -17,6 +17,17 @@ public class HierCluster {
     private int centroidIndex=-1;
 
 
+
+    public HierCluster() {
+
+    }
+
+    public HierCluster(HierCluster c) {
+        for (int i:c.getPatentsIndex()) {
+            patentsIndex.add(i);
+        }
+    }
+
     /**
      * add a new patents index into the cluster
      * @param num the new patent index
@@ -53,12 +64,14 @@ public class HierCluster {
             {
                double temp=simMatrix.getSimbetweenPatents(i,j);
                 sum+=temp;
-                if (temp<maxdistance) maxdistance=temp;
+                if (temp>maxdistance) maxdistance=temp;
             }
 
         }
-     return maxdistance;
-    //    return sum/(c1.getPatentsIndex().size()*c2.getPatentsIndex().size());
+
+        return maxdistance;
+        // return sum/(c1.getPatentsIndex().size()*c2.getPatentsIndex().size());
+
     }
 
     public void computeCentroid(ArrayList<patent> pts,AbstractDistance distance) {
