@@ -2,33 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab209d6b-4348-46b0-8871-b774722eae25" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/identification/Evaluation/Evaluation.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cc_mallet_mallet_2_0_7.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_matrix_toolkits_java_mtj_0_9_14.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_netlib_java_netlib_java_0_9_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__jgrapht_jgrapht_0_6_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_jwordnet_jwnl_1_4_rc3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_trove4j_trove4j_2_0_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_f2j_arpack_combined_all_0_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_beanshell_bsh_2_0b4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jdom_jdom_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/identification/preprocessing/ParameterLearning.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/hierarchy/HierCluster.class" afterPath="$PROJECT_DIR$/target/classes/clustering/hierarchy/HierCluster.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/hierarchy/HierClusteringPatents.class" afterPath="$PROJECT_DIR$/target/classes/clustering/hierarchy/HierClusteringPatents.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/hierarchy/HierCore.class" afterPath="$PROJECT_DIR$/target/classes/clustering/hierarchy/HierCore.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/ParaIni.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/ParaIni.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/SimMatrix.class" afterPath="$PROJECT_DIR$/target/classes/clustering/SimMatrix.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCluster.java" afterPath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCluster.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java" afterPath="$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java" afterPath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/InvIdenti.iml" afterPath="$PROJECT_DIR$/InvIdenti.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/ParaIni.java" afterPath="$PROJECT_DIR$/identification/preprocessing/ParaIni.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/SimMatrix.java" afterPath="$PROJECT_DIR$/identification/clustering/SimMatrix.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/invidenti.ini" afterPath="$PROJECT_DIR$/invidenti.ini" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/patentClustering.java" afterPath="$PROJECT_DIR$/identification/clustering/patentClustering.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="InvIdenti.iws" />
@@ -66,7 +39,7 @@
       <file leaf-file-name="Evaluation.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/identification/Evaluation/Evaluation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3.5801013">
+            <state vertical-scroll-proportion="5.4575834">
               <caret line="137" column="46" selection-start-line="137" selection-start-column="46" selection-end-line="137" selection-end-column="46" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -726,7 +699,13 @@
       <option name="project" value="LOCAL" />
       <updated>1443011543736</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add country ， coauthor , graphical information&#10;">
+      <created>1446567673994</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1446567673994</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -740,7 +719,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="713" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -749,7 +728,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6666667" sideWeight="0.51373184" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.49676898" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32850242" sideWeight="0.49676898" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6666667" sideWeight="0.48626816" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277592" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1207,7 +1186,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/identification/Evaluation/Evaluation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.5801013">
+        <state vertical-scroll-proportion="5.4575834">
           <caret line="137" column="46" selection-start-line="137" selection-start-column="46" selection-end-line="137" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
