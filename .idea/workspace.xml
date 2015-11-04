@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ab209d6b-4348-46b0-8871-b774722eae25" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/Evaluation/Evaluation.java" afterPath="$PROJECT_DIR$/identification/Evaluation/Evaluation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java" afterPath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/DatasetGenerator/TrainingDataGenerator.java" afterPath="$PROJECT_DIR$/identification/DatasetGenerator/TrainingDataGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/USPTOSpider.java" afterPath="$PROJECT_DIR$/identification/preprocessing/USPTOSpider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/invidenti.ini" afterPath="$PROJECT_DIR$/invidenti.ini" />
-    </list>
+    <list default="true" id="ab209d6b-4348-46b0-8871-b774722eae25" name="Default" comment="" />
     <ignored path="InvIdenti.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -763,7 +757,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="713" extended-state="1" />
+    <frame x="0" y="23" width="1280" height="713" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
