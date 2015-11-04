@@ -217,6 +217,7 @@ public class Evaluation {
         logger.info("Training Data Size:"+training.firstarg.size());
         logger.info("Testing Data Size:"+testing.firstarg.size());
         clusteirngMethod.ininitialize(testing.firstarg);
+        ((HierClusteringPatents)clusteirngMethod).setEps(0.0025);
         clusteirngMethod.Cluster(d);
         logger.error("Clustering Result\n");
         logger.error(clusteirngMethod);

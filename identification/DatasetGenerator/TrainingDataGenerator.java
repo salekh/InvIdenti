@@ -22,6 +22,8 @@ public class TrainingDataGenerator {
             Wini iniFile=new Wini(new File("invidenti.ini"));
             this.inputPath=iniFile.get("DataSet","TrainingDataInputPath");
             this.outputPath=iniFile.get("DataSet","TrainingDataOutputPath");
+            File f = new File(this.outputPath);
+            if (!f.exists()) f.mkdirs();
         } catch (IOException e) {
             System.out.println("Initial File not Found");
         }
@@ -111,6 +113,7 @@ public class TrainingDataGenerator {
 
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:"+outputPath+"/trainingData.db");
+
             connection.setAutoCommit(false);
             stmt = connection.createStatement();
 
@@ -129,7 +132,7 @@ public class TrainingDataGenerator {
             }
 
             var2=var1.readLine();
-            int var5=this.size;
+            int var5=2000;
 
             while (var2!=null) { //Control the dataset Size
                 if (var5>=0) {
@@ -191,5 +194,11 @@ public class TrainingDataGenerator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args){
+        TrainingDataGenerator t=new TrainingDataGenerator();
+        //t.buildPatentInfDataSet();
+        t.buildData();
     }
 }

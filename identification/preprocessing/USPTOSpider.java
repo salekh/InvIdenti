@@ -25,7 +25,7 @@ public class USPTOSpider implements PageProcessor
 
     private String title;
 
-    private Site site=Site.me().setRetryTimes(3).setRetryTimes(100);
+    private Site site=Site.me().setRetryTimes(3).setRetryTimes(1000);
 
     public void setCharset(String code)
     {
