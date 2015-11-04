@@ -3,6 +3,9 @@ package preprocessing;
 import base.patent;
 import clustering.distancefunction.AbstractDistance;
 import clustering.distancefunction.CosDistance;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.carrot2.core.LanguageCode;
 
 import java.util.ArrayList;
 
@@ -12,31 +15,56 @@ import java.util.ArrayList;
 public abstract class ParameterLearning {
 
 
-        public abstract AbstractDistance estimateDistanceFunction();
+    public abstract AbstractDistance estimateDistanceFunction();
+    protected static Logger logger= LogManager.getLogger(ParaIni.class.getName());
+    protected ArrayList<patent> patents;
+    protected ArrayList<String> patentsID;
+    protected ArrayList<String> optionsName;
+    protected int numberofOptions=8;
+    protected boolean initialization=false;
+    double threshold=-Double.MAX_VALUE;
 
-        protected String trainingDataPath;
-        protected String trainingTextPath;
-        protected String infoDataPath;
-        protected ArrayList<patent> patents;
-        protected ArrayList<String> patentsID;
-        protected ArrayList<String> optionsName;
-        protected int numberofOptions=8;
-
-        protected ArrayList<AbstractDistance> distances;
-        IniFile ini;
+    protected ArrayList<AbstractDistance> distances;
+    IniFile ini;
 
 
-        public ParameterLearning(ArrayList<patent> patents,ArrayList<String> patentsID){
+    public ParameterLearning(){
             ini=new IniFile();
-            this.trainingDataPath = ini.getTrainingDataOutputPath() + "/trainingData.db";
-            this.trainingTextPath = ini.getTrainingDataOutputPath() + "/PatentsText/";
-            this.infoDataPath = ini.getInfoDataPath();
-            this.patents=patents;
-            this.patentsID=patentsID;
             this.optionsName=ini.getOptionsNames();
             generateSeperatedDisFunctions();
-        }
+    }
 
+
+    public double getThreshold() {
+        return this.threshold;
+    }
+
+
+    /**
+     * Initialize the Parameter Learning with arraylist of patents and arraylist of patentsID
+     * @param patents arraylist of patents
+     * @param patentsID arraylist of patentsID
+     */
+
+    public void initilize(ArrayList<patent>patents,ArrayList<String>patentsID){
+        this.patents=patents;
+        this.patentsID=patentsID;
+        preprocess();
+        initialization=true;
+    }
+
+
+    /**
+     * preprocess the patents;
+     */
+    protected void preprocess() {
+
+        patentPreprocessing preprocess = new patentPreprocessing(this.patents);
+        preprocess.setLanguage(LanguageCode.ENGLISH);
+        preprocess.preprocess();
+        this.patents = preprocess.getPatents();
+
+    }
 
     /**
      * Generate a distance function based on a arraylist of weights and a arraylist of index

@@ -27,37 +27,46 @@ public class CosDistance extends AbstractDistance {
 
         if (this.fulltextCompare==true) {
             result+=(this.cosDistance(first.getTd(),second.getTd())*this.weightFullText);
+            if (Double.isNaN(result)) System.out.println(1);
         }
 
         if (this.abstractCompare==true) {
             result+=(this.cosDistance(first.getTd_abs(),second.getTd_abs())*this.weightAbstract);
+            if (Double.isNaN(result)) System.out.println(2);
         }
 
         if (this.desComapre==true) {
             result+=(this.cosDistance(first.getTd_des(),second.getTd_des())*this.weightDes);
+            if (Double.isNaN(result)) System.out.println(3);
         }
 
         if (this.claimsCompare==true) {
             result+=(this.cosDistance(first.getTd_claims(),second.getTd_claims())*this.weightClaims);
+            if (Double.isNaN(result)) System.out.println(4);
         }
 
         if (this.assigneeCompare==true) {
             result+=(this.compareAssignee(first.getAssignee(),second.getAssignee())*this.weightAssignee);
+            if (Double.isNaN(result)) System.out.println(5);
         }
 
         if (this.categoryCompare==true) {
             result+=(this.comapreCategories(first.getCategory(),second.getCategory())*this.weightCategory);
+            if (Double.isNaN(result)) System.out.println(6);
         }
         if (this.nameCompare==true) {
             result+=(this.compareName(first.getCategory(),second.getCategory())*this.weightName);
+            if (Double.isNaN(result)) System.out.println(7);
         }
 
         if (this.coAuthorCompare==true) {
             result+=(this.compareCoAuthor(first.getCoAuthor(),second.getCoAuthor())*this.weightCoAuthor);
+            if (Double.isNaN(result)) System.out.println(8);
         }
 
         if (this.locationCompare==true) {
             result+=(this.compareLocation(first.getCountry(),first.getLat(),first.getLng(),second.getCountry(),second.getLat(),second.getLng())*this.weightLocation);
+            if (Double.isNaN(result)) System.out.println(9);
         }
         return result;
     }

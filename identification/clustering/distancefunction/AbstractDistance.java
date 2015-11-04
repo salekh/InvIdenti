@@ -103,15 +103,19 @@ public abstract class AbstractDistance {
      * @return the comparison result of two assignees;
      */
     protected double compareAssignee (String str1,String str2) {
-        if (str1==null || str2==null) {
+        if (str1==null || str2==null||str1.length()==0||str2.length()==0) {
           if (this.pCorrelation)  {
-              return 0.5;
+              return 0;
           } else {
-              return 0.5;
+              return 1;
           }
         }
 
         NormalizedLevenshtein var0 = new NormalizedLevenshtein();
+
+        double var1=var0.distance(str1,str2);
+
+
 
         if (this.pCorrelation)
         {
@@ -131,8 +135,12 @@ public abstract class AbstractDistance {
      */
     public double comapreCategories (String str1,String str2) {
         double result=0.0;
-        if (str1==null || str2==null) {
-            return 0;
+        if (str1==null || str2==null||str1.length()==0||str2.length()==0) {
+           if(pCorrelation) {
+               return 0;
+           } else {
+               return 1;
+           }
         }
         String[] strs_1=str1.split("-");
         String[] strs_2=str2.split("-");
@@ -188,7 +196,7 @@ public abstract class AbstractDistance {
      * @return the levenshtein distance between two names according to the pCorrelation
      */
     public double compareName(String name1,String name2) {
-        if (name1==null || name2==null) {
+        if (name1==null || name2==null||name1.length()==0||name2.length()==0) {
             if (this.pCorrelation)  {
                 return 0;
             } else {
@@ -215,9 +223,12 @@ public abstract class AbstractDistance {
     public double compareCoAuthor(String coAuthor1,String coAuthor2) {
         double result=0.0;
 
-        if (coAuthor1.equalsIgnoreCase("")||coAuthor2.equalsIgnoreCase(" ")) {
+        if (coAuthor1==null||coAuthor2==null||coAuthor1.length()==0||coAuthor2.length()==0) {
             return 1.0;
         }
+
+
+
         String[] coAuthorNames1=coAuthor1.split(";");
         String[] coAuthorNames2=coAuthor2.split(";");
         String[] lessNames;

@@ -126,9 +126,6 @@ public class patentPreprocessing {
                 var19 = var17.termDocumentMatrix;
             }
 
-           // System.out.println("Stem:"+preprocessingContext.allStems.tf.length);
-           // System.out.println(var19.rows());
-
 
             IntArrayList intA=new IntArrayList();
 

@@ -1,6 +1,7 @@
 package clustering.hierarchy;
 
 
+import base.indexCluster;
 import base.patent;
 import clustering.SimMatrix;
 import clustering.distancefunction.AbstractDistance;
@@ -12,8 +13,8 @@ import java.util.ArrayList;
 /**
  * Created by leisun on 15/9/29.
  */
-public class HierCluster {
-    private ArrayList<Integer> patentsIndex=new ArrayList<>();
+public class HierCluster extends indexCluster {
+
     private int centroidIndex=-1;
 
 
@@ -34,13 +35,7 @@ public class HierCluster {
      */
     public void addInstance(int num) { this.patentsIndex.add(num);}
 
-    /**
-     *
-     * @return the patents index in the cluster
-     */
-    public ArrayList<Integer> getPatentsIndex() {
-        return this.patentsIndex;
-    }
+
 
     /**
      * Calculate the max distance between two clusters

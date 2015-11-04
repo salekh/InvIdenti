@@ -26,7 +26,7 @@ import java.util.Collections;
  */
 public class ParaIni extends ParameterLearning{
 
-    private static Logger logger= LogManager.getLogger(ParaIni.class.getName());
+    protected static Logger logger= LogManager.getLogger(ParaIni.class.getName());
 
     /**
      * @beta used for guess the parametervalue
@@ -42,7 +42,7 @@ public class ParaIni extends ParameterLearning{
 
     public ParaIni(ArrayList<patent> patents,ArrayList<String> patentsID) {
 
-        super(patents,patentsID);
+        super();
 
     }
 
@@ -434,7 +434,8 @@ public class ParaIni extends ParameterLearning{
 
         logger.warn(testingP.size()+" "+testingID.size());
 
-        HierClusteringPatents hiT=new HierClusteringPatents(testingP);
+        HierClusteringPatents hiT=new HierClusteringPatents();
+        hiT.ininitialize(testingP);
 
         hiT.Cluster(d);
         hiT.setEps(Double.MAX_VALUE);

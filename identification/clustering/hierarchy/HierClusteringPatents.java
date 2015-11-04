@@ -18,8 +18,8 @@ public class HierClusteringPatents extends patentClustering
     private double eps=Double.MAX_VALUE;
     ArrayList<HierCluster> hier_clusters;
 
-    public HierClusteringPatents(ArrayList<patent> patents) {
-        super(patents);
+    public HierClusteringPatents() {
+        super();
     }
 
 
@@ -27,8 +27,8 @@ public class HierClusteringPatents extends patentClustering
         this.eps=eps;
     }
 
-    public void getEps() {
-        System.out.println(eps);
+    public double getEps() {
+        return this.eps;
     }
 
     /**
@@ -45,6 +45,7 @@ public class HierClusteringPatents extends patentClustering
             hc.set_NumClusters(this.number_Cluster);
 
             hc.buildCluster(patents,new CosDistance());
+
             clusters.clear();
 
           hier_clusters=hc.get_Clusters();
@@ -70,7 +71,16 @@ public class HierClusteringPatents extends patentClustering
      * @param distance distance function
      */
     public void Cluster(AbstractDistance distance) {
+
+        if (!initilization) {
+            logger.error("Clustering method: no patents are initialized");
+            return;
+        }
+
+
+
         HierCore hc=new HierCore();
+
         hc.setEps(this.eps);
         hc.setpCorrelation(this.pCorrelation);
 
@@ -85,6 +95,12 @@ public class HierClusteringPatents extends patentClustering
             clusters.clear();
 
             hier_clusters=hc.get_Clusters();
+
+            clustersIndex.clear();
+
+            for(HierCluster cluster:this.hier_clusters) {
+                this.clustersIndex.add(cluster);
+            }
 
            // System.out.println(hier_clusters.size());
 

@@ -1,11 +1,15 @@
 package clustering;
 
+import base.indexCluster;
 import base.pair;
 import base.patent;
 import base.patentCluster;
 import clustering.distancefunction.AbstractDistance;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.carrot2.core.LanguageCode;
 import org.ini4j.Wini;
+import preprocessing.ParaIni;
 import preprocessing.patentPreprocessing;
 import preprocessing.patentPreprocessingTF;
 import weka.core.Attribute;
@@ -21,13 +25,15 @@ import java.util.HashMap;
  */
 public abstract class patentClustering
 {
-
-    protected ArrayList<patent> patents=new ArrayList<>();
+    protected static Logger logger= LogManager.getLogger(patentClustering.class.getName());
+    protected ArrayList<patent> patents;
     protected LanguageCode language=LanguageCode.ENGLISH;
     protected ArrayList<patentCluster> clusters=new ArrayList<>();
+    protected ArrayList<indexCluster> clustersIndex=new ArrayList<>();
     protected Instances instances;
     protected int number_Cluster=1;
     protected boolean pCorrelation=true;
+    protected boolean initilization=false;
 
     protected pair<HashMap<String,Integer>,HashMap<String,Integer>> attriInfo;
 
@@ -46,6 +52,12 @@ public abstract class patentClustering
     {
         return this.clusters;
     }
+
+    public ArrayList<indexCluster> getClustersIndex()
+    {
+        return this.clustersIndex;
+    }
+
     /**Get original index of the patent**/
     public int getIndex(patent p)
     {
@@ -89,7 +101,7 @@ public abstract class patentClustering
         return str;
     }
 
-    public patentClustering(ArrayList<patent> patents)
+    public patentClustering()
     {
         try {
             Wini initalFile=new Wini(new File("invidenti.ini"));
@@ -99,10 +111,15 @@ public abstract class patentClustering
         {
             System.out.println("Initial File 'invidenti.ini not found',distance function will use default options");
         }
-        this.patents=patents;
-        preprocess();
+
+
     }
 
+    public void ininitialize(ArrayList<patent> patents) {
+        this.patents=patents;
+        this.initilization=true;
+        preprocess();
+    }
 
     public abstract void Cluster(AbstractDistance distance);
 

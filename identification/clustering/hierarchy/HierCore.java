@@ -18,9 +18,10 @@ public class HierCore {
     protected int current_NumClusters;
     protected boolean pCorrelation=true;
     protected boolean silCoeEnable=true;
-    protected double eps=0;
+    protected double eps=Double.MAX_VALUE;
     protected SimMatrix simMatrix;
     protected ArrayList<ArrayList<HierCluster>> resultClustering=new ArrayList<>();
+
     /**
      * set the number of the clusters
      * @param number the number of the cluster
@@ -72,7 +73,7 @@ public class HierCore {
     public void buildCluster(ArrayList<patent> patents,AbstractDistance distance)
     {
 
-        this.eps=Double.MAX_VALUE;
+
         this.simMatrix=new SimMatrix(patents,distance);
         this.m_Distance=distance;
         initializeCluster(patents);
@@ -80,6 +81,7 @@ public class HierCore {
 
         current_NumClusters=m_Clusters.size();
 
+        System.out.println(this.eps);
 
         while(current_NumClusters>m_NumClusters)
         {
@@ -95,6 +97,7 @@ public class HierCore {
 
                 silCoes.add(temp);
 
+
             }
         }
 
@@ -103,11 +106,15 @@ public class HierCore {
             Double max = Collections.max(silCoes);
 
 
-
             this.m_Clusters = resultClustering.get(silCoes.indexOf(max));
 
             current_NumClusters = this.m_Clusters.size();
+
+            System.out.println("Max SilCoe:"+max);
+
         }
+
+
 
     }
 
@@ -161,6 +168,8 @@ public class HierCore {
             }
 
 
+
+
         if (this.pCorrelation){
         if (mostSim>eps) {
         m_Clusters.get(most_i).getPatentsIndex().addAll(m_Clusters.get(most_j).getPatentsIndex());
@@ -194,10 +203,18 @@ public class HierCore {
 
     public double avaerageSimilarityFromCluster (int index,HierCluster C,SimMatrix simMatrix,boolean within) {
        double result=0.0;
+
         if (within&&C.getPatentsIndex().size()<2) return 0;
+
         for (int i:C.getPatentsIndex()) {
             result+=simMatrix.getSimbetweenPatents(index,i);
+
+
         }
+
+
+
+
         return result/C.getPatentsIndex().size();
      }
 
@@ -222,7 +239,6 @@ public class HierCore {
 
 
         if (b==Double.MAX_VALUE) b=0;
-
 
 
         return (b-a)/Math.max(a,b);
