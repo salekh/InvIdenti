@@ -13,10 +13,7 @@ import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.carrot2.core.LanguageCode;
-import preprocessing.IniFile;
-import preprocessing.LagrangeWeightsLearning;
-import preprocessing.ParameterLearning;
-import preprocessing.patentPreprocessing;
+import preprocessing.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +38,8 @@ public class Evaluation {
 
     boolean shuffle=true;
 
+    int datasize=100;
+
     int k=10;
 
     public Evaluation(ParameterLearning p,patentClustering c) {
@@ -53,7 +52,7 @@ public class Evaluation {
 
         PatentsGenerator patentGenerator=new PatentsGenerator(infoDataPath,trainingTextPath,trainingDataPath);
 
-        pair<ArrayList<patent>,ArrayList<String>> var0=patentGenerator.getTrainingPatents("TrainingData",1,290);
+        pair<ArrayList<patent>,ArrayList<String>> var0=patentGenerator.getTrainingPatents("TrainingData",1,datasize);
 
         ArrayList<patent>patentsI=var0.firstarg;
         ArrayList<String> patentsIDI=var0.secondarg;
@@ -65,13 +64,13 @@ public class Evaluation {
 
         if(this.shuffle) {
              shuffleIndex = new ArrayList<>();
-            for (int i = 0; i < 290; i++) {
+            for (int i = 0; i < datasize; i++) {
                 shuffleIndex.add(i);
             }
 
 
             Collections.shuffle(shuffleIndex);
-            for (int i = 0; i < 290; i++) {
+            for (int i = 0; i < datasize; i++) {
                 patents.add(patentsI.get(shuffleIndex.get(i)));
                 patentsID.add(patentsIDI.get(shuffleIndex.get(i)));
             }
@@ -186,8 +185,11 @@ public class Evaluation {
             int end=start+numberoftesting;
             if (end>patents.size()-1) end=patents.size()-1;
             pair<pair<ArrayList<patent>,ArrayList<String>>,pair<ArrayList<patent>,ArrayList<String>>> var0=this.getTrainingandTesingPatents(start,end);
-            FMeasure.add(evaluateAClustering(var0.firstarg,var0.secondarg));
+            weightlearning.initilize(var0.firstarg.firstarg,var0.firstarg.secondarg);
+            weightlearning.estimateDistanceFunction();
+            //FMeasure.add(evaluateAClustering(var0.firstarg,var0.secondarg));
             //calculateTheBestThreshold(var0.firstarg,var0.secondarg);
+            break;
         }
 
         logger.info("");
@@ -312,7 +314,7 @@ public class Evaluation {
     }
 
     public static void main(String[] args){
-        Evaluation evaluation=new Evaluation(new LagrangeWeightsLearning(),new HierClusteringPatents());
+        Evaluation evaluation=new Evaluation(new LRWeightLearning(),new HierClusteringPatents());
         evaluation.evaluteAllClustering();
 
     }

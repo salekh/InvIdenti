@@ -17,7 +17,7 @@ public class HierCore {
     protected AbstractDistance m_Distance;
     protected int current_NumClusters;
     protected boolean pCorrelation=true;
-    protected boolean silCoeEnable=false;
+    protected boolean silCoeEnable=true;
     protected double eps=Double.MAX_VALUE;
     protected SimMatrix simMatrix;
     protected ArrayList<ArrayList<HierCluster>> resultClustering=new ArrayList<>();
@@ -171,7 +171,7 @@ public class HierCore {
 
 
         if (this.pCorrelation){
-        if (mostSim>eps) {
+        if (mostSim>=eps) {
         m_Clusters.get(most_i).getPatentsIndex().addAll(m_Clusters.get(most_j).getPatentsIndex());
 
         m_Clusters.remove(most_j);
