@@ -40,7 +40,7 @@ public class Evaluation {
 
     boolean shuffle=true;
 
-    int datasize=100;
+    int datasize=250;
 
     int k=10;
 
@@ -188,8 +188,8 @@ public class Evaluation {
             if (end>patents.size()-1) end=patents.size()-1;
             pair<pair<ArrayList<patent>,ArrayList<String>>,pair<ArrayList<patent>,ArrayList<String>>> var0=this.getTrainingandTesingPatents(start,end);
 
-            //FMeasure.add(evaluateAClustering(var0.firstarg,var0.secondarg));
-            calculateTheBestThreshold(var0.firstarg,var0.secondarg);
+            FMeasure.add(evaluateAClustering(var0.firstarg,var0.secondarg));
+            //calculateTheBestThreshold(var0.firstarg,var0.secondarg);
 
         }
 
@@ -221,7 +221,7 @@ public class Evaluation {
         logger.info("Training Data Size:"+training.firstarg.size());
         logger.info("Testing Data Size:"+testing.firstarg.size());
         clusteirngMethod.ininitialize(testing.firstarg);
-        ((HierClusteringPatents)clusteirngMethod).setEps(weightlearning.getThreshold()*0.45);
+        ((HierClusteringPatents)clusteirngMethod).setEps(weightlearning.getThreshold());
         clusteirngMethod.Cluster(d);
         logger.error("Clustering Result\n");
         logger.error(clusteirngMethod);
@@ -315,7 +315,9 @@ public class Evaluation {
     }
 
     public static void main(String[] args){
-        Evaluation evaluation=new Evaluation(new LRWeightLearning(),new HierClusteringPatents());
+
+
+       Evaluation evaluation=new Evaluation(new LRWeightLearning(),new HierClusteringPatents());
         evaluation.evaluteAllClustering();
 
     }

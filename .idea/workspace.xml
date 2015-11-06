@@ -2,19 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab209d6b-4348-46b0-8871-b774722eae25" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/DatasetGenerator/TrainingDataGenerator.class" afterPath="$PROJECT_DIR$/target/classes/DatasetGenerator/TrainingDataGenerator.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Evaluation/Evaluation.class" afterPath="$PROJECT_DIR$/target/classes/Evaluation/Evaluation.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/SimMatrix.class" afterPath="$PROJECT_DIR$/target/classes/clustering/SimMatrix.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/hierarchy/HierCore.class" afterPath="$PROJECT_DIR$/target/classes/clustering/hierarchy/HierCore.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/LRWeightLearning.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/LRWeightLearning.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/ParameterLearning.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/ParameterLearning.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/USPTOSearch.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/USPTOSearch.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/Evaluation/Evaluation.java" afterPath="$PROJECT_DIR$/identification/Evaluation/Evaluation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/SimMatrix.java" afterPath="$PROJECT_DIR$/identification/clustering/SimMatrix.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java" afterPath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCluster.java" afterPath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCluster.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java" afterPath="$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java" afterPath="$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/ParameterLearning.java" afterPath="$PROJECT_DIR$/identification/preprocessing/ParameterLearning.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/patentPreprocessing.java" afterPath="$PROJECT_DIR$/identification/preprocessing/patentPreprocessing.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/invidenti.ini" afterPath="$PROJECT_DIR$/invidenti.ini" />
     </list>
     <ignored path="InvIdenti.iws" />
@@ -37,11 +29,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Evaluation.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Evaluation.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/identification/Evaluation/Evaluation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5316456">
-              <caret line="191" column="12" selection-start-line="191" selection-start-column="12" selection-end-line="191" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="42" column="20" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ParaIni.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/preprocessing/ParaIni.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="85" column="9" selection-start-line="70" selection-start-column="7" selection-end-line="85" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -71,17 +73,37 @@
         <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="92" column="22" selection-start-line="92" selection-start-column="15" selection-end-line="92" selection-end-column="27" />
+              <caret line="84" column="37" selection-start-line="84" selection-start-column="37" selection-end-line="84" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PatentsGenerator.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/DatasetGenerator/PatentsGenerator.java">
+      <file leaf-file-name="CosDistance.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/clustering/distancefunction/CosDistance.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="142" column="22" selection-start-line="142" selection-start-column="22" selection-end-line="142" selection-end-column="22" />
+              <caret line="49" column="10" selection-start-line="49" selection-start-column="10" selection-end-line="49" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LRWeightLearning.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.37974682">
+              <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TrainingDataGenerator.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/DatasetGenerator/TrainingDataGenerator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="183" column="13" selection-start-line="183" selection-start-column="13" selection-end-line="183" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -97,43 +119,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LRWeightLearning.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-19.555555">
-              <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimMatrix.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/clustering/SimMatrix.java">
+      <file leaf-file-name="PatentsGenerator.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/DatasetGenerator/PatentsGenerator.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IniFile.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/preprocessing/IniFile.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="21" column="32" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LagrangeWeightsLearning.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/preprocessing/LagrangeWeightsLearning.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="12" column="62" selection-start-line="12" selection-start-column="45" selection-end-line="12" selection-end-column="62" />
+              <caret line="142" column="22" selection-start-line="142" selection-start-column="22" selection-end-line="142" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -193,9 +183,7 @@
         <option value="$PROJECT_DIR$/identification/DatasetGenerator/PatentsGenerator.java" />
         <option value="$PROJECT_DIR$/identification/preprocessing/ParameterLearining.java" />
         <option value="$PROJECT_DIR$/identification/preprocessing/IniFile.java" />
-        <option value="$PROJECT_DIR$/identification/preprocessing/patentPreprocessing.java" />
         <option value="$PROJECT_DIR$/identification/preprocessing/ParaIni.java" />
-        <option value="$PROJECT_DIR$/identification/clustering/hierarchy/HierCluster.java" />
         <option value="$PROJECT_DIR$/identification/base/indexCluster.java" />
         <option value="$PROJECT_DIR$/identification/clustering/patentClustering.java" />
         <option value="$PROJECT_DIR$/identification/clustering/distancefunction/CosDistance.java" />
@@ -205,12 +193,14 @@
         <option value="$PROJECT_DIR$/identification/preprocessing/USPTOSpider.java" />
         <option value="$PROJECT_DIR$/identification/preprocessing/ParameterLearning.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/invidenti.ini" />
-        <option value="$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java" />
         <option value="$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java" />
         <option value="$PROJECT_DIR$/identification/clustering/SimMatrix.java" />
-        <option value="$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java" />
+        <option value="$PROJECT_DIR$/identification/preprocessing/patentPreprocessing.java" />
+        <option value="$PROJECT_DIR$/invidenti.ini" />
+        <option value="$PROJECT_DIR$/identification/clustering/hierarchy/HierCluster.java" />
+        <option value="$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java" />
         <option value="$PROJECT_DIR$/identification/Evaluation/Evaluation.java" />
+        <option value="$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java" />
       </list>
     </option>
   </component>
@@ -883,13 +873,13 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.664437" sideWeight="0.48303714" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3277592" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2428115" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2428115" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24920128" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3993559" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39910814" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1043,14 +1033,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/log4j.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/configuration/log4j.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1144,20 +1126,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/preprocessing/patentPreprocessing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="126" column="13" selection-start-line="126" selection-start-column="13" selection-end-line="126" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/clustering/testMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1165,26 +1133,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/DatasetGenerator/TrainingDataGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="183" column="13" selection-start-line="183" selection-start-column="13" selection-end-line="183" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/identification/preprocessing/USPTOSearch.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/preprocessing/USPTOSpider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="67" selection-start-line="27" selection-start-column="67" selection-end-line="27" selection-end-column="67" />
           <folding />
         </state>
       </provider>
@@ -1197,37 +1149,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierCluster.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/clustering/distancefunction/CosDistance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="10" selection-start-line="49" selection-start-column="10" selection-end-line="49" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/identification/base/patentCluster.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/preprocessing/ParaIni.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="85" column="9" selection-start-line="70" selection-start-column="7" selection-end-line="85" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1247,50 +1173,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/invidenti.ini">
+    <entry file="file://$PROJECT_DIR$/identification/preprocessing/IniFile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/clustering/patentClustering.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="117" column="16" selection-start-line="117" selection-start-column="16" selection-end-line="117" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="92" column="22" selection-start-line="92" selection-start-column="15" selection-end-line="92" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/clustering/SimMatrix.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/DatasetGenerator/PatentsGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="142" column="22" selection-start-line="142" selection-start-column="22" selection-end-line="142" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="171" column="31" selection-start-line="171" selection-start-column="31" selection-end-line="171" selection-end-column="31" />
+          <caret line="21" column="32" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
           <folding />
         </state>
       </provider>
@@ -1303,10 +1189,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/preprocessing/IniFile.java">
+    <entry file="file://$PROJECT_DIR$/invidenti.ini">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="32" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
+          <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/clustering/SimMatrix.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/log4j.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.4838705">
+          <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/preprocessing/USPTOSpider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="67" selection-start-line="27" selection-start-column="67" selection-end-line="27" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierCluster.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="62" column="25" selection-start-line="62" selection-start-column="25" selection-end-line="62" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/clustering/testMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/preprocessing/patentPreprocessing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="136" column="15" selection-start-line="136" selection-start-column="15" selection-end-line="136" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/preprocessing/ParaIni.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="85" column="9" selection-start-line="70" selection-start-column="7" selection-end-line="85" selection-end-column="9" />
           <folding />
         </state>
       </provider>
@@ -1319,20 +1261,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java">
+    <entry file="file://$PROJECT_DIR$/identification/DatasetGenerator/PatentsGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.555555">
-          <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="142" column="22" selection-start-line="142" selection-start-column="22" selection-end-line="142" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/DatasetGenerator/TrainingDataGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="183" column="13" selection-start-line="183" selection-start-column="13" selection-end-line="183" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/clustering/patentClustering.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="117" column="16" selection-start-line="117" selection-start-column="16" selection-end-line="117" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/identification/Evaluation/Evaluation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5316456">
-          <caret line="191" column="12" selection-start-line="191" selection-start-column="12" selection-end-line="191" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="42" column="20" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="171" column="31" selection-start-line="171" selection-start-column="31" selection-end-line="171" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="84" column="37" selection-start-line="84" selection-start-column="37" selection-end-line="84" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/clustering/distancefunction/CosDistance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="49" column="10" selection-start-line="49" selection-start-column="10" selection-end-line="49" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37974682">
+          <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
           <folding />
         </state>
       </provider>

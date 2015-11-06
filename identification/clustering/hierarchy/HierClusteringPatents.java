@@ -82,6 +82,7 @@ public class HierClusteringPatents extends patentClustering
         HierCore hc=new HierCore();
 
         hc.setEps(this.eps);
+        System.out.println(this.eps);
         hc.setpCorrelation(this.pCorrelation);
 
         try {

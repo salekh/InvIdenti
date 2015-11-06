@@ -20,8 +20,8 @@ public class LRWeightLearning extends ParameterLearning {
     public AbstractDistance estimateDistanceFunction() {
 
         this.generateLRTraiingData();
-        int maxIteration=150;
-        double alpha=0.1;
+        int maxIteration=10000;
+        double alpha=0.5;
         double lamda=0;
         pair<DoubleMatrix,DoubleMatrix> result=this.logisticRTrainingDataGenerator();
 
@@ -31,6 +31,8 @@ public class LRWeightLearning extends ParameterLearning {
         for(int i=0;i<numberofOptions+1;i++) {
             var0[i][0]=1.0;
         }
+
+        double previous_error=Double.MAX_VALUE;
 
         DoubleMatrix thetas=new DoubleMatrix(var0);
         thetas.transpose();
@@ -54,6 +56,11 @@ public class LRWeightLearning extends ParameterLearning {
             varM3.addi(1);
             varM3.divi(varM2);
             varM3.subi(Y);
+            //logger.warn("Error:"+varM3.sum()/X.rows)
+            // ;
+            if (varM3.sum()/X.rows>previous_error) break;
+            if (varM3.sum()/X.rows<0.00001) break;
+             previous_error=varM3.sum()/X.rows;
             varM3 = X.transpose().mmul(varM3);
 
             DoubleMatrix thetas1 = new DoubleMatrix(thetas.toArray2());
@@ -69,6 +76,8 @@ public class LRWeightLearning extends ParameterLearning {
             previous.subi(thetas);
 
         }
+
+        System.out.println("Final correcteness: "+previous_error);
         double[] weights=thetas.toArray();
 
         ArrayList<Double> weight=new ArrayList<>();
