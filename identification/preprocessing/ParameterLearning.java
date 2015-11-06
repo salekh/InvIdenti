@@ -111,8 +111,10 @@ public abstract class ParameterLearning {
 
                 ArrayList<Integer> var1 = new ArrayList<>();
                 var1.add(i);
+
                 distances.add(this.generateDistanceFunction(var1, null));
-                var0++;
+
+                if (ini.getOptionValue(optionsName.get(i))) var0++;
 
         }
 

@@ -21,12 +21,7 @@ public class SimMatrix {
         this.distance=distance;
         buildMatrix();
 
-        for (int i=0;i<simMatrix.size();i++) {
-            for (int j=0;j<simMatrix.get(i).size();j++) {
-                System.out.print(simMatrix.get(i).get(j)+" ");
-            }
-            System.out.println();
-        }
+
 
     }
 

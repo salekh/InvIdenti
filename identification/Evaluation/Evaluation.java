@@ -13,6 +13,8 @@ import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.carrot2.core.LanguageCode;
+import org.jblas.DoubleMatrix;
+import org.jblas.MatrixFunctions;
 import preprocessing.*;
 
 import java.util.ArrayList;
@@ -185,11 +187,10 @@ public class Evaluation {
             int end=start+numberoftesting;
             if (end>patents.size()-1) end=patents.size()-1;
             pair<pair<ArrayList<patent>,ArrayList<String>>,pair<ArrayList<patent>,ArrayList<String>>> var0=this.getTrainingandTesingPatents(start,end);
-            weightlearning.initilize(var0.firstarg.firstarg,var0.firstarg.secondarg);
-            weightlearning.estimateDistanceFunction();
+
             //FMeasure.add(evaluateAClustering(var0.firstarg,var0.secondarg));
-            //calculateTheBestThreshold(var0.firstarg,var0.secondarg);
-            break;
+            calculateTheBestThreshold(var0.firstarg,var0.secondarg);
+
         }
 
         logger.info("");
@@ -216,10 +217,11 @@ public class Evaluation {
 
         CosDistance d=(CosDistance)weightlearning.estimateDistanceFunction();
         logger.info(d);
+        logger.info("THreshoold:"+weightlearning.getThreshold());
         logger.info("Training Data Size:"+training.firstarg.size());
         logger.info("Testing Data Size:"+testing.firstarg.size());
         clusteirngMethod.ininitialize(testing.firstarg);
-        ((HierClusteringPatents)clusteirngMethod).setEps(0.0025);
+        ((HierClusteringPatents)clusteirngMethod).setEps(weightlearning.getThreshold()*0.45);
         clusteirngMethod.Cluster(d);
         logger.error("Clustering Result\n");
         logger.error(clusteirngMethod);
@@ -297,12 +299,11 @@ public class Evaluation {
 
         double fmax=-Double.MAX_VALUE;
         double timeM=0.0;
-        for(double time=1.2;time>0.1;time-=0.05) {
+
+        for(double time=1.2;time>=0.0;time-=0.05) {
 
             ((HierClusteringPatents)clusteirngMethod).setEps(time*threshold);
             clusteirngMethod.Cluster(d);
-            //logger.error("Clustering Result\n");
-            //logger.error(clusteirngMethod);
             double FMeasurement = getFScoreofClustering(clusteirngMethod.getClustersIndex(), testing.secondarg);
             if (FMeasurement>fmax) {
                 fmax=FMeasurement;
