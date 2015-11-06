@@ -20,7 +20,7 @@ public class LRWeightLearning extends ParameterLearning {
     public AbstractDistance estimateDistanceFunction() {
 
         this.generateLRTraiingData();
-        int maxIteration=10000;
+        int maxIteration=15000;
         double alpha=0.5;
         double lamda=0;
         pair<DoubleMatrix,DoubleMatrix> result=this.logisticRTrainingDataGenerator();

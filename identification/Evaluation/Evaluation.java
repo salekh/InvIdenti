@@ -220,13 +220,13 @@ public class Evaluation {
         logger.info("THreshoold:"+weightlearning.getThreshold());
         logger.info("Training Data Size:"+training.firstarg.size());
         logger.info("Testing Data Size:"+testing.firstarg.size());
-        clusteirngMethod.ininitialize(testing.firstarg);
+        clusteirngMethod.ininitialize(training.firstarg);
         ((HierClusteringPatents)clusteirngMethod).setEps(weightlearning.getThreshold());
         clusteirngMethod.Cluster(d);
         logger.error("Clustering Result\n");
         logger.error(clusteirngMethod);
 
-        double FMeasurement=getFScoreofClustering(clusteirngMethod.getClustersIndex(),testing.secondarg);
+        double FMeasurement=getFScoreofClustering(clusteirngMethod.getClustersIndex(),training.secondarg);
 
         logger.warn("F Measurement:"+ FMeasurement);
 
