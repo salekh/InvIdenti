@@ -65,8 +65,8 @@ public class HierCluster extends indexCluster {
 
         }
 
-        return maxdistance;
-        // return sum/(c1.getPatentsIndex().size()*c2.getPatentsIndex().size());
+       return maxdistance;
+        //return sum/(c1.getPatentsIndex().size()*c2.getPatentsIndex().size());
 
     }
 

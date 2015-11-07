@@ -42,7 +42,7 @@ public class Evaluation {
 
     int datasize=250;
 
-    int k=10;
+    int k=5;
 
     public Evaluation(ParameterLearning p,patentClustering c) {
         ini=new IniFile();
@@ -191,6 +191,7 @@ public class Evaluation {
             FMeasure.add(evaluateAClustering(var0.firstarg,var0.secondarg));
             //calculateTheBestThreshold(var0.firstarg,var0.secondarg);
 
+
         }
 
         logger.info("");
@@ -220,13 +221,14 @@ public class Evaluation {
         logger.info("THreshoold:"+weightlearning.getThreshold());
         logger.info("Training Data Size:"+training.firstarg.size());
         logger.info("Testing Data Size:"+testing.firstarg.size());
-        clusteirngMethod.ininitialize(training.firstarg);
+        clusteirngMethod.ininitialize(testing.firstarg);
         ((HierClusteringPatents)clusteirngMethod).setEps(weightlearning.getThreshold());
+        logger.error(weightlearning.getThreshold());
         clusteirngMethod.Cluster(d);
         logger.error("Clustering Result\n");
         logger.error(clusteirngMethod);
 
-        double FMeasurement=getFScoreofClustering(clusteirngMethod.getClustersIndex(),training.secondarg);
+        double FMeasurement=getFScoreofClustering(clusteirngMethod.getClustersIndex(),testing.secondarg);
 
         logger.warn("F Measurement:"+ FMeasurement);
 

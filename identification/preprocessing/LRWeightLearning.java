@@ -20,9 +20,9 @@ public class LRWeightLearning extends ParameterLearning {
     public AbstractDistance estimateDistanceFunction() {
 
         this.generateLRTraiingData();
-        int maxIteration=15000;
+        int maxIteration=10000;
         double alpha=0.5;
-        double lamda=0;
+        double lamda=2;
         pair<DoubleMatrix,DoubleMatrix> result=this.logisticRTrainingDataGenerator();
 
 
@@ -40,7 +40,7 @@ public class LRWeightLearning extends ParameterLearning {
         DoubleMatrix X=result.firstarg;
         DoubleMatrix Y=result.secondarg;
         Y=Y.transpose();
-
+        DoubleMatrix varM4=new DoubleMatrix();
         for(int k=0;k<maxIteration;k++) {
 
             DoubleMatrix varM1 = new DoubleMatrix(X.transpose().toArray2());
@@ -56,26 +56,53 @@ public class LRWeightLearning extends ParameterLearning {
             varM3.addi(1);
             varM3.divi(varM2);
             varM3.subi(Y);
+
             //logger.warn("Error:"+varM3.sum()/X.rows)
             // ;
-            if (varM3.sum()/X.rows>previous_error) break;
-            if (varM3.sum()/X.rows<0.00001) break;
-             previous_error=varM3.sum()/X.rows;
+
+
+            varM4=new DoubleMatrix(varM3.toArray2());
+            MatrixFunctions.absi(varM4);
+            if (varM4.sum()/X.rows>previous_error) break;
+
+            if (Math.abs(previous_error-varM4.sum()/X.rows)<0.00001) {
+               // outputMatrix(varM4.transpose(),"error vector");
+                break;
+            }
+            previous_error=varM4.sum()/X.rows;
+            //logger.warn(previous_error);
+
             varM3 = X.transpose().mmul(varM3);
 
             DoubleMatrix thetas1 = new DoubleMatrix(thetas.toArray2());
+
             thetas1.put(0, 0, 0);
+
+
+
             varM3.muli(alpha / X.rows);
 
             thetas1.muli(lamda / X.rows);
 
+            //System.out.print(previous_error + " ");
 
-            DoubleMatrix previous = new DoubleMatrix(thetas.toArray2());
+
+            //outputMatrix(thetas.transpose(),"Weights");
+
             thetas.subi(varM3);
+
             thetas.subi(thetas1);
-            previous.subi(thetas);
+
+
+
+
+
 
         }
+
+
+
+
 
         System.out.println("Final correcteness: "+previous_error);
         double[] weights=thetas.toArray();
@@ -85,6 +112,7 @@ public class LRWeightLearning extends ParameterLearning {
 
         for(int j=0;j<9;j++) {
             if(ini.getOptionValue(optionsName.get(j))) {
+                logger.warn(optionsName.get(j));
                 weight.add(weights[i]);
                 i++;
             } else {
@@ -102,13 +130,19 @@ public class LRWeightLearning extends ParameterLearning {
 
     public void outputMatrix(DoubleMatrix x,String name) {
         logger.error("Matrix Name:" +name);
+        int var0=0;
         for (int i=0;i<x.rows;i++) {
             String temp="";
             for(int j=0;j<x.columns;j++) {
-                temp+=x.get(i,j)+" ";
+
+                    temp+=x.get(i,j)+" ";
+
+
             }
             logger.error(temp);
         }
+
+
 
     }
 
