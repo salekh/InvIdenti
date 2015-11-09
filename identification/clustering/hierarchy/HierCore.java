@@ -84,16 +84,12 @@ public class HierCore {
 
         while(current_NumClusters>m_NumClusters)
         {
-            if (!mergeCluster(patents)) {
+            if (!mergeCluster()) {
                 break;
             } else {
                 current_NumClusters=m_Clusters.size();
-
-
                 double temp=this.totalAvaverageSilHouette(this.m_Clusters, simMatrix);
-
                 resultClustering.add(cloneClusters(this.m_Clusters));
-
                 silCoes.add(temp);
 
 
@@ -118,6 +114,35 @@ public class HierCore {
     }
 
     /**
+     *
+
+     */
+
+
+    public void buildCluster(ArrayList<HierCluster> m_Clusters,SimMatrix simMatrix)
+    {
+
+        this.m_Clusters=m_Clusters;
+
+        this.simMatrix=simMatrix;
+
+        ArrayList<Double> silCoes=new ArrayList<>();
+
+        int current_NumClusters=m_Clusters.size();
+
+
+        while(current_NumClusters>1)
+        {
+            if (!mergeCluster()) {
+                break;
+            } else {
+                current_NumClusters=m_Clusters.size();
+            }
+        }
+
+    }
+
+    /**
      * initilize the clusters
      * @param patents ArrayList of the patents
      */
@@ -133,9 +158,9 @@ public class HierCore {
 
     /**
      * Merge the cluster with the max similarity
-     * @param patents the arraylist of the patents
+
      */
-    public boolean mergeCluster(ArrayList<patent> patents)
+    public  boolean mergeCluster()
     {
         double mostSim=HierCluster.maxDitanceBetweenClusters(this.m_Clusters.get(0),this.m_Clusters.get(1),simMatrix);
         int most_i=0;

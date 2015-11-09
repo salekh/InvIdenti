@@ -4,10 +4,12 @@ import DatasetGenerator.PatentsGenerator;
 import base.indexCluster;
 import base.pair;
 import base.patent;
+import clustering.NameHierClustering;
 import clustering.distancefunction.AbstractDistance;
 import clustering.distancefunction.CosDistance;
 import clustering.hierarchy.HierCluster;
 import clustering.hierarchy.HierClusteringPatents;
+import clustering.invClustering;
 import clustering.patentClustering;
 import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.apache.logging.log4j.LogManager;
@@ -40,9 +42,9 @@ public class Evaluation {
 
     boolean shuffle=true;
 
-    int datasize=250;
+    int datasize=290;
 
-    int k=5;
+    int k=10;
 
     public Evaluation(ParameterLearning p,patentClustering c) {
         ini=new IniFile();
@@ -50,7 +52,7 @@ public class Evaluation {
         this.trainingTextPath=ini.getTrainingDataOutputPath()+"/PatentsText/";
         infoDataPath=ini.getInfoDataPath();
         this.weightlearning=p;
-        this.clusteirngMethod=(HierClusteringPatents)c;
+        this.clusteirngMethod=c;
 
         PatentsGenerator patentGenerator=new PatentsGenerator(infoDataPath,trainingTextPath,trainingDataPath);
 
@@ -181,6 +183,11 @@ public class Evaluation {
     public void evaluteAllClustering() {
 
         int numberoftesting=this.patents.size()/k;
+
+
+
+
+
         ArrayList<Double> FMeasure=new ArrayList<>();
         for(int i=0;i<k;i++){
             int start=i*numberoftesting;
@@ -202,6 +209,7 @@ public class Evaluation {
         }
         logger.info("");
         logger.error(sum/k);
+
     }
 
     /**
@@ -214,15 +222,19 @@ public class Evaluation {
 
 
 
+
         weightlearning.initilize(training.firstarg,training.secondarg);
 
         CosDistance d=(CosDistance)weightlearning.estimateDistanceFunction();
         logger.info(d);
         logger.info("THreshoold:"+weightlearning.getThreshold());
         logger.info("Training Data Size:"+training.firstarg.size());
+
+
+
         logger.info("Testing Data Size:"+testing.firstarg.size());
         clusteirngMethod.ininitialize(testing.firstarg);
-        ((HierClusteringPatents)clusteirngMethod).setEps(weightlearning.getThreshold());
+        ((invClustering)clusteirngMethod).setClusteringThreshold(weightlearning.getThreshold());
         logger.error(weightlearning.getThreshold());
         clusteirngMethod.Cluster(d);
         logger.error("Clustering Result\n");
@@ -319,7 +331,7 @@ public class Evaluation {
     public static void main(String[] args){
 
 
-       Evaluation evaluation=new Evaluation(new LRWeightLearning(),new HierClusteringPatents());
+       Evaluation evaluation=new Evaluation(new LRWeightLearning(),new invClustering());
         evaluation.evaluteAllClustering();
 
     }

@@ -9,6 +9,7 @@ import org.carrot2.core.Document;
 import org.carrot2.core.LanguageCode;
 import org.carrot2.text.preprocessing.LabelFormatter;
 import org.carrot2.text.preprocessing.PreprocessingContext;
+import org.carrot2.text.preprocessing.pipeline.BasicPreprocessingPipeline;
 import org.carrot2.text.preprocessing.pipeline.CompletePreprocessingPipeline;
 import org.carrot2.text.preprocessing.pipeline.IPreprocessingPipeline;
 import org.carrot2.text.vsm.ReducedVectorSpaceModelContext;
@@ -30,7 +31,7 @@ public class patentPreprocessing {
     public int clusterCount = 15;
     public boolean useDimensionalityReduction = false;
 
-    public IPreprocessingPipeline preprocessingPipeline = new CompletePreprocessingPipeline();
+    public IPreprocessingPipeline preprocessingPipeline = new BasicPreprocessingPipeline();
     public final TermDocumentMatrixBuilder matrixBuilder = new TermDocumentMatrixBuilder();
 
     public final TermDocumentMatrixReducer matrixReducer = new TermDocumentMatrixReducer();

@@ -21,6 +21,8 @@ public class IniFile {
     private String trainingDataOutputPath;
     private String infoDataPath;
 
+    private boolean pCorrelation;
+
     private static Logger logger= LogManager.getLogger(IniFile.class.getName());
 
     public IniFile() {
@@ -53,6 +55,7 @@ public class IniFile {
                }
            }
 
+            pCorrelation=ini.get("DistanceOption","PCorrelation").equalsIgnoreCase("true");
             trainingDataInputPath=ini.get("DataSet","TrainingDataInputPath");
             trainingDataOutputPath=ini.get("DataSet","TrainingDataOutputPath");
             infoDataPath=ini.get("DataSet","InfoDataPath");
@@ -89,6 +92,10 @@ public class IniFile {
 
     public ArrayList<String> getOptionsNames() {
         return this.optionsNames;
+    }
+
+    public boolean getPCorrelation() {
+        return this.pCorrelation;
     }
 
 }

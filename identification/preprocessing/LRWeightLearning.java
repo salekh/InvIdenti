@@ -21,8 +21,8 @@ public class LRWeightLearning extends ParameterLearning {
 
         this.generateLRTraiingData();
         int maxIteration=10000;
-        double alpha=0.5;
-        double lamda=2;
+        double alpha=1;
+        double lamda=10;
         pair<DoubleMatrix,DoubleMatrix> result=this.logisticRTrainingDataGenerator();
 
 
@@ -64,15 +64,13 @@ public class LRWeightLearning extends ParameterLearning {
             varM4=new DoubleMatrix(varM3.toArray2());
             MatrixFunctions.absi(varM4);
             if (varM4.sum()/X.rows>previous_error) break;
-
-            if (Math.abs(previous_error-varM4.sum()/X.rows)<0.00001) {
-               // outputMatrix(varM4.transpose(),"error vector");
-                break;
-            }
             previous_error=varM4.sum()/X.rows;
+
             //logger.warn(previous_error);
 
             varM3 = X.transpose().mmul(varM3);
+
+            DoubleMatrix thetas_p=new DoubleMatrix(thetas.toArray2());
 
             DoubleMatrix thetas1 = new DoubleMatrix(thetas.toArray2());
 
@@ -93,10 +91,12 @@ public class LRWeightLearning extends ParameterLearning {
 
             thetas.subi(thetas1);
 
+            thetas_p=MatrixFunctions.absi(thetas_p.subi(thetas));
 
-
-
-
+            if (thetas_p.sum()<0.001) {
+                System.out.println(k);
+                break;
+            }
 
         }
 
@@ -105,6 +105,8 @@ public class LRWeightLearning extends ParameterLearning {
 
 
         System.out.println("Final correcteness: "+previous_error);
+
+
         double[] weights=thetas.toArray();
 
         ArrayList<Double> weight=new ArrayList<>();
@@ -155,6 +157,7 @@ public class LRWeightLearning extends ParameterLearning {
                 double result;
                 if (patentsID.get(i).equalsIgnoreCase(patentsID.get(j))) {
                     result = 1.0;
+
                 } else {
                     result = 0.0;
                 }

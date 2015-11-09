@@ -13,6 +13,7 @@ import org.carrot2.core.Document;
 import org.carrot2.core.LanguageCode;
 import org.carrot2.text.preprocessing.LabelFormatter;
 import org.carrot2.text.preprocessing.PreprocessingContext;
+import org.carrot2.text.preprocessing.pipeline.BasicPreprocessingPipeline;
 import org.carrot2.text.preprocessing.pipeline.CompletePreprocessingPipeline;
 import org.carrot2.text.preprocessing.pipeline.IPreprocessingPipeline;
 import org.carrot2.text.vsm.ReducedVectorSpaceModelContext;
@@ -94,8 +95,58 @@ public class testMain
         l.error(c.distance(p1,p2));
 */
 
-      int m=500*300;
-        l.error(m);
-    }
+        IPreprocessingPipeline preprocessingPipeline = new BasicPreprocessingPipeline();
+        TermDocumentMatrixBuilder matrixBuilder = new TermDocumentMatrixBuilder();
 
+        ArrayList<Document> docs = new ArrayList<>();
+        docs.add(new Document("", "app,apple,invent,invention,invention"));
+        docs.add(new Document("", "compete,competition,invent,invention,invention"));
+        docs.add(new Document("", "compete,apple"));
+
+        PreprocessingContext preprocessingContext = preprocessingPipeline.preprocess(docs, (String) null, LanguageCode.ENGLISH);
+
+
+        int[] stemsMfow = preprocessingContext.allStems.mostFrequentOriginalWordIndex;
+        short[] wordsType = preprocessingContext.allWords.type;
+        IntArrayList featureIndices = new IntArrayList(stemsMfow.length);
+
+        for (int vsmContext = 0; vsmContext < stemsMfow.length; ++vsmContext) {
+            short reducedVsmContext = wordsType[stemsMfow[vsmContext]];
+            if ((reducedVsmContext & 12290) == 0) {
+                featureIndices.add(stemsMfow[vsmContext]);
+            }
+        }
+
+        preprocessingContext.allLabels.featureIndex = featureIndices.toArray();
+        preprocessingContext.allLabels.firstPhraseIndex = -1;
+        if (preprocessingContext.hasLabels()) {
+            VectorSpaceModelContext var17 = new VectorSpaceModelContext(preprocessingContext);
+            ReducedVectorSpaceModelContext var18 = new ReducedVectorSpaceModelContext(var17);
+            matrixBuilder.buildTermDocumentMatrix(var17);
+            matrixBuilder.buildTermPhraseMatrix(var17);
+            IntIntHashMap rowToStemIndex = new IntIntHashMap();
+            Iterator tdMatrix = var17.stemToRowIndex.iterator();
+
+            while (tdMatrix.hasNext()) {
+                IntIntCursor columns = (IntIntCursor) tdMatrix.next();
+                rowToStemIndex.put(columns.value, columns.key);
+            }
+
+            DoubleMatrix2D var19;
+            var19 = var17.termDocumentMatrix;
+
+
+            l.error(preprocessingContext.allStems);
+
+            for(int i=0;i<var19.rows();i++){
+                for(int j=0;j<var19.columns();j++) {
+                    System.out.print(var19.get(i,j)+" ");
+                }
+                System.out.println();
+
+            }
+
+
+        }
+    }
 }

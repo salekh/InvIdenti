@@ -9,10 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.carrot2.core.LanguageCode;
 import org.ini4j.Wini;
-import preprocessing.ParaIni;
 import preprocessing.patentPreprocessing;
-import preprocessing.patentPreprocessingTF;
-import weka.core.Attribute;
 import weka.core.Instances;
 
 import java.io.File;
@@ -115,9 +112,16 @@ public abstract class patentClustering
 
     }
 
+
+    public void initilizewithoutpreprocessing(ArrayList<patent> patents) {
+        this.patents=patents;
+    }
+
     public void ininitialize(ArrayList<patent> patents) {
         this.patents=patents;
         this.initilization=true;
+        clustersIndex.clear();
+        clusters.clear();
         preprocess();
     }
 

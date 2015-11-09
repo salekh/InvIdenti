@@ -16,7 +16,7 @@ public abstract class ParameterLearning {
 
 
     public abstract AbstractDistance estimateDistanceFunction();
-    protected static Logger logger= LogManager.getLogger(ParaIni.class.getName());
+    protected static Logger logger= LogManager.getLogger(ParameterLearning.class.getName());
     protected ArrayList<patent> patents;
     protected ArrayList<String> patentsID;
     protected ArrayList<String> optionsName;

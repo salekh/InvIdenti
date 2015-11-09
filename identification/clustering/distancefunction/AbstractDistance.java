@@ -105,9 +105,9 @@ public abstract class AbstractDistance {
     protected double compareAssignee (String str1,String str2) {
         if (str1==null || str2==null||str1.length()==0||str2.length()==0) {
           if (this.pCorrelation)  {
-              return 0;
+              return 0.2;
           } else {
-              return 1;
+              return 0.8;
           }
         }
 
@@ -137,9 +137,9 @@ public abstract class AbstractDistance {
         double result=0.0;
         if (str1==null || str2==null||str1.length()==0||str2.length()==0) {
            if(pCorrelation) {
-               return 0;
+               return 0.2;
            } else {
-               return 1;
+               return 0.8;
            }
         }
         String[] strs_1=str1.split("-");
@@ -224,7 +224,12 @@ public abstract class AbstractDistance {
         double result=0.0;
 
         if (coAuthor1==null||coAuthor2==null||coAuthor1.length()==0||coAuthor2.length()==0) {
-            return 1.0;
+            if (this.pCorrelation) {
+                return 0.2;
+            } else {
+                return 0.8;
+            }
+
         }
 
 
