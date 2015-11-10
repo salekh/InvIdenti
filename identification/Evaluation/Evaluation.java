@@ -28,8 +28,8 @@ import java.util.Collections;
 public class Evaluation {
 
     private static Logger logger= LogManager.getLogger(Evaluation.class.getName());
-    int[] wrongIndex={305, 124 ,167, 359 ,209 ,59 ,446 ,89 ,156 ,461 ,96 ,150, 429 ,145 ,39 ,79 ,47, 56, 129 ,355 ,456 ,179 ,394 ,44 ,316 ,123 ,409 ,309 ,420 ,424 ,141 ,104 ,369 ,237 ,477 ,388 ,377, 378 ,375 ,387 ,214 ,438 ,453 ,293 ,376 ,400 ,22 ,55 ,457 ,42 ,206 ,290 ,212,459,63,445,64,418,21,82,390,386,115,146,114,105,54,342,319,404,285,292,349,83,339,225,261,255,138,392,15,35,318,384,283,61,210,11,260,116,199,130,32,287,271,313,397,259,217,474};
-
+    //int[] wrongIndex={305, 124 ,167, 359 ,209 ,59 ,446 ,89 ,156 ,461 ,96 ,150, 429 ,145 ,39 ,79 ,47, 56, 129 ,355 ,456 ,179 ,394 ,44 ,316 ,123 ,409 ,309 ,420 ,424 ,141 ,104 ,369 ,237 ,477 ,388 ,377, 378 ,375 ,387 ,214 ,438 ,453 ,293 ,376 ,400 ,22 ,55 ,457 ,42 ,206 ,290 ,212,459,63,445,64,418,21,82,390,386,115,146,114,105,54,342,319,404,285,292,349,83,339,225,261,255,138,392,15,35,318,384,283,61,210,11,260,116,199,130,32,287,271,313,397,259,217,474};
+    int[] wrongIndex={90,273,197,125,12,136,44,180,222,33,113,151,254,105,116,154,265,165,232,202,249,149,6,218,56,239,215,8,288,80};
     IniFile ini=new IniFile();
     String trainingDataPath;
     String trainingTextPath;
@@ -42,9 +42,9 @@ public class Evaluation {
 
     boolean shuffle=true;
 
-    int datasize=1305;
+    int datasize=1000;
 
-    int k=5;
+    int k=10;
 
     public Evaluation(ParameterLearning p,patentClustering c) {
         ini=new IniFile();
@@ -100,7 +100,7 @@ public class Evaluation {
         TP = FP = 0;
         for (indexCluster c : clusters) {
             for (int i = 0; i < c.getPatentsIndex().size(); i++) {
-                for (int j = i + 1; j < c.getPatentsIndex().size(); j++) {
+                for (int j = 0 ; j < c.getPatentsIndex().size(); j++) {
                     if (patentsID.get(c.getPatentsIndex().get(i)).equalsIgnoreCase(patentsID.get(c.getPatentsIndex().get(j)))) {
                         TP++;
                     }
@@ -112,13 +112,15 @@ public class Evaluation {
         FP = FP - TP;
         TN = FN = 0;
         for (int i = 0; i < clusters.size(); i++) {
-            for (int j = i + 1; j < clusters.size(); j++) {
-                for (Integer var1 : clusters.get(i).getPatentsIndex()) {
-                    for (Integer var2 : clusters.get(j).getPatentsIndex()) {
-                        if (patentsID.get(var1).equalsIgnoreCase(patentsID.get(var2))) {
-                            FN++;
+            for (int j = 0; j < clusters.size(); j++) {
+                if (j != i) {
+                    for (Integer var1 : clusters.get(i).getPatentsIndex()) {
+                        for (Integer var2 : clusters.get(j).getPatentsIndex()) {
+                            if (patentsID.get(var1).equalsIgnoreCase(patentsID.get(var2))) {
+                                FN++;
+                            }
+                            TN++;
                         }
-                        TN++;
                     }
                 }
             }
@@ -128,7 +130,7 @@ public class Evaluation {
 
         double precision;
         double recall;
-        // System.out.println(TP + " " + FP + " " + " " + TN + " " + FN);
+        //System.out.println(TP + " " + FP + " " + " " + TN + " " + FN);
         if ((TP + FP) != 0) {
             precision = (double) TP / (TP + FP);
         } else {
@@ -260,7 +262,7 @@ public class Evaluation {
         }
 
         for(int i=0;i<this.patents.size();i++) {
-            if (patents.get(i).getPatent_number().equalsIgnoreCase("06681230")||patents.get(i).getPatent_number().equalsIgnoreCase("06502095"))
+            if (patents.get(i).getPatent_number().equalsIgnoreCase("05166131")||patents.get(i).getPatent_number().equalsIgnoreCase("07026071"))
             {
                 System.out.println(i);
             }
@@ -301,14 +303,16 @@ public class Evaluation {
         logger.error(clusteirngMethod);
 
 
-        d.s=true;
+        d.show=false;
 
 
-        logger.error(d.distance(patents.get(375),patents.get(376)));
+        logger.error(d.distance(patents.get(232),patents.get(239)));
 
-        logger.error(d.compareAssignee(patents.get(375).getAssignee(),patents.get(376).getAssignee(),patents.get(375).getAsgNum(),patents.get(376).getAsgNum()));
 
-        logger.error(d.compareLocation(patents.get(375).getCountry(),patents.get(375).getLat(),patents.get(375).getLng(),patents.get(376).getCountry(),patents.get(376).getLat(),patents.get(376).getLng()));
+
+        //logger.error(d.compareAssignee(patents.get(232).getAssignee(),patents.get(239).getAssignee(),patents.get(232).getAsgNum(),patents.get(239).getAsgNum()));
+
+        //logger.error(d.compareLocation(patents.get(232).getCountry(),patents.get(232).getLat(),patents.get(232).getLng(),patents.get(239).getCountry(),patents.get(239).getLat(),patents.get(239).getLng()));
 
 
         double FMeasurement = getFScoreofClustering(clusteirngMethod.getClustersIndex(), testingIDs);
@@ -353,7 +357,7 @@ public class Evaluation {
 
        Evaluation evaluation=new Evaluation(new LRWeightLearning(),new invClustering());
         evaluation.evaluteAllClustering();
-       // evaluation.wrongPatents();
+        //evaluation.wrongPatents();
     }
 
 }

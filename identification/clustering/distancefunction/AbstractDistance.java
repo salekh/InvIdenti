@@ -39,6 +39,8 @@ public abstract class AbstractDistance {
     protected double weightCoAuthor=1.0;
 
 
+    public boolean show=false;
+
     protected int numofOptions=9;
 
     protected String distanceType="AbstractDistance";
@@ -117,25 +119,35 @@ public abstract class AbstractDistance {
             }
         }
 
+
+
         if (str1==null || str2==null||str1.length()==0||str2.length()==0) {
           if (this.pCorrelation)  {
-              return 1/6;
+              return 1.0/4.0;
           } else {
-              return 5/6;
+              return 3.0/4.0;
           }
         }
+
+
+        double result=0;
 
         NormalizedLevenshtein var0 = new NormalizedLevenshtein();
 
         double var1=var0.distance(str1,str2);
 
+        if (var1<0.1) result=0.0; else
+        if (var1<0.2) result=1.0; else
 
+        if (var1<0.3) result=2.0; else
+        if (var1<0.4) result=3.0; else
+        result=4.0;
 
         if (this.pCorrelation)
         {
-            return (1-var0.distance(str1,str2));
+            return (1.0-var1);
         } else {
-            return var0.distance(str1,str2);
+            return var1;
         }
 
 
@@ -186,7 +198,7 @@ public abstract class AbstractDistance {
         }
 
 
-        result=result/4;
+        result=result/4.0;
 
 
 
@@ -212,9 +224,9 @@ public abstract class AbstractDistance {
     public double compareName(String name1,String name2) {
         if (name1==null || name2==null||name1.length()==0||name2.length()==0) {
             if (this.pCorrelation)  {
-                return 0;
+                return 0.0;
             } else {
-                return 1;
+                return 1.0;
             }
         }
 
@@ -265,52 +277,52 @@ public abstract class AbstractDistance {
         for(String var1:lessNames) {
             double max=-1;
             for (String var2: moreNames) {
-                double temp=(1-var0.distance(var1,var2));
+                double temp=(1.0-var0.distance(var1,var2));
                 if (temp>max) max=temp;
             }
             result+=max;
         }
-        if (result>6) {
-            result=6;
+        if (result>6.0) {
+            result=6.0;
         }
         if (this.pCorrelation) {
-            return result/6;
+            return result/6.0;
         } else {
-        return (1-result/6);
+        return (1-result/6.0);
         }
     }
 
 
     public  double compareLocation(String country1,String lat1,String lng1,String country2,String lat2,String lng2) {
-        double result=0;
+        double result=0.0;
         if (country1.equalsIgnoreCase(country2)) {
             if (lat1==null||lat2==null||lng1==null||lng2==null) {
-                result=1;
+                result=1.0;
             } else {
                 double lat1_d = Double.parseDouble(lat1)/180;
                 double lng1_d = Double.parseDouble(lng1)/180;
                 double lat2_d = Double.parseDouble(lat2)/180;
                 double lng2_d = Double.parseDouble(lng2)/180;
                 double distance = getDistance(lat1_d,lng1_d,lat2_d,lng2_d);
-                if ( distance < 1.0 )
-                    result = 5;
-                else if ( distance < 10 )
-                    result = 4;
-                else if ( distance < 25)
-                    result = 3;
-                else if ( distance < 50 )
-                    result = 2;
+                if ( distance < 5.0 )
+                    result = 5.0;
+                else if ( distance < 10.0 )
+                    result = 4.0;
+                else if ( distance < 25.0)
+                    result = 3.0;
+                else if ( distance < 50.0 )
+                    result = 2.0;
                 else
-                    result = 1;
+                    result = 1.0;
 
             }
 
         }
 
         if (this.pCorrelation) {
-            return result/5;
+            return result/5.0;
         } else {
-            return (1-result/5);
+            return (1-result/5.0);
         }
     }
 
@@ -341,8 +353,9 @@ public abstract class AbstractDistance {
         this.abstractCompare=options[1];
         this.claimsCompare=options[2];
         this.desComapre=options[3];
-        this.assigneeCompare=options[4];
-        this.categoryCompare=options[5];
+        this.categoryCompare=options[4];
+        this.assigneeCompare=options[5];
+
         this.nameCompare=options[6];
         this.coAuthorCompare=options[7];
         this.locationCompare=options[8];
@@ -364,8 +377,9 @@ public abstract class AbstractDistance {
         this.weightAbstract=options[1];
         this.weightClaims=options[2];
         this.weightDes=options[3];
-        this.weightAssignee=options[5];
         this.weightCategory=options[4];
+        this.weightAssignee=options[5];
+
         this.weightName=options[6];
         this.weightCoAuthor=options[7];
         this.weightLocation=options[8];
@@ -384,17 +398,17 @@ public abstract class AbstractDistance {
 
         var0+="Options:\n";
 
-        var0+="\t"+"FullText    |"+fulltextCompare+"\n";
-        var0+="\t"+"Abstract    |"+abstractCompare+"\n";
-        var0+="\t"+"Claims      |"+claimsCompare+"\n";
-        var0+="\t"+"Description |"+desComapre+"\n";
-        var0+="\t"+"Assignee    |"+assigneeCompare+"\n";
-        var0+="\t"+"Categories  |"+categoryCompare+"\n";
-        var0+="\t"+"Name        |"+nameCompare+"\n";
-        var0+="\t"+"CoAuthor    |"+coAuthorCompare+"\n";
-        var0+="\t"+"Location    |"+locationCompare+"\n";
+        var0+="\t"+"FullText    |"+fulltextCompare+" |"+this.weightFullText+"\n";
+        var0+="\t"+"Abstract    |"+abstractCompare+" |"+this.weightAbstract+"\n";
+        var0+="\t"+"Claims      |"+claimsCompare+" |"+this.weightClaims+"\n";
+        var0+="\t"+"Description |"+desComapre+" |"+this.weightDes+"\n";
+        var0+="\t"+"Assignee    |"+assigneeCompare+" |"+this.weightAssignee+"\n";
+        var0+="\t"+"Categories  |"+categoryCompare+" |"+this.weightCategory+"\n";
+        var0+="\t"+"Name        |"+nameCompare+" |"+this.weightName+"\n";
+        var0+="\t"+"CoAuthor    |"+coAuthorCompare+" |"+this.weightCoAuthor+"\n";
+        var0+="\t"+"Location    |"+locationCompare+" |"+this.weightLocation+"\n";
 
-        var0+="Weights:"+this.weightFullText+","+this.weightAbstract+","+weightClaims+","+weightDes+","+weightAssignee+","+weightCategory+","+weightName+" "+weightCoAuthor+" "+weightLocation;
+       // var0+="Weights:"+this.weightFullText+","+this.weightAbstract+","+weightClaims+","+weightDes+","+weightAssignee+","+weightCategory+","+weightName+" "+weightCoAuthor+" "+weightLocation;
 
         return var0;
     }

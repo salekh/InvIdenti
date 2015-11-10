@@ -22,7 +22,7 @@ public class LRWeightLearning extends ParameterLearning {
         this.generateLRTraiingData();
         int maxIteration=10000;
         double alpha=1;
-        double lamda=10;
+        double lamda=0;
         pair<DoubleMatrix,DoubleMatrix> result=this.logisticRTrainingDataGenerator();
 
 
@@ -49,12 +49,20 @@ public class LRWeightLearning extends ParameterLearning {
 
             varM2.subi(varM1);
 
+
+
             MatrixFunctions.expi(varM2);
 
+
+
             varM2.addi(1);
+
+
             DoubleMatrix varM3 = new DoubleMatrix(varM2.rows, varM2.columns);
             varM3.addi(1);
             varM3.divi(varM2);
+
+
             varM3.subi(Y);
 
             varM4=new DoubleMatrix(varM3.toArray2());
@@ -68,13 +76,13 @@ public class LRWeightLearning extends ParameterLearning {
             DoubleMatrix thetas_p=new DoubleMatrix(thetas.toArray2());
 
             DoubleMatrix thetas1 = new DoubleMatrix(thetas.toArray2());
-            thetas1=
 
-            thetas1.put(0, 0, 0);
+            thetas1=thetas1.put(0, 0, 0);
 
 
 
             varM3.muli(alpha / X.rows);
+
 
             thetas1.muli(lamda *alpha/ X.rows);
 
@@ -85,7 +93,7 @@ public class LRWeightLearning extends ParameterLearning {
 
             thetas_p=MatrixFunctions.absi(thetas_p.subi(thetas));
 
-            if (thetas_p.sum()<0.001) {
+            if (thetas_p.sum()<0.005) {
                 System.out.println(k);
                 break;
             }
@@ -106,7 +114,7 @@ public class LRWeightLearning extends ParameterLearning {
 
         for(int j=0;j<9;j++) {
             if(ini.getOptionValue(optionsName.get(j))) {
-                logger.warn(optionsName.get(j));
+                logger.warn(optionsName.get(j)+weights[i]);
                 weight.add(weights[i]);
                 i++;
             } else {
@@ -168,13 +176,20 @@ public class LRWeightLearning extends ParameterLearning {
 
         int i=0;
 
+      //distances.get(4).show=true;
+       // System.out.println(distances.get(4));
+       // distances.get(5).show=true;
 
         for(pair<int[],Double> p:this.lrTrainingData) {
             var0[i][0]=1.0;
             int var2=1;
             for(int j=0;j<optionsName.size();j++) {
                 if (ini.getOptionValue(optionsName.get(j))) {
+
+
                     var0[i][var2]=distances.get(j).distance(patents.get(p.firstarg[0]), patents.get(p.firstarg[1]));
+                  // if (j==4) System.out.println(p.secondarg);
+
                     var2++;
                 }
 
@@ -184,7 +199,12 @@ public class LRWeightLearning extends ParameterLearning {
         }
 
         DoubleMatrix X=new DoubleMatrix(var0);
+
         DoubleMatrix Y=new DoubleMatrix(var1);
+
+       // for(int var=0;var<X.columns;var++) {
+         //   System.out.println(MatrixFunctions.absi(X.getColumn(var).subi(Y)).sum());
+        //}
         return new pair<>(X, Y);
     }
 }
