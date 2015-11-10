@@ -14,14 +14,7 @@ public class invClustering extends  patentClustering{
 
     private SimMatrix simMatrix;
     ArrayList<NameCluster> nameClusters=new ArrayList<>();
-    public double clusteringThreshold;
 
-
-
-
-    public void setClusteringThreshold(double d) {
-        this.clusteringThreshold=d;
-    }
 
     public void Cluster(AbstractDistance d) {
         /**
@@ -36,7 +29,7 @@ public class invClustering extends  patentClustering{
 
 
         for (NameCluster c : this.nameClusters) {
-            c.ClusterByHier(clusteringThreshold, simMatrix);
+            c.ClusterByHier(this.threshold, simMatrix);
         }
 
         /**
@@ -49,7 +42,7 @@ public class invClustering extends  patentClustering{
         nameClusters = mergeNameCluster(var0.getClusters());
 
         for (NameCluster c : this.nameClusters) {
-            c.ClusterByHier(clusteringThreshold, simMatrix);
+            c.ClusterByHier(this.threshold, simMatrix);
         }
 
 

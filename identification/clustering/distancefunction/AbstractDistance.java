@@ -102,12 +102,26 @@ public abstract class AbstractDistance {
      * @param str2 second assignee name
      * @return the comparison result of two assignees;
      */
-    protected double compareAssignee (String str1,String str2) {
+    public double compareAssignee (String str1,String str2,String code1,String code2) {
+
+
+
+        if(code1!=null&&code2!=null) {
+            if (code1.equals(code2)) {
+
+                if (this.pCorrelation) return 1.0;
+                else return 0.0;
+            } else {
+                if (this.pCorrelation) return 0.0;
+                else return 1.0;
+            }
+        }
+
         if (str1==null || str2==null||str1.length()==0||str2.length()==0) {
           if (this.pCorrelation)  {
-              return 0.2;
+              return 1/6;
           } else {
-              return 0.8;
+              return 5/6;
           }
         }
 
@@ -350,8 +364,8 @@ public abstract class AbstractDistance {
         this.weightAbstract=options[1];
         this.weightClaims=options[2];
         this.weightDes=options[3];
-        this.weightAssignee=options[4];
-        this.weightCategory=options[5];
+        this.weightAssignee=options[5];
+        this.weightCategory=options[4];
         this.weightName=options[6];
         this.weightCoAuthor=options[7];
         this.weightLocation=options[8];

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class HierClusteringPatents extends patentClustering
 {
 
-    private double eps=Double.MAX_VALUE;
+
     ArrayList<HierCluster> hier_clusters;
 
     public HierClusteringPatents() {
@@ -23,13 +23,6 @@ public class HierClusteringPatents extends patentClustering
     }
 
 
-    public void setEps(double eps) {
-        this.eps=eps;
-    }
-
-    public double getEps() {
-        return this.eps;
-    }
 
     /**
      * run clustering on the patents
@@ -38,7 +31,7 @@ public class HierClusteringPatents extends patentClustering
     {
 
         HierCore hc=new HierCore();
-        hc.setEps(this.eps);
+        hc.setEps(this.threshold);
 
         try {
 
@@ -81,8 +74,8 @@ public class HierClusteringPatents extends patentClustering
 
         HierCore hc=new HierCore();
 
-        hc.setEps(this.eps);
-        System.out.println(this.eps);
+        hc.setEps(this.threshold);
+
         hc.setpCorrelation(this.pCorrelation);
 
         try {

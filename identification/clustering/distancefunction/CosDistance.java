@@ -16,6 +16,8 @@ public class CosDistance extends AbstractDistance {
      * @return return the similarity between the two patents
      */
 
+    public boolean s=false;
+
     public CosDistance()
     {
         super();
@@ -27,45 +29,57 @@ public class CosDistance extends AbstractDistance {
 
         if (this.fulltextCompare==true) {
             result+=(this.cosDistance(first.getTd(),second.getTd())*this.weightFullText);
+
             if (Double.isNaN(result)) System.out.println(1);
         }
 
         if (this.abstractCompare==true) {
             result+=(this.cosDistance(first.getTd_abs(),second.getTd_abs())*this.weightAbstract);
+            if (s) System.out.println(result);
             if (Double.isNaN(result)) System.out.println(2);
         }
 
         if (this.desComapre==true) {
             result+=(this.cosDistance(first.getTd_des(),second.getTd_des())*this.weightDes);
+            if (s) System.out.println(result);
             if (Double.isNaN(result)) System.out.println(3);
         }
 
         if (this.claimsCompare==true) {
             result+=(this.cosDistance(first.getTd_claims(),second.getTd_claims())*this.weightClaims);
+            if (s) System.out.println(result);
             if (Double.isNaN(result)) System.out.println(4);
         }
 
         if (this.assigneeCompare==true) {
-            result+=(this.compareAssignee(first.getAssignee(),second.getAssignee())*this.weightAssignee);
+            result+=(this.compareAssignee(first.getAssignee(),second.getAssignee(),first.getAsgNum(),second.getAsgNum())*this.weightAssignee);
+            if (s) System.out.println(result);
+            if (s) System.out.println("wl"+this.weightAssignee);
             if (Double.isNaN(result)) System.out.println(5);
         }
 
         if (this.categoryCompare==true) {
             result+=(this.comapreCategories(first.getCategory(),second.getCategory())*this.weightCategory);
+            if (s) System.out.println(result);
             if (Double.isNaN(result)) System.out.println(6);
         }
         if (this.nameCompare==true) {
             result+=(this.compareName(first.getCategory(),second.getCategory())*this.weightName);
+            if (s) System.out.println(result);
             if (Double.isNaN(result)) System.out.println(7);
         }
 
         if (this.coAuthorCompare==true) {
             result+=(this.compareCoAuthor(first.getCoAuthor(),second.getCoAuthor())*this.weightCoAuthor);
+            if (s) System.out.println(result);
             if (Double.isNaN(result)) System.out.println(8);
         }
 
         if (this.locationCompare==true) {
             result+=(this.compareLocation(first.getCountry(),first.getLat(),first.getLng(),second.getCountry(),second.getLat(),second.getLng())*this.weightLocation);
+            if (s) System.out.println(result);
+
+            if (s) System.out.println("wl"+this.weightLocation);
             if (Double.isNaN(result)) System.out.println(9);
         }
         return result;

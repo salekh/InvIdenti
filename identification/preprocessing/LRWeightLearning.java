@@ -57,22 +57,18 @@ public class LRWeightLearning extends ParameterLearning {
             varM3.divi(varM2);
             varM3.subi(Y);
 
-            //logger.warn("Error:"+varM3.sum()/X.rows)
-            // ;
-
-
             varM4=new DoubleMatrix(varM3.toArray2());
             MatrixFunctions.absi(varM4);
             if (varM4.sum()/X.rows>previous_error) break;
             previous_error=varM4.sum()/X.rows;
 
-            //logger.warn(previous_error);
 
             varM3 = X.transpose().mmul(varM3);
 
             DoubleMatrix thetas_p=new DoubleMatrix(thetas.toArray2());
 
             DoubleMatrix thetas1 = new DoubleMatrix(thetas.toArray2());
+            thetas1=
 
             thetas1.put(0, 0, 0);
 
@@ -80,16 +76,12 @@ public class LRWeightLearning extends ParameterLearning {
 
             varM3.muli(alpha / X.rows);
 
-            thetas1.muli(lamda / X.rows);
+            thetas1.muli(lamda *alpha/ X.rows);
 
-            //System.out.print(previous_error + " ");
-
-
-            //outputMatrix(thetas.transpose(),"Weights");
 
             thetas.subi(varM3);
 
-            thetas.subi(thetas1);
+            thetas.addi(thetas1);
 
             thetas_p=MatrixFunctions.absi(thetas_p.subi(thetas));
 
@@ -149,6 +141,7 @@ public class LRWeightLearning extends ParameterLearning {
     }
 
     public void generateLRTraiingData() {
+        this.lrTrainingData.clear();
         for (int i = 0; i < this.patents.size() - 1; i++) {
             for (int j = i + 1; j < this.patents.size(); j++) {
                 int[] tempint = new int[2];
@@ -167,7 +160,9 @@ public class LRWeightLearning extends ParameterLearning {
     }
 
     public pair<DoubleMatrix,DoubleMatrix> logisticRTrainingDataGenerator() {
-        System.out.println(numberofOptions);
+
+
+
         double[][] var0=new double[this.lrTrainingData.size()][numberofOptions+1];
         double[][] var1=new double[this.lrTrainingData.size()][1];
 

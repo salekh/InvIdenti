@@ -21,14 +21,17 @@ public class patent
     private DoubleMatrix2D td_des;
     /**Attributes of the patent**/
     private String author;
+    private String firstName;
+    private String lastName;
     private String title;
     private String category;
     private String assignee;
+    private String asgNum;
     /**Inventor information**/
     private String lat,lng;
     private String coAuthor;
     private String country;
-    public patent(String patent_number,String abs,String claims,String description,String title,String category,String Assignee,String name,String lat,String lng,String coAuthor,String country)
+    public patent(String patent_number,String abs,String claims,String description,String title,String category,String Assignee,String lastname,String firstname,String lat,String lng,String coAuthor,String country,String asgNum)
     {
         this.patent_number=patent_number;
         this.abs=abs;
@@ -37,11 +40,14 @@ public class patent
         this.title=title;
         this.category=category;
         this.assignee=Assignee;
-        this.author=name;
+        this.author=firstname+" "+lastname;
+        this.firstName=firstname;
+        this.lastName=lastname;
         this.lat=lat;
         this.lng=lng;
         this.coAuthor=coAuthor;
         this.country=country;
+        this.asgNum=asgNum;
 
     }
 
@@ -174,6 +180,12 @@ public class patent
     public String getCoAuthor() {return this.coAuthor;}
 
     public String getCountry() {return this.country;}
+
+    public String getFirstName() {return this.firstName;}
+
+    public String getLasName() {return this.lastName;}
+
+    public String getAsgNum() {return this.asgNum;}
 
 
     public String toString() {

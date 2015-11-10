@@ -156,9 +156,11 @@ public class SqlitePatents {
 
                 String patentNumber=rs.getString("Patent");
                 String authorLastName=rs.getString("Lastname");
+                String authorFirstName=rs.getString("Firstname");
                 String assignee=rs.getString("Assignee");
                 String category=rs.getString("Class");
                 String country=rs.getString("Country");
+                String asgNum=rs.getString("AsgNum");
 
                 String abs=readText(path + patentNumber + "/" + "Abstract.txt");
                 String claims=readText(path + patentNumber + "/" + "Claims.txt");
@@ -169,7 +171,7 @@ public class SqlitePatents {
 
 
 
-                patent temp=new patent(patentNumber,abs,claims,description,title,category,assignee,authorLastName,lat,lng,"",country);
+                patent temp=new patent(patentNumber,abs,claims,description,title,category,assignee,authorLastName,authorFirstName,lat,lng,"",country,asgNum);
 
                 number--;
 

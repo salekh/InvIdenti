@@ -102,7 +102,7 @@ public class PatentsGenerator {
      * @param lastname author name
      * @return the patent
      */
-    public patent getOnePatentFromText(String patentNumber,String table,String lastname) {
+    public patent getOnePatentFromText(String patentNumber,String table,String lastname,String firstname) {
 
         String var1;
         patent var2=null;
@@ -127,14 +127,16 @@ public class PatentsGenerator {
 
                 String patent=var0.getString("Patent");
                 String authorLastName=var0.getString("Lastname");
+                String authorFirstName=var0.getString("Firstname");
                 String assignee=var0.getString("Assignee");
                 String category=var0.getString("Class");
                 String lat=var0.getString("Lat");
                 String lng=var0.getString("Lng");
                 String country=var0.getString("Country");
+                String asigneeNum=var0.getString("AsgNum");
 
 
-                if (authorLastName.equalsIgnoreCase(lastname))
+                if (authorLastName.equalsIgnoreCase(lastname)&&authorFirstName.equalsIgnoreCase(firstname))
                 {
                    /*
                     if(abs.length()==0||claims.length()==0||description.length()==0) {
@@ -143,7 +145,7 @@ public class PatentsGenerator {
                     */
 
 
-                    var2=new patent(patent,abs,claims,description,title,category,assignee,authorLastName,lat,lng,"",country);
+                    var2=new patent(patent,abs,claims,description,title,category,assignee,authorLastName,authorFirstName,lat,lng,"",country,asigneeNum);
 
 
                 } else {
@@ -222,7 +224,7 @@ public class PatentsGenerator {
                 } else {
                     var2--;
                 }
-                patent var3=this.getOnePatentFromText(var0.getString("Patent"), "invpat", var0.getString("LastName"));
+                patent var3=this.getOnePatentFromText(var0.getString("Patent"), "invpat", var0.getString("LastName"),var0.getString("FirstName"));
                 if (var3!=null)
                 {
                     patents.add(var3);

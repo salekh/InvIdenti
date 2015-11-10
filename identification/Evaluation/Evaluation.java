@@ -28,7 +28,7 @@ import java.util.Collections;
 public class Evaluation {
 
     private static Logger logger= LogManager.getLogger(Evaluation.class.getName());
-    int[] wrongIndex={122,18,229,133,104,53,171,15,6,247,225,149,240,249,280,142,176,131,267,251,68,66,44,75,288,24,227,103,26,120,34,19,168,213,230,58,175,101,112,32,62,181,37,139,226,124,126,192,94,231,74,173,57,143,221,268,172,27};
+    int[] wrongIndex={305, 124 ,167, 359 ,209 ,59 ,446 ,89 ,156 ,461 ,96 ,150, 429 ,145 ,39 ,79 ,47, 56, 129 ,355 ,456 ,179 ,394 ,44 ,316 ,123 ,409 ,309 ,420 ,424 ,141 ,104 ,369 ,237 ,477 ,388 ,377, 378 ,375 ,387 ,214 ,438 ,453 ,293 ,376 ,400 ,22 ,55 ,457 ,42 ,206 ,290 ,212,459,63,445,64,418,21,82,390,386,115,146,114,105,54,342,319,404,285,292,349,83,339,225,261,255,138,392,15,35,318,384,283,61,210,11,260,116,199,130,32,287,271,313,397,259,217,474};
 
     IniFile ini=new IniFile();
     String trainingDataPath;
@@ -42,9 +42,9 @@ public class Evaluation {
 
     boolean shuffle=true;
 
-    int datasize=290;
+    int datasize=1305;
 
-    int k=10;
+    int k=5;
 
     public Evaluation(ParameterLearning p,patentClustering c) {
         ini=new IniFile();
@@ -57,6 +57,7 @@ public class Evaluation {
         PatentsGenerator patentGenerator=new PatentsGenerator(infoDataPath,trainingTextPath,trainingDataPath);
 
         pair<ArrayList<patent>,ArrayList<String>> var0=patentGenerator.getTrainingPatents("TrainingData",1,datasize);
+
 
         ArrayList<patent>patentsI=var0.firstarg;
         ArrayList<String> patentsIDI=var0.secondarg;
@@ -230,11 +231,9 @@ public class Evaluation {
         logger.info("THreshoold:"+weightlearning.getThreshold());
         logger.info("Training Data Size:"+training.firstarg.size());
 
-
-
         logger.info("Testing Data Size:"+testing.firstarg.size());
         clusteirngMethod.ininitialize(testing.firstarg);
-        ((invClustering)clusteirngMethod).setClusteringThreshold(weightlearning.getThreshold());
+        clusteirngMethod.setThreshold(weightlearning.getThreshold());
         logger.error(weightlearning.getThreshold());
         clusteirngMethod.Cluster(d);
         logger.error("Clustering Result\n");
@@ -261,6 +260,10 @@ public class Evaluation {
         }
 
         for(int i=0;i<this.patents.size();i++) {
+            if (patents.get(i).getPatent_number().equalsIgnoreCase("06681230")||patents.get(i).getPatent_number().equalsIgnoreCase("06502095"))
+            {
+                System.out.println(i);
+            }
             if (wrongIDs.contains(i)) {
                 testing.add(patents.get(i));
                 testingIDs.add(patentsID.get(i));
@@ -269,7 +272,6 @@ public class Evaluation {
                 trainingIDs.add(patentsID.get(i));
             }
         }
-
 
         weightlearning.initilize(training,trainingIDs);
 
@@ -286,12 +288,30 @@ public class Evaluation {
 
         //((HierClusteringPatents)clusteirngMethod).setEps(threshold*di);
 
+            clusteirngMethod.setThreshold(threshold);
 
-            clusteirngMethod.Cluster(d);
-            logger.error(clusteirngMethod.getClustersIndex().size());
+        logger.warn(threshold);
 
 
-            double FMeasurement = getFScoreofClustering(clusteirngMethod.getClustersIndex(), testingIDs);
+
+
+         clusteirngMethod.Cluster(d);
+
+
+        logger.error(clusteirngMethod);
+
+
+        d.s=true;
+
+
+        logger.error(d.distance(patents.get(375),patents.get(376)));
+
+        logger.error(d.compareAssignee(patents.get(375).getAssignee(),patents.get(376).getAssignee(),patents.get(375).getAsgNum(),patents.get(376).getAsgNum()));
+
+        logger.error(d.compareLocation(patents.get(375).getCountry(),patents.get(375).getLat(),patents.get(375).getLng(),patents.get(376).getCountry(),patents.get(376).getLat(),patents.get(376).getLng()));
+
+
+        double FMeasurement = getFScoreofClustering(clusteirngMethod.getClustersIndex(), testingIDs);
 
             logger.warn("F Measurement:" + FMeasurement);
 
@@ -316,7 +336,7 @@ public class Evaluation {
 
         for(double time=1.2;time>=0.0;time-=0.05) {
 
-            ((HierClusteringPatents)clusteirngMethod).setEps(time*threshold);
+            clusteirngMethod.setThreshold(time*threshold);
             clusteirngMethod.Cluster(d);
             double FMeasurement = getFScoreofClustering(clusteirngMethod.getClustersIndex(), testing.secondarg);
             if (FMeasurement>fmax) {
@@ -333,7 +353,7 @@ public class Evaluation {
 
        Evaluation evaluation=new Evaluation(new LRWeightLearning(),new invClustering());
         evaluation.evaluteAllClustering();
-
+       // evaluation.wrongPatents();
     }
 
 }

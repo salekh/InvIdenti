@@ -32,6 +32,8 @@ public abstract class patentClustering
     protected boolean pCorrelation=true;
     protected boolean initilization=false;
 
+    protected double threshold=0;
+
     protected pair<HashMap<String,Integer>,HashMap<String,Integer>> attriInfo;
 
     public void setLanguage(LanguageCode code)
@@ -42,6 +44,10 @@ public abstract class patentClustering
     public void setNumberofCluster(Integer num)
     {
         this.number_Cluster=num;
+    }
+
+    public void setThreshold(double threshold) {
+        this.threshold=threshold;
     }
 
 
