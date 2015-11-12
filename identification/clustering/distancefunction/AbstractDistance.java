@@ -23,9 +23,11 @@ public abstract class AbstractDistance {
     protected boolean desComapre=true;
     protected boolean assigneeCompare=true;
     protected boolean categoryCompare=true;
-    protected boolean nameCompare=true;
+
     protected boolean locationCompare=true;
     protected boolean coAuthorCompare=true;
+    protected boolean lastNameCompare=true;
+    protected boolean firstNameCompare=true;
     protected boolean pCorrelation=true;
 
     protected double weightFullText=1.0;
@@ -34,14 +36,16 @@ public abstract class AbstractDistance {
     protected double weightDes=1.0;
     protected double weightAssignee=1.0;
     protected double weightCategory=1.0;
-    protected double weightName=1.0;
+
     protected double weightLocation=1.0;
     protected double weightCoAuthor=1.0;
+    protected double weightLastName=1.0;
+    protected double weightFirstName=1.0;
 
 
     public boolean show=false;
 
-    protected int numofOptions=9;
+    protected int numofOptions=10;
 
     protected String distanceType="AbstractDistance";
 
@@ -74,9 +78,11 @@ public abstract class AbstractDistance {
             this.abstractCompare=initalFile.get("DistanceOption","AbstractCompare").equalsIgnoreCase("true");
             this.claimsCompare=initalFile.get("DistanceOption","ClaimsCompare").equalsIgnoreCase("true");
             this.desComapre=initalFile.get("DistanceOption","DescriptionCompare").equalsIgnoreCase("true");
-            this.nameCompare=initalFile.get("DistanceOption","NameCompare").equalsIgnoreCase("true");
+
             this.coAuthorCompare=initalFile.get("DistanceOption","CoAuthorCompare").equalsIgnoreCase("true");
             this.locationCompare=initalFile.get("DistanceOption","LocationCompare").equalsIgnoreCase("true");
+            this.lastNameCompare=initalFile.get("DistanceOption","LastNameCompare").equalsIgnoreCase("true");
+            this.firstNameCompare=initalFile.get("DistanceOption","FirstNameCompare").equalsIgnoreCase("true");
 
 
             this.weightFullText=Double.parseDouble(initalFile.get("Weights", "FullText"));
@@ -85,9 +91,11 @@ public abstract class AbstractDistance {
             this.weightDes=Double.parseDouble(initalFile.get("Weights","Description"));
             this.weightAssignee=Double.parseDouble(initalFile.get("Weights","Assignee"));
             this.weightCategory=Double.parseDouble(initalFile.get("Weights","Category"));
-            this.weightName=Double.parseDouble(initalFile.get("Weights","Name"));
+
             this.weightCoAuthor= Double.parseDouble(initalFile.get("Weights","CoAuthor"));
             this.weightLocation = Double.parseDouble(initalFile.get("Weights","Location"));
+            this.weightLastName=Double.parseDouble(initalFile.get("Weights","LastName"));
+            this.weightFirstName=Double.parseDouble(initalFile.get("Weights","FirstName"));
 
 
             this.pCorrelation=initalFile.get("DistanceOption","PCorrelation").equalsIgnoreCase("true");
@@ -198,20 +206,24 @@ public abstract class AbstractDistance {
         }
 
 
-        result=result/4.0;
 
 
+        if (result>3) result=3;
 
         /**
          * Need Change here
          */
 
-        if (result>1) result=1;
+//        if (result>4) {
+  //          result=1;
+    //    } else {
+      //      result=result/(strs1.size()*strs2.size());
+       // }
 
-        if (this.pCorrelation) {return result;}
+        if (this.pCorrelation) {return result/3.0;}
         else
         {
-            return 1-result;
+            return 1-result/3.0;
         }
     }
 
@@ -356,9 +368,10 @@ public abstract class AbstractDistance {
         this.categoryCompare=options[4];
         this.assigneeCompare=options[5];
 
-        this.nameCompare=options[6];
+        this.lastNameCompare=options[6];
         this.coAuthorCompare=options[7];
         this.locationCompare=options[8];
+        this.firstNameCompare=options[9];
 
         return true;
     }
@@ -380,9 +393,11 @@ public abstract class AbstractDistance {
         this.weightCategory=options[4];
         this.weightAssignee=options[5];
 
-        this.weightName=options[6];
+        this.weightLastName=options[6];
         this.weightCoAuthor=options[7];
         this.weightLocation=options[8];
+        this.weightFirstName=options[9];
+
 
         return true;
     }
@@ -398,15 +413,16 @@ public abstract class AbstractDistance {
 
         var0+="Options:\n";
 
-        var0+="\t"+"FullText    |"+fulltextCompare+" |"+this.weightFullText+"\n";
-        var0+="\t"+"Abstract    |"+abstractCompare+" |"+this.weightAbstract+"\n";
-        var0+="\t"+"Claims      |"+claimsCompare+" |"+this.weightClaims+"\n";
-        var0+="\t"+"Description |"+desComapre+" |"+this.weightDes+"\n";
-        var0+="\t"+"Assignee    |"+assigneeCompare+" |"+this.weightAssignee+"\n";
-        var0+="\t"+"Categories  |"+categoryCompare+" |"+this.weightCategory+"\n";
-        var0+="\t"+"Name        |"+nameCompare+" |"+this.weightName+"\n";
-        var0+="\t"+"CoAuthor    |"+coAuthorCompare+" |"+this.weightCoAuthor+"\n";
-        var0+="\t"+"Location    |"+locationCompare+" |"+this.weightLocation+"\n";
+        var0+="\t"+"FullText    |"+this.weightFullText+"\n";
+        var0+="\t"+"Abstract    |"+this.weightAbstract+"\n";
+        var0+="\t"+"Claims      |"+this.weightClaims+"\n";
+        var0+="\t"+"Description |"+this.weightDes+"\n";
+        var0+="\t"+"Categories  |"+this.weightCategory+"\n";
+        var0+="\t"+"Assignee    |"+this.weightAssignee+"\n";
+        var0+="\t"+"LastName    |"+this.weightLastName+"\n";
+        var0+="\t"+"FirstName   |"+this.weightFirstName+"\n";
+        var0+="\t"+"CoAuthor    |"+this.weightCoAuthor+"\n";
+        var0+="\t"+"Location    |"+this.weightLocation+"\n";
 
        // var0+="Weights:"+this.weightFullText+","+this.weightAbstract+","+weightClaims+","+weightDes+","+weightAssignee+","+weightCategory+","+weightName+" "+weightCoAuthor+" "+weightLocation;
 

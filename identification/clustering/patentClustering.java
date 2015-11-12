@@ -31,6 +31,7 @@ public abstract class patentClustering
     protected int number_Cluster=1;
     protected boolean pCorrelation=true;
     protected boolean initilization=false;
+    protected String clusteringType="Abstract Clustering!";
 
     protected double threshold=0;
 
@@ -76,7 +77,7 @@ public abstract class patentClustering
     /**output the clustering result**/
     public String toString()
     {
-        String str="Cluster Number:"+clusters.size()+"\n";
+        String str="Clustering Type: "+this.clusteringType+"\nThreshold:"+this.threshold+"\nCluster Number:"+clusters.size()+"\n";
         int var0=2000;
         String var1="";
         while(var0>1) {

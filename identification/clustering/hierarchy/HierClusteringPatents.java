@@ -20,6 +20,7 @@ public class HierClusteringPatents extends patentClustering
 
     public HierClusteringPatents() {
         super();
+        this.clusteringType="Hierarchical Clustering";
     }
 
 

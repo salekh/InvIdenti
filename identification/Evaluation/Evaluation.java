@@ -29,7 +29,8 @@ public class Evaluation {
 
     private static Logger logger= LogManager.getLogger(Evaluation.class.getName());
     //int[] wrongIndex={305, 124 ,167, 359 ,209 ,59 ,446 ,89 ,156 ,461 ,96 ,150, 429 ,145 ,39 ,79 ,47, 56, 129 ,355 ,456 ,179 ,394 ,44 ,316 ,123 ,409 ,309 ,420 ,424 ,141 ,104 ,369 ,237 ,477 ,388 ,377, 378 ,375 ,387 ,214 ,438 ,453 ,293 ,376 ,400 ,22 ,55 ,457 ,42 ,206 ,290 ,212,459,63,445,64,418,21,82,390,386,115,146,114,105,54,342,319,404,285,292,349,83,339,225,261,255,138,392,15,35,318,384,283,61,210,11,260,116,199,130,32,287,271,313,397,259,217,474};
-    int[] wrongIndex={90,273,197,125,12,136,44,180,222,33,113,151,254,105,116,154,265,165,232,202,249,149,6,218,56,239,215,8,288,80};
+    //int[] wrongIndex={90,273,197,125,12,136,44,180,222,33,113,151,254,105,116,154,265,165,232,202,249,149,6,218,56,239,215,8,288,80};
+    int[] wrongIndex={29,53,88,180,127,100,171,35,153,23,49,16,190,47,56,145,32,97,31,118};
     IniFile ini=new IniFile();
     String trainingDataPath;
     String trainingTextPath;
@@ -42,8 +43,7 @@ public class Evaluation {
 
     boolean shuffle=true;
 
-    int datasize=1000;
-
+    int datasize=1300;
     int k=10;
 
     public Evaluation(ParameterLearning p,patentClustering c) {
@@ -130,7 +130,7 @@ public class Evaluation {
 
         double precision;
         double recall;
-        //System.out.println(TP + " " + FP + " " + " " + TN + " " + FN);
+        System.out.println(TP + " " + FP + " " + " " + TN + " " + FN);
         if ((TP + FP) != 0) {
             precision = (double) TP / (TP + FP);
         } else {
@@ -230,17 +230,17 @@ public class Evaluation {
 
         CosDistance d=(CosDistance)weightlearning.estimateDistanceFunction();
         logger.info(d);
-        logger.info("THreshoold:"+weightlearning.getThreshold());
+        logger.info("Threshold Estimated:"+weightlearning.getThreshold());
         logger.info("Training Data Size:"+training.firstarg.size());
 
         logger.info("Testing Data Size:"+testing.firstarg.size());
+
         clusteirngMethod.ininitialize(testing.firstarg);
         clusteirngMethod.setThreshold(weightlearning.getThreshold());
-        logger.error(weightlearning.getThreshold());
+
         clusteirngMethod.Cluster(d);
         logger.error("Clustering Result\n");
         logger.error(clusteirngMethod);
-
         double FMeasurement=getFScoreofClustering(clusteirngMethod.getClustersIndex(),testing.secondarg);
 
         logger.warn("F Measurement:"+ FMeasurement);
@@ -290,7 +290,7 @@ public class Evaluation {
 
         //((HierClusteringPatents)clusteirngMethod).setEps(threshold*di);
 
-            clusteirngMethod.setThreshold(threshold);
+        clusteirngMethod.setThreshold(threshold);
 
         logger.warn(threshold);
 
@@ -306,7 +306,7 @@ public class Evaluation {
         d.show=false;
 
 
-        logger.error(d.distance(patents.get(232),patents.get(239)));
+//        logger.error(d.distance(patents.get(232),patents.get(239)));
 
 
 
@@ -317,7 +317,7 @@ public class Evaluation {
 
         double FMeasurement = getFScoreofClustering(clusteirngMethod.getClustersIndex(), testingIDs);
 
-            logger.warn("F Measurement:" + FMeasurement);
+        logger.warn("F Measurement:" + FMeasurement);
 
 
     }
@@ -355,9 +355,9 @@ public class Evaluation {
     public static void main(String[] args){
 
 
-       Evaluation evaluation=new Evaluation(new LRWeightLearning(),new invClustering());
+       Evaluation evaluation=new Evaluation(new LRWeightLearning(),new HierClusteringPatents());
         evaluation.evaluteAllClustering();
-        //evaluation.wrongPatents();
+     //   evaluation.wrongPatents();
     }
 
 }

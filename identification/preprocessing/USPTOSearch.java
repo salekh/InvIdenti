@@ -35,9 +35,9 @@ public class USPTOSearch
         patent_number_c = patent_number.substring(num, patent_number.length());
 
 
-        String base_url = "http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO2&Sect2=HITOFF&p=1&u=%2Fnetahtml%2FPTO%2Fsearch-adv.htm&r=1&f=G&l=50&d=PALL&";
+        String base_url = "http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO1&Sect2=HITOFF&d=PALL&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.htm&r=1&f=G&l=50&";
 
-        String pat_number = "S1=" + this.patetnt_number + "&OS=" + this.patetnt_number + "&RS=" + this.patetnt_number;
+        String pat_number = "s1=" + this.patetnt_number + ".PN.&OS=PN/=" + this.patetnt_number + "&RS=PN/" + this.patetnt_number;
         String full_path = base_url + pat_number;
 
             try {
@@ -66,10 +66,12 @@ public class USPTOSearch
 
             }
 
-            base_url = "http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO1&Sect2=HITOFF&d=PALL&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.htm&r=1&f=G&l=50&";
-            pat_number = "s1=" + patent_number + ".PN.&OS=PN/" + patent_number + "&RS=PN/" + patent_number;
 
-            try {
+        base_url = "http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO1&Sect2=HITOFF&d=PALL&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.htm&r=1&f=G&l=50&";
+
+        pat_number = "s1=" + patent_number + ".PN.&OS=PN/=" + patent_number + "&RS=PN/" + patent_number;
+
+        try {
                 Spider.create(g).addUrl(base_url + pat_number).thread(1).run();
                 if (g.getHead().contains(patent_number_c)) {
                     abs = g.getAbs();

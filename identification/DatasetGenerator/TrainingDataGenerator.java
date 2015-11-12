@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class TrainingDataGenerator {
 
-    private int size=300;
+    private int size=1000;
     private String inputPath;
     private String outputPath;
 

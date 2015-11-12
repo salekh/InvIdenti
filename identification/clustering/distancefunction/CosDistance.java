@@ -81,10 +81,18 @@ public class CosDistance extends AbstractDistance {
             if (s) System.out.println(result);
             if (Double.isNaN(result)) System.out.println(6);
         }
-        if (this.nameCompare==true) {
+        if (this.lastNameCompare==true) {
 
-            if (show) System.out.println("name");
-            result+=(this.compareName(first.getAuthor(),second.getAuthor())*this.weightName);
+            if (show) System.out.println("Lastname");
+            result+=(this.compareName(first.getLastName(),second.getLastName())*this.weightLastName);
+            if (s) System.out.println(result);
+            if (Double.isNaN(result)) System.out.println(7);
+        }
+
+        if (this.firstNameCompare==true) {
+
+            if (show) System.out.println("Firstname");
+            result+=(this.compareName(first.getFirstName(),second.getFirstName())*this.weightFirstName);
             if (s) System.out.println(result);
             if (Double.isNaN(result)) System.out.println(7);
         }

@@ -183,7 +183,7 @@ public class patent
 
     public String getFirstName() {return this.firstName;}
 
-    public String getLasName() {return this.lastName;}
+    public String getLastName() {return this.lastName;}
 
     public String getAsgNum() {return this.asgNum;}
 
