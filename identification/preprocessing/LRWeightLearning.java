@@ -148,7 +148,7 @@ public class LRWeightLearning extends ParameterLearning {
 
 
 
-    public  void test(){
+    public  void test(double lamda){
 
         double[][] var0=new double[2+1][1];
 
@@ -560,7 +560,7 @@ public class LRWeightLearning extends ParameterLearning {
                , 0}};
 
         DoubleMatrix Y=new DoubleMatrix(YY).transpose();
-        double lamda=99.99;
+
         double alpha=1;
         Y=Y.transpose();
         DoubleMatrix varM4=new DoubleMatrix();
@@ -644,7 +644,7 @@ public class LRWeightLearning extends ParameterLearning {
 */
         }
         System.out.println();
-        outputMatrix(thetas,"thetas");
+        outputMatrix(thetas.transpose(),"thetas");
 
         System.out.println(Math.sqrt(thetas.transpose().mmul(thetas).sum()));
         // System.out.print(Math.abs(thetas.get(2,0)-thetas.get(1,0)));
@@ -655,7 +655,8 @@ public class LRWeightLearning extends ParameterLearning {
 
 
     public static void main(String[] args) {
-        new LRWeightLearning().test();
+        for(double i=5;i<100;i+=1)
+        new LRWeightLearning().test(i);
 
 
       //  double[][] dd={{1,2,3,4,5}};

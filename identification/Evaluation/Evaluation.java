@@ -40,6 +40,8 @@ public class Evaluation {
     ArrayList<patent> patents;
     ArrayList<String> patentsID;
     ArrayList<Integer> shuffleIndex;
+    ArrayList<Double> lumpings=new ArrayList<>();
+    ArrayList<Double> splittings=new ArrayList<>();
 
     boolean shuffle=true;
 
@@ -99,8 +101,8 @@ public class Evaluation {
         int TN, TP, FN, FP;
         TP = FP = 0;
         for (indexCluster c : clusters) {
-            for (int i = 0; i < c.getPatentsIndex().size(); i++) {
-                for (int j = 0 ; j < c.getPatentsIndex().size(); j++) {
+            for (int i = 0; i < c.getPatentsIndex().size()-1; i++) {
+                for (int j = i+1 ; j < c.getPatentsIndex().size(); j++) {
                     if (patentsID.get(c.getPatentsIndex().get(i)).equalsIgnoreCase(patentsID.get(c.getPatentsIndex().get(j)))) {
                         TP++;
                     }
@@ -111,8 +113,8 @@ public class Evaluation {
 
         FP = FP - TP;
         TN = FN = 0;
-        for (int i = 0; i < clusters.size(); i++) {
-            for (int j = 0; j < clusters.size(); j++) {
+        for (int i = 0; i < clusters.size()-1; i++) {
+            for (int j = i+1; j < clusters.size(); j++) {
                 if (j != i) {
                     for (Integer var1 : clusters.get(i).getPatentsIndex()) {
                         for (Integer var2 : clusters.get(j).getPatentsIndex()) {
@@ -130,7 +132,15 @@ public class Evaluation {
 
         double precision;
         double recall;
+
         System.out.println(TP + " " + FP + " " + " " + TN + " " + FN);
+
+        System.out.print("lumping:"+(double)FP/(TP+FN));
+        System.out.print("Splitting:"+(double)FN/(TP+FN));
+
+        this.lumpings.add((double)FP/(TP+FN));
+        this.splittings.add((double)FN/(TP+FN));
+
         if ((TP + FP) != 0) {
             precision = (double) TP / (TP + FP);
         } else {
@@ -199,6 +209,8 @@ public class Evaluation {
             pair<pair<ArrayList<patent>,ArrayList<String>>,pair<ArrayList<patent>,ArrayList<String>>> var0=this.getTrainingandTesingPatents(start,end);
 
             FMeasure.add(evaluateAClustering(var0.firstarg,var0.secondarg));
+
+
             //calculateTheBestThreshold(var0.firstarg,var0.secondarg);
 
 
@@ -212,6 +224,17 @@ public class Evaluation {
         }
         logger.info("");
         logger.error(sum/k);
+        sum=0;
+        for(double d:this.lumpings) {
+            sum+=d;
+        }
+        logger.error("Average Lumping:"+sum/k);
+        sum=0;
+        for(double d:this.splittings) {
+            sum+=d;
+        }
+        logger.error("Average splitting:"+sum/k);
+
 
     }
 
