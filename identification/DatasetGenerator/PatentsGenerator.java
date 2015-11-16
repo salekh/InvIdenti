@@ -26,9 +26,14 @@ public class PatentsGenerator {
     Connection connectionTraining=null;
     Statement stmtTraining=null;
     LanguageCode language = LanguageCode.ENGLISH;
+    private String IDType="Upper Bound";
 
     public PatentsGenerator(String databasePath) {
         this.databasePath=databasePath;
+    }
+
+    public void setIDType(String IDType) {
+        this.IDType=IDType;
     }
 
     public PatentsGenerator(String databasePath,String textsPath) {
@@ -134,6 +139,16 @@ public class PatentsGenerator {
                 String lng=var0.getString("Lng");
                 String country=var0.getString("Country");
                 String asigneeNum=var0.getString("AsgNum");
+                String ID;
+
+                if (this.IDType.equalsIgnoreCase("Upper Bound")) {
+
+                    ID=var0.getString("Invnum_N_UC");
+                } else
+                {
+
+                    ID=var0.getString("Invnum_N");
+                }
 
 
                 if (authorLastName.equalsIgnoreCase(lastname)&&authorFirstName.equalsIgnoreCase(firstname))
@@ -147,6 +162,7 @@ public class PatentsGenerator {
 
                     var2=new patent(patent,abs,claims,description,title,category,assignee,authorLastName,authorFirstName,lat,lng,"",country,asigneeNum);
 
+                    var2.setID(ID);
 
                 } else {
                     coAuthor+=authorLastName+";";
@@ -228,7 +244,10 @@ public class PatentsGenerator {
                 if (var3!=null)
                 {
                     patents.add(var3);
+
                     patentsID.add(var0.getString("ID"));
+
+
 
                 } else {
                     var2++;
@@ -243,4 +262,59 @@ public class PatentsGenerator {
         pair<ArrayList<patent>,ArrayList<String>> result=new pair<>(patents,patentsID);
         return result;
     }
+
+
+    /**
+     *
+     * @param table
+     * @param startIndex
+     * @param size
+     * @return
+     */
+
+    public pair<ArrayList<patent>,ArrayList<String>> getTrainingPatentsWithEstimatedID(String table,int startIndex,int size)  {
+        ArrayList<patent> patents=new ArrayList<>();
+        ArrayList<String> patentsID=new ArrayList<>();
+        String sql="select * from "+table;
+        try {
+            ResultSet var0=this.stmtTraining.executeQuery(sql);
+            int var1=startIndex;
+
+            while (var0.next()) {
+                if (var1 < 2) {
+                    break;
+
+                } else {
+                    var1--;
+                }
+            }
+
+            int var2=size;
+            while (var0.next()) {
+                if (var2<1) {
+                    break;
+
+                } else {
+                    var2--;
+                }
+                patent var3=this.getOnePatentFromText(var0.getString("Patent"), "invpat", var0.getString("LastName"),var0.getString("FirstName"));
+                if (var3!=null)
+                {
+                    patents.add(var3);
+                    patentsID.add(var3.getID());
+
+                } else {
+                    var2++;
+                }
+
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        pair<ArrayList<patent>,ArrayList<String>> result=new pair<>(patents,patentsID);
+        return result;
+    }
+
 }

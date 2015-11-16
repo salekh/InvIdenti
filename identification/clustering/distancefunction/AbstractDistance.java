@@ -116,7 +116,8 @@ public abstract class AbstractDistance {
 
 
 
-        if(code1!=null&&code2!=null) {
+
+        if(code1!=null&&code2!=null&&code1.length()!=0&&code2.length()!=0) {
             if (code1.equals(code2)) {
 
                 if (this.pCorrelation) return 1.0;
@@ -131,9 +132,9 @@ public abstract class AbstractDistance {
 
         if (str1==null || str2==null||str1.length()==0||str2.length()==0) {
           if (this.pCorrelation)  {
-              return 1.0/4.0;
+              return 0.25;
           } else {
-              return 3.0/4.0;
+              return 0.75;
           }
         }
 
@@ -171,9 +172,9 @@ public abstract class AbstractDistance {
         double result=0.0;
         if (str1==null || str2==null||str1.length()==0||str2.length()==0) {
            if(pCorrelation) {
-               return 0.2;
+               return 0.33;
            } else {
-               return 0.8;
+               return 0.67;
            }
         }
         String[] strs_1=str1.split("-");
@@ -263,9 +264,9 @@ public abstract class AbstractDistance {
 
         if (coAuthor1==null||coAuthor2==null||coAuthor1.length()==0||coAuthor2.length()==0) {
             if (this.pCorrelation) {
-                return 0.2;
+                return 1.0/6.0;
             } else {
-                return 0.8;
+                return 5.0/6.0;
             }
 
         }

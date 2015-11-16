@@ -31,6 +31,8 @@ public class patent
     private String lat,lng;
     private String coAuthor;
     private String country;
+    private String ID;
+
     public patent(String patent_number,String abs,String claims,String description,String title,String category,String Assignee,String lastname,String firstname,String lat,String lng,String coAuthor,String country,String asgNum)
     {
         this.patent_number=patent_number;
@@ -120,6 +122,8 @@ public class patent
 
     public void setCoAuthor(String coAuthor) {this.coAuthor=coAuthor;}
 
+    public void setID(String ID) {this.ID=ID;}
+
     /**Get the attribute value of the patent**/
 
     public String getAuthor()
@@ -187,6 +191,7 @@ public class patent
 
     public String getAsgNum() {return this.asgNum;}
 
+    public String getID() {return this.ID;}
 
     public String toString() {
         String str="Patent Number: "+this.patent_number+"\n";

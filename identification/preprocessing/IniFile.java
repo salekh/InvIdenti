@@ -66,6 +66,49 @@ public class IniFile {
         }
     }
 
+
+    public IniFile(String path) {
+
+        try {
+            Wini ini=new Wini(new File(path));
+            String optionsName=ini.get("DistanceOption","Options");
+            String[] var0=optionsName.split(",");
+
+            for(String var1:var0) {
+                optionsNames.add(var1);
+            }
+
+
+            for(String var2:var0) {
+                String var3=ini.get("DistanceOption",var2+"Compare");
+                if (var3==null) {
+                    optionsValues.add(false);
+                } else {
+                    optionsValues.add(var3.equalsIgnoreCase("true"));
+                }
+            }
+
+            for (String var4:var0) {
+                String var5=ini.get("Weights",var4);
+                if (var5==null) {
+                    optionsWeights.add(0.0);
+                } else {
+                    optionsWeights.add(Double.parseDouble(var5));
+                }
+            }
+
+            pCorrelation=ini.get("DistanceOption","PCorrelation").equalsIgnoreCase("true");
+            trainingDataInputPath=ini.get("DataSet","TrainingDataInputPath");
+            trainingDataOutputPath=ini.get("DataSet","TrainingDataOutputPath");
+            infoDataPath=ini.get("DataSet","InfoDataPath");
+
+
+        } catch (IOException e) {
+            logger.error("Initial File not Found");
+        }
+    }
+
+
     public String getTrainingDataInputPath() {
         return this.trainingDataInputPath;
     }

@@ -104,6 +104,7 @@ public class TrainingDataGenerator {
             }
             if (!(var3[0].equalsIgnoreCase("ID")&&var3[2].equalsIgnoreCase("LastName")&&var3[3].equalsIgnoreCase("FirstName")&&var3[1].equalsIgnoreCase("Patent"))) {
 
+                System.out.println(var3[0]+var3[1]+var3[2]+var3[3]);
                 System.out.println("Benchmark file format is not right.");
                 return patents;
             }
