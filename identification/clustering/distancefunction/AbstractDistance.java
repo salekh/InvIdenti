@@ -5,10 +5,13 @@ import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.apache.logging.log4j.Logger;
 import org.ini4j.Wini;
 
+import javax.naming.ldap.HasControls;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-
+import java.util.Hashtable;
+import java.util.Iterator;
 
 
 /**
@@ -28,6 +31,7 @@ public abstract class AbstractDistance {
     protected boolean coAuthorCompare=true;
     protected boolean lastNameCompare=true;
     protected boolean firstNameCompare=true;
+    protected boolean titleCompare=true;
     protected boolean pCorrelation=true;
 
     protected double weightFullText=1.0;
@@ -36,6 +40,7 @@ public abstract class AbstractDistance {
     protected double weightDes=1.0;
     protected double weightAssignee=1.0;
     protected double weightCategory=1.0;
+    protected double weightTitle=1.0;
 
     protected double weightLocation=1.0;
     protected double weightCoAuthor=1.0;
@@ -83,7 +88,7 @@ public abstract class AbstractDistance {
             this.locationCompare=initalFile.get("DistanceOption","LocationCompare").equalsIgnoreCase("true");
             this.lastNameCompare=initalFile.get("DistanceOption","LastNameCompare").equalsIgnoreCase("true");
             this.firstNameCompare=initalFile.get("DistanceOption","FirstNameCompare").equalsIgnoreCase("true");
-
+            this.titleCompare=initalFile.get("DistanceOption","TitleCompare").equalsIgnoreCase("true");
 
             this.weightFullText=Double.parseDouble(initalFile.get("Weights", "FullText"));
             this.weightAbstract=Double.parseDouble(initalFile.get("Weights","Abstract"));
@@ -96,7 +101,7 @@ public abstract class AbstractDistance {
             this.weightLocation = Double.parseDouble(initalFile.get("Weights","Location"));
             this.weightLastName=Double.parseDouble(initalFile.get("Weights","LastName"));
             this.weightFirstName=Double.parseDouble(initalFile.get("Weights","FirstName"));
-
+            this.weightTitle=Double.parseDouble(initalFile.get("Weights","Title"));
 
             this.pCorrelation=initalFile.get("DistanceOption","PCorrelation").equalsIgnoreCase("true");
 
@@ -121,11 +126,12 @@ public abstract class AbstractDistance {
             if (code1.equals(code2)) {
 
                 if (this.pCorrelation) return 1.0;
-                else return 0.0;
-            } else {
+               else return 0.0;
+            }
+            /*else {
                 if (this.pCorrelation) return 0.0;
                 else return 1.0;
-            }
+            }*/
         }
 
 
@@ -177,54 +183,81 @@ public abstract class AbstractDistance {
                return 0.67;
            }
         }
-        String[] strs_1=str1.split("-");
-        String[] strs_2=str2.split("-");
+        String[] strs_1=str1.split("/");
+        String[] strs_2=str2.split("/");
 
-        ArrayList<String> strs1=new ArrayList<>();
-        ArrayList<String> strs2=new ArrayList<>();
+        Hashtable<String,ArrayList<String>> var0=new Hashtable<>();
+        Hashtable<String,ArrayList<String>> var1=new Hashtable<>();
+        /**
+         * Split the technology class by main class and subclass
+         *
+         */
+        for(String var2:strs_1) {
+            String[] var3=var2.split("-");
+            if (var3.length==1) {
+                if (!var0.containsKey(var3[0])) {
+                    var0.put(var3[0],new ArrayList<>());
+                }
+            }  else {
 
-        for (String var3:strs_1) {
-            String[] var4=var3.split("/");
-            for (String var5:var4) {
-                if (!strs1.contains(var5)) strs1.add(var5);
-            }
-        }
-
-        for (String var3:strs_2) {
-            String[] var4=var3.split("/");
-            for (String var5:var4) {
-                if (!strs2.contains(var5)) strs2.add(var5);
-            }
-        }
-
-        for (String var1:strs1) {
-            for (String var2:strs2) {
-                if (var1.equalsIgnoreCase(var2)) {
-                    result+=1;
-                    break;
+                if (!var0.containsKey(var3[0])) {
+                    ArrayList<String> temp=new ArrayList<>();
+                    temp.add(var3[1]);
+                    var0.put(var3[0],temp);
+                } else
+                {
+                    var0.get(var3[0]).add(var3[1]);
                 }
             }
         }
 
-
-
-
-        if (result>3) result=3;
-
+        for(String var2:strs_2) {
+            String[] var3=var2.split("-");
+            if (var3.length==1) {
+                if (!var1.containsKey(var3[0])) {
+                    var1.put(var3[0],new ArrayList<>());
+                }
+            }  else {
+                if (!var1.containsKey(var3[0])) {
+                    ArrayList<String> temp=new ArrayList<>();
+                    temp.add(var3[1]);
+                    var1.put(var3[0],temp);
+                } else
+                {
+                    var1.get(var3[0]).add(var3[1]);
+                }
+            }
+        }
         /**
-         * Need Change here
+         * Compare the technology class
          */
 
-//        if (result>4) {
-  //          result=1;
-    //    } else {
-      //      result=result/(strs1.size()*strs2.size());
-       // }
+        for (Iterator<String> iterator = var0.keySet().iterator(); iterator.hasNext(); ) {
+            String var4 = iterator.next();
+            if (var1.containsKey(var4)) {
+                result+=1;
+                ArrayList<String> var5=var0.get(var4);
+                ArrayList<String> var6=var1.get(var4);
+                for(String var7:var5) {
+                    if (var6.contains(var7)) {
 
-        if (this.pCorrelation) {return result/3.0;}
-        else
-        {
-            return 1-result/3.0;
+                        result+=2.0;
+                    }
+                }
+            }
+        }
+
+        if (result>5) {
+            result=1.0;
+        } else {
+            result/=5.0;
+        }
+
+
+        if(pCorrelation) {
+            return result;
+        } else {
+            return 1-result;
         }
     }
 
@@ -373,6 +406,7 @@ public abstract class AbstractDistance {
         this.coAuthorCompare=options[7];
         this.locationCompare=options[8];
         this.firstNameCompare=options[9];
+        this.titleCompare=options[10];
 
         return true;
     }
@@ -398,6 +432,7 @@ public abstract class AbstractDistance {
         this.weightCoAuthor=options[7];
         this.weightLocation=options[8];
         this.weightFirstName=options[9];
+        this.weightTitle=options[10];
 
 
         return true;
@@ -424,9 +459,12 @@ public abstract class AbstractDistance {
         var0+="\t"+"FirstName   |"+this.weightFirstName+"\n";
         var0+="\t"+"CoAuthor    |"+this.weightCoAuthor+"\n";
         var0+="\t"+"Location    |"+this.weightLocation+"\n";
+        var0+="\t"+"Title       |"+this.weightTitle+"\n";
 
        // var0+="Weights:"+this.weightFullText+","+this.weightAbstract+","+weightClaims+","+weightDes+","+weightAssignee+","+weightCategory+","+weightName+" "+weightCoAuthor+" "+weightLocation;
 
         return var0;
     }
+
+
 }

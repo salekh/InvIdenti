@@ -151,7 +151,7 @@ public class PatentsGenerator {
                 }
 
 
-                if (authorLastName.equalsIgnoreCase(lastname)&&authorFirstName.equalsIgnoreCase(firstname))
+                if (authorLastName.equalsIgnoreCase(lastname)||authorFirstName.equalsIgnoreCase(firstname))
                 {
                    /*
                     if(abs.length()==0||claims.length()==0||description.length()==0) {
@@ -250,6 +250,7 @@ public class PatentsGenerator {
 
 
                 } else {
+                    System.out.println(var0.getString("Patent")+" "+var0.getString("LastName"));
                     var2++;
                 }
 

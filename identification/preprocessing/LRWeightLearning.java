@@ -21,8 +21,8 @@ public class LRWeightLearning extends ParameterLearning {
 
         this.generateLRTraiingData();
         int maxIteration=4000;
-        double alpha=1;
-        double lamda=1;
+        double alpha=2;
+        double lamda=0;
         pair<DoubleMatrix,DoubleMatrix> result=this.logisticRTrainingDataGenerator();
 
 
@@ -111,8 +111,9 @@ public class LRWeightLearning extends ParameterLearning {
             thetas_p=MatrixFunctions.absi(thetas_p.subi(thetas));
 
 
-            if (thetas_p.sum()<0.005) {
+            if (thetas_p.sum()/X.columns<0.0005) {
                 System.out.println();
+                System.out.println(X.columns);
                 System.out.println(k);
                 break;
             }

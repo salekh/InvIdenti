@@ -115,6 +115,10 @@ public class CosDistance extends AbstractDistance {
 
             if (Double.isNaN(result)) System.out.println(9);
         }
+
+        if (this.titleCompare==true) {
+            result+=this.cosDistance(first.getTd_title(),second.getTd_title())*this.weightTitle;
+        }
         return result;
     }
 

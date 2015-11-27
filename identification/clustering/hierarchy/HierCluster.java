@@ -30,11 +30,7 @@ public class HierCluster extends indexCluster {
         }
     }
 
-    /**
-     * add a new patents index into the cluster
-     * @param num the new patent index
-     */
-    public void addInstance(int num) { this.patentsIndex.add(num);}
+
 
 
 

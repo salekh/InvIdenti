@@ -68,6 +68,7 @@ public class patentPreprocessing {
         this.generateTextVector("Abstract");
         this.generateTextVector("Claims");
         this.generateTextVector("Description");
+        this.generateTextVector("Title");
 
     }
 
@@ -83,7 +84,7 @@ public class patentPreprocessing {
             if (str.equalsIgnoreCase("Abstract")) temp=p.getAbs();
             if (str.equalsIgnoreCase("Claims"))   temp=p.getClaims();
             if (str.equalsIgnoreCase("Description")) temp=p.getDescription();
-
+            if (str.equalsIgnoreCase("Title")) temp=p.getTitle();
 
             docs.add(new Document("",temp));
         }
@@ -139,6 +140,8 @@ public class patentPreprocessing {
                 if (str.equalsIgnoreCase("Abstract")) patents.get(i).setTd_abs(var19.viewSelection((int[]) null, intA.toArray()).copy());
                 if (str.equalsIgnoreCase("Claims"))  patents.get(i).setTd_claims(var19.viewSelection((int[]) null, intA.toArray()).copy());
                 if (str.equalsIgnoreCase("Description")) patents.get(i).setTd_des(var19.viewSelection((int[]) null, intA.toArray()).copy());
+                if (str.equalsIgnoreCase("Title")) patents.get(i).setTd_title(var19.viewSelection((int[]) null, intA.toArray()).copy());
+
             }
 
         }

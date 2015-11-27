@@ -19,6 +19,7 @@ public class patent
     private DoubleMatrix2D td_abs;
     private DoubleMatrix2D td_claims;
     private DoubleMatrix2D td_des;
+    private DoubleMatrix2D td_title;
     /**Attributes of the patent**/
     private String author;
     private String firstName;
@@ -94,6 +95,12 @@ public class patent
         this.td_claims=M.copy();
     }
 
+    public void setTd_title(DoubleMatrix2D M)
+    {
+        this.td_title=M.copy();
+    }
+
+
     public void setAssignee(String assignee){this.assignee=assignee;}
 
     public void setCategory(String category){this.assignee= category;}
@@ -151,6 +158,11 @@ public class patent
         return td_claims;
     }
 
+    public DoubleMatrix2D getTd_title()
+    {
+        return td_title;
+    }
+
     public String getPatent_number()
     {
         return this.patent_number;
@@ -205,6 +217,7 @@ public class patent
         str+="Lat: "+this.getLat()+"\n";
         str+="Lng: "+this.getLng()+"\n";
         str+="coAuthor: "+this.getCoAuthor();
+        str+="title: "+this.getTitle();
         return str;
     }
 

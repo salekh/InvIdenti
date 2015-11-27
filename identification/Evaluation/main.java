@@ -2,6 +2,7 @@ package Evaluation;
 
 import base.pair;
 import base.patent;
+import clustering.Dbscan.DBScanClusteringPatents;
 import clustering.distancefunction.AbstractDistance;
 import clustering.hierarchy.HierClusteringPatents;
 import org.apache.logging.log4j.LogManager;
@@ -24,17 +25,37 @@ public class main {
     private static Logger logger= LogManager.getLogger(main.class.getName());
 
 
-    String traingPath="/Users/sunlei/Desktop/ThesisData/TrainingData/dulplicatedName1009";
-    String testingPath="/Users/sunlei/Desktop/ThesisData/TrainingData";
-    String infoPath="/Users/sunlei/Desktop/ThesisData/PatentData/PatTest.sqlite";
+    String traingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&STest";
+    String testingPath="/Users/leisun/Desktop/ThesisData/TrainingData";
+    String infoPath="/Users/leisun/Desktop/ThesisData/PatentData/PatTest.sqlite";
 
     pair<ArrayList<patent>,ArrayList<String>> training;
     pair<ArrayList<patent>,ArrayList<String>> testing;
 
 
-    public main(){
-        training=new patentsDataset(traingPath,infoPath,1009,"Upper Bound").getPatents();
-        testing=new patentsDataset(testingPath,infoPath,0,"Benchmark").getPatents();
+    public main(int num){
+        training=new patentsDataset(traingPath,infoPath,1000,"Benchmark").getPatents();
+
+        subsetofTrainingwithRandomly(num);
+
+        testing=new patentsDataset(testingPath,infoPath,1,"Benchmark").getPatents();
+
+    }
+
+    public void subsetofTrainingwithRandomly(int num){
+        ArrayList<Integer> shuffleIndex = new ArrayList<>();
+        for (int i = 0; i < training.firstarg.size(); i++) {
+            shuffleIndex.add(i);
+        }
+        ArrayList<patent> patents=new ArrayList<>();
+        ArrayList<String> patentsID=new ArrayList<>();
+        Collections.shuffle(shuffleIndex);
+        if (num>training.firstarg.size()) num=training.firstarg.size();
+        for (int i = 0; i < num; i++) {
+            patents.add(training.firstarg.get(shuffleIndex.get(i)));
+            patentsID.add(training.secondarg.get(shuffleIndex.get(i)));
+        }
+        training=new pair<>(patents,patentsID);
 
     }
 
@@ -54,6 +75,7 @@ public class main {
 
         Training var4=new Training(training.firstarg,training.secondarg,new LRWeightLearning());
         pair<AbstractDistance,Double> var5=var4.estimateParameter();
+
         System.out.println(var5.firstarg);
 
         Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
@@ -68,6 +90,10 @@ public class main {
     }
 
     public double crossValidate(){
+
+
+
+
         int k=10;
 
         ArrayList<patent> patents=new ArrayList<>();
@@ -105,8 +131,6 @@ public class main {
             if (end>patents.size()-1) end=patents.size()-1;
             pair<pair<ArrayList<patent>,ArrayList<String>>,pair<ArrayList<patent>,ArrayList<String>>> var0=this.getTrainingandTesingPatents(start,end,patents,patentsID,shuffleIndex);
             FMeasure.add(testingWithTraining(var0.firstarg,var0.secondarg));
-
-
 
         }
 
@@ -162,20 +186,42 @@ public class main {
 
 
     public static void main(String[] args) {
+
         double sum=0;
         double sumL=0;
         double sumS=0;
-        for(int i=0;i<10;i++) {
+        ArrayList<Double> F1s=new ArrayList<>();
+        ArrayList<Double> lumpings=new ArrayList<>();
+        ArrayList<Double> splittings=new ArrayList<>();
+
+        for(int i=100;i<1001;i+=100) {
          logger.warn("Iteration:"+i);
 
-            main temp=new main();
-            sum+=temp.crossValidate();
-            sumL+=temp.suml;
-            sumS+=temp.sums;
+            main temp=new main(i);
+            F1s.add(temp.crossValidate());
+            lumpings.add(temp.suml);
+            splittings.add(temp.sums);
         }
-        System.out.println("Final avaerage FMeasure:" + sum/10);
-        System.out.println("Final avaerage lumping:" + sumL/10);
-        System.out.println("Final avaerage splitting:" + sumS/10);
+
+        for(double d:F1s) {
+            System.out.print(d+" ");
+        }
+        System.out.println();
+
+        for(double d:lumpings) {
+            System.out.print(d+" ");
+        }
+        System.out.println();
+
+        for(double d:splittings) {
+            System.out.print(d+" ");
+        }
+        System.out.println();
+
+       // new main().testingWithTraining();
+
     }
+
+
 
 }

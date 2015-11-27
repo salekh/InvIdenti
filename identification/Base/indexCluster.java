@@ -14,4 +14,12 @@ public abstract class indexCluster  {
     public ArrayList<Integer> getPatentsIndex() {
         return this.patentsIndex;
     }
+
+    /**
+     * add a new patents index into the cluster
+     * @param num the new patent index
+     */
+    public void addInstance(int num) { this.patentsIndex.add(num);}
+
+    public void addInstances(ArrayList<Integer> nums) { this.patentsIndex.addAll(nums);}
 }
