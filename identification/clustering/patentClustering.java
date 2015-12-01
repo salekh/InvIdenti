@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.carrot2.core.LanguageCode;
 import org.ini4j.Wini;
 import preprocessing.patentPreprocessing;
+import preprocessing.patentPreprocessingTF;
 import weka.core.Instances;
 
 import java.io.File;

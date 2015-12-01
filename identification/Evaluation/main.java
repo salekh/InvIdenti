@@ -4,6 +4,7 @@ import base.pair;
 import base.patent;
 import clustering.Dbscan.DBScanClusteringPatents;
 import clustering.distancefunction.AbstractDistance;
+import clustering.distancefunction.CosDistance;
 import clustering.hierarchy.HierClusteringPatents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,8 +26,8 @@ public class main {
     private static Logger logger= LogManager.getLogger(main.class.getName());
 
 
-    String traingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&STest";
-    String testingPath="/Users/leisun/Desktop/ThesisData/TrainingData";
+    String traingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&S";
+    String testingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&SDulplicateName";
     String infoPath="/Users/leisun/Desktop/ThesisData/PatentData/PatTest.sqlite";
 
     pair<ArrayList<patent>,ArrayList<String>> training;
@@ -34,12 +35,17 @@ public class main {
 
 
     public main(int num){
-        training=new patentsDataset(traingPath,infoPath,1000,"Benchmark").getPatents();
+        training=new patentsDataset(traingPath,infoPath,5027,"Benchmark").getPatents();
 
         subsetofTrainingwithRandomly(num);
 
-        testing=new patentsDataset(testingPath,infoPath,1,"Benchmark").getPatents();
+        testing=new patentsDataset(testingPath,infoPath,48,"Benchmark").getPatents();
 
+    }
+
+
+    public double test(){
+        return testingWithTraining(training,null);
     }
 
     public void subsetofTrainingwithRandomly(int num){
@@ -64,10 +70,17 @@ public class main {
 
         Training var2=new Training(training.firstarg,training.secondarg,new LRWeightLearning());
         pair<AbstractDistance,Double> var3=var2.estimateParameter();
+
+
         System.out.println(var3.firstarg);
 
-        Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
-        e.evaluate(var3.firstarg,var3.secondarg,new HierClusteringPatents());
+        System.out.println(var3.secondarg);
+
+        //Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
+        Evaluation e=new Evaluation(training.firstarg,training.secondarg);
+
+       e.evaluate(var3.firstarg,var3.secondarg,new HierClusteringPatents());
+       // e.evaluate(new CosDistance(),8.68,new HierClusteringPatents());
 
     }
 
@@ -76,10 +89,8 @@ public class main {
         Training var4=new Training(training.firstarg,training.secondarg,new LRWeightLearning());
         pair<AbstractDistance,Double> var5=var4.estimateParameter();
 
-        System.out.println(var5.firstarg);
-
         Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
-        double FMeasure=e.evaluate(var5.firstarg,var5.secondarg,new HierClusteringPatents());
+        double FMeasure=e.evaluate(var5.firstarg,var5.secondarg,new DBScanClusteringPatents());
 
 
         this.lumpings.add(e.lumping);
@@ -91,11 +102,7 @@ public class main {
 
     public double crossValidate(){
 
-
-
-
-        int k=10;
-
+        int k=5;
         ArrayList<patent> patents=new ArrayList<>();
         ArrayList<String> patentsID=new ArrayList<>();
         Boolean shuffle=true;
@@ -107,7 +114,7 @@ public class main {
         }
 
         if(shuffle) {
-            Collections.shuffle(shuffleIndex);
+           Collections.shuffle(shuffleIndex);
             for (int i = 0; i < training.firstarg.size(); i++) {
                 patents.add(training.firstarg.get(shuffleIndex.get(i)));
                 patentsID.add(training.secondarg.get(shuffleIndex.get(i)));
@@ -194,13 +201,13 @@ public class main {
         ArrayList<Double> lumpings=new ArrayList<>();
         ArrayList<Double> splittings=new ArrayList<>();
 
-        for(int i=100;i<1001;i+=100) {
-         logger.warn("Iteration:"+i);
-
+        for(int i=5000;i<5001;i+=1000) {
+        logger.warn("Size: "+i);
             main temp=new main(i);
+            //logger.error(i+" "+temp.test()+" "+temp.lumpings.get(0)+" "+temp.splittings.get(0)+";");
             F1s.add(temp.crossValidate());
-            lumpings.add(temp.suml);
-            splittings.add(temp.sums);
+            lumpings.add(temp.lumpings.get(0));
+            splittings.add(temp.splittings.get(0));
         }
 
         for(double d:F1s) {
@@ -216,9 +223,9 @@ public class main {
         for(double d:splittings) {
             System.out.print(d+" ");
         }
-        System.out.println();
 
-       // new main().testingWithTraining();
+
+
 
     }
 

@@ -22,7 +22,7 @@ public class LRWeightLearning extends ParameterLearning {
         this.generateLRTraiingData();
         int maxIteration=4000;
         double alpha=2;
-        double lamda=0;
+        double lamda=2;
         pair<DoubleMatrix,DoubleMatrix> result=this.logisticRTrainingDataGenerator();
 
 
@@ -196,10 +196,6 @@ public class LRWeightLearning extends ParameterLearning {
         double[][] var1=new double[this.lrTrainingData.size()][1];
 
         int i=0;
-
-      //distances.get(4).show=true;
-       // System.out.println(distances.get(4));
-       // distances.get(5).show=true;
         double sum=0;
         for(pair<int[],Double> p:this.lrTrainingData) {
             var0[i][0]=1.0;
@@ -207,7 +203,6 @@ public class LRWeightLearning extends ParameterLearning {
 
             for(int j=0;j<optionsName.size();j++) {
                 if (ini.getOptionValue(optionsName.get(j))) {
-
 
                     var0[i][var2]=distances.get(j).distance(patents.get(p.firstarg[0]), patents.get(p.firstarg[1]));
 
@@ -223,6 +218,8 @@ public class LRWeightLearning extends ParameterLearning {
 
         DoubleMatrix Y=new DoubleMatrix(var1);
 
+
+        System.out.println("Finished Generating!");
 
         return new pair<>(X, Y);
     }

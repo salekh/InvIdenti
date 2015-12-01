@@ -133,7 +133,7 @@ public class TrainingDataGenerator {
             }
 
             var2=var1.readLine();
-            int var5=2000;
+            int var5=10000;
 
             while (var2!=null) { //Control the dataset Size
                 if (var5>=0) {

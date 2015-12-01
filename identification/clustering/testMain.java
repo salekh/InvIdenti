@@ -1,6 +1,7 @@
 package clustering;
 
 
+import base.pair;
 import base.patent;
 import clustering.distancefunction.CosDistance;
 import com.carrotsearch.hppc.IntArrayList;
@@ -9,6 +10,7 @@ import com.carrotsearch.hppc.cursors.IntIntCursor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.mahout.math.matrix.DoubleMatrix2D;
+import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.carrot2.core.Document;
 import org.carrot2.core.LanguageCode;
 import org.carrot2.text.preprocessing.LabelFormatter;
@@ -20,9 +22,12 @@ import org.carrot2.text.vsm.ReducedVectorSpaceModelContext;
 import org.carrot2.text.vsm.TermDocumentMatrixBuilder;
 import org.carrot2.text.vsm.TermDocumentMatrixReducer;
 import org.carrot2.text.vsm.VectorSpaceModelContext;
+import org.jblas.DoubleMatrix;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 
 
@@ -95,21 +100,51 @@ public class testMain
         l.error(c.distance(p1,p2));
 */
 
+        pair<ArrayList<String>,double[]> temp= TFcalculation("a,app,apple,invent,invention,invent,a,a,app,app",0.2);
+
+        for(int i=0;i<temp.secondarg.length;i++) {
+            System.out.println(temp.firstarg.get(i)+" "+temp.secondarg[i]);
+        }
+
+        /*
+        double[][] var1=new double[temp.secondarg.length][2];
+        int i=0;
+        for(double var2:temp.secondarg) {
+            var1[i][0]=var2;
+            i++;
+        }
+        DenseDoubleMatrix2D f=new DenseDoubleMatrix2D(var1);
+        */
+        pair<ArrayList<String>,double[]>temp2=TFcalculation("a,app,apple,b",0.2);
+        for(int i=0;i<temp2.secondarg.length;i++) {
+            System.out.println(temp2.firstarg.get(i)+" "+temp2.secondarg[i]);
+        }
+
+        /*
+        double[][] var2=new double[temp.secondarg.length][2];
+        i=0;
+        for(double var3:temp2.secondarg) {
+            var2[i][0]=var3;
+            i++;
+        }
+        DenseDoubleMatrix2D s=new DenseDoubleMatrix2D(var2);
+        System.out.println(CosDistance.cosDistance(f,s,temp.firstarg,temp2.firstarg));
+    */
+    }
+
+
+
+
+
+    public static pair<ArrayList<String>,double[]> TFcalculation(String var0,double threshold) {
+
         IPreprocessingPipeline preprocessingPipeline = new BasicPreprocessingPipeline();
-        TermDocumentMatrixBuilder matrixBuilder = new TermDocumentMatrixBuilder();
-
         ArrayList<Document> docs = new ArrayList<>();
-        docs.add(new Document("", "app,apple,invent,invention,invention"));
-        docs.add(new Document("", "compete,competition,invent,invention,invention"));
-        docs.add(new Document("", "compete,apple"));
-
+        docs.add(new Document(" ", var0));
         PreprocessingContext preprocessingContext = preprocessingPipeline.preprocess(docs, (String) null, LanguageCode.ENGLISH);
-
-
         int[] stemsMfow = preprocessingContext.allStems.mostFrequentOriginalWordIndex;
         short[] wordsType = preprocessingContext.allWords.type;
         IntArrayList featureIndices = new IntArrayList(stemsMfow.length);
-
         for (int vsmContext = 0; vsmContext < stemsMfow.length; ++vsmContext) {
             short reducedVsmContext = wordsType[stemsMfow[vsmContext]];
             if ((reducedVsmContext & 12290) == 0) {
@@ -117,36 +152,81 @@ public class testMain
             }
         }
 
-        preprocessingContext.allLabels.featureIndex = featureIndices.toArray();
-        preprocessingContext.allLabels.firstPhraseIndex = -1;
-        if (preprocessingContext.hasLabels()) {
-            VectorSpaceModelContext var17 = new VectorSpaceModelContext(preprocessingContext);
-            ReducedVectorSpaceModelContext var18 = new ReducedVectorSpaceModelContext(var17);
-            matrixBuilder.buildTermDocumentMatrix(var17);
-            matrixBuilder.buildTermPhraseMatrix(var17);
-            IntIntHashMap rowToStemIndex = new IntIntHashMap();
-            Iterator tdMatrix = var17.stemToRowIndex.iterator();
+        double[] tfMatrix = new double[preprocessingContext.allStems.tf.length];
 
-            while (tdMatrix.hasNext()) {
-                IntIntCursor columns = (IntIntCursor) tdMatrix.next();
-                rowToStemIndex.put(columns.value, columns.key);
-            }
-
-            DoubleMatrix2D var19;
-            var19 = var17.termDocumentMatrix;
+        for (int j = 0; j < preprocessingContext.allStems.tf.length; j++) {
+            tfMatrix[j]=0.0;
+        }
 
 
-            l.error(preprocessingContext.allStems);
+        for (int j = 0; j < preprocessingContext.allStems.tfByDocument.length; j ++) {
+            tfMatrix[j]=preprocessingContext.allStems.tfByDocument[j][1];
+        }
 
-            for(int i=0;i<var19.rows();i++){
-                for(int j=0;j<var19.columns();j++) {
-                    System.out.print(var19.get(i,j)+" ");
-                }
-                System.out.println();
+        double sum=0;
 
-            }
+        for(double var1:tfMatrix) {
+            sum+=var1;
+        }
 
+        for(int vari=0;vari<tfMatrix.length;vari++) {
+            tfMatrix[vari]/=sum;
+        }
+
+        ArrayList<Double> var1=new ArrayList<>();
+
+        for(double vari:tfMatrix) {
+            var1.add(vari);
+        }
+
+        ArrayList<String> stems=new ArrayList<>();
+        for(int vari=0;vari<preprocessingContext.allStems.image.length;vari++) {
+
+                String varTemp=String.copyValueOf(preprocessingContext.allStems.image[vari]);
+                stems.add(varTemp);
 
         }
+
+        HashMap<Double,ArrayList<String>> stemsWithTF=new HashMap<>();
+
+        for(int i=0;i<tfMatrix.length;i++) {
+            if(stemsWithTF.containsKey(tfMatrix[i])) {
+                stemsWithTF.get(tfMatrix[i]).add(stems.get(i));
+            }
+            else {
+                ArrayList<String> temp=new ArrayList<>();
+                temp.add(stems.get(i));
+                stemsWithTF.put(tfMatrix[i],temp);
+            }
+        }
+
+        Collections.sort(var1);
+
+        int numberofstems= (int) (stems.size()*threshold)+1;
+
+        ArrayList<Double> var3=new ArrayList<>();
+        ArrayList<String> var4=new ArrayList<>();
+        int i=0;
+        for(int j=var1.size()-1;j>=0;j--) {
+            double var5=var1.get(j);
+            for(String str:stemsWithTF.get(var5)) {
+                var4.add(str);
+                var3.add(var5);
+                i++;
+            }
+            if(i>=numberofstems) break;
+        }
+
+
+        double[] var6=new double[var3.size()];
+        for(int j=0;j<var3.size();j++) {
+            var6[j]=var3.get(j);
+        }
+
+        return new pair<>(var4,var6);
     }
+
+
+
 }
+

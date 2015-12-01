@@ -3,6 +3,9 @@ package clustering.distancefunction;
 import base.patent;
 import org.apache.mahout.math.matrix.DoubleMatrix2D;
 import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
+import org.jblas.DoubleMatrix;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -156,6 +159,8 @@ public class CosDistance extends AbstractDistance {
             } else if (result>1) {
                 result=1;
             }
+
+         //   System.out.print(result+" ");
             return result;
         }
         else
@@ -169,4 +174,24 @@ public class CosDistance extends AbstractDistance {
         }
     }
 
+
+    public static double cosDistance(DoubleMatrix2D first, DoubleMatrix2D second, ArrayList<String> stems1,ArrayList<String> stems2) {
+        double sum=0;
+        for(String var0:stems1) {
+            if (stems2.contains(var0)) {
+                int i=stems1.indexOf(var0);
+                int j=stems2.indexOf(var0);
+                sum+=first.get(i,0)*second.get(j,0);
+
+            }
+        }
+
+        DoubleMatrix firstM=new DoubleMatrix(first.toArray());
+        DoubleMatrix secondM=new DoubleMatrix(second.toArray());
+        double n1=firstM.transpose().mmul(firstM).get(0,0);
+        double n2=secondM.transpose().mmul(secondM).get(0,0);
+
+        return sum/(Math.sqrt(n1)*Math.sqrt(n2));
+
+    }
 }

@@ -3,24 +3,19 @@ package base;
 import org.apache.mahout.math.matrix.DoubleMatrix2D;
 import preprocessing.USPTOSearch;
 
-import java.util.ArrayList;
-import java.util.Locale;
-
 /**
- * Created by sunlei on 15/9/6.
+ * Created by leisun on 15/12/1.
  */
-public class patent
-{
+public class patentTF {
     private String patent_number;
     private String abs;
     private String claims;
     private String description;
     /**Text vector representation of the patent**/
-    private DoubleMatrix2D td;
-    private DoubleMatrix2D td_abs;
-    private DoubleMatrix2D td_claims;
-    private DoubleMatrix2D td_des;
-    private DoubleMatrix2D td_title;
+    private double[] td_abs;
+    private double[] td_claims;
+    private double[] td_des;
+    private double[] td_title;
     /**Attributes of the patent**/
     private String author;
     private String firstName;
@@ -35,12 +30,7 @@ public class patent
     private String country;
     private String ID;
 
-    public ArrayList<String> absStems;
-    public ArrayList<String> titleStems;
-    public ArrayList<String> claimsStems;
-    public ArrayList<String> desStems;
-
-    public patent(String patent_number,String abs,String claims,String description,String title,String category,String Assignee,String lastname,String firstname,String lat,String lng,String coAuthor,String country,String asgNum)
+    public patentTF(String patent_number,String abs,String claims,String description,String title,String category,String Assignee,String lastname,String firstname,String lat,String lng,String coAuthor,String country,String asgNum)
     {
         this.patent_number=patent_number;
         this.abs=abs;
@@ -60,19 +50,19 @@ public class patent
 
     }
 
-   public patent(String patent_number,String category,String assignee,String author){
-       this.patent_number=patent_number;
-       this.category=category;
-       this.assignee=assignee;
-       this.author=author;
+    public patentTF(String patent_number,String category,String assignee,String author){
+        this.patent_number=patent_number;
+        this.category=category;
+        this.assignee=assignee;
+        this.author=author;
 
-       USPTOSearch searchPatent=new USPTOSearch(patent_number);
-       this.setAbs(searchPatent.getAbs());
-       this.setClaims(searchPatent.getClaims());
-       this.setDescription(searchPatent.getDescription());
-       this.setTitle(searchPatent.getTitle());
+        USPTOSearch searchPatent=new USPTOSearch(patent_number);
+        this.setAbs(searchPatent.getAbs());
+        this.setClaims(searchPatent.getClaims());
+        this.setDescription(searchPatent.getDescription());
+        this.setTitle(searchPatent.getTitle());
 
-   }
+    }
 
 
     /**Set patent attributes value**/
@@ -81,32 +71,22 @@ public class patent
         this.author=author;
     }
 
-    public void setTd(DoubleMatrix2D M)
+   
+
+    public void setTd_abs(double[] M)
     {
-        td=M.copy();
+        this.td_abs=M;
     }
 
-    public void setTd_abs(DoubleMatrix2D M)
+    public void setTd_des(double[] M)
     {
-        this.td_abs=M.copy();
+        this.td_des=M;
     }
 
-    public void setTd_des(DoubleMatrix2D M)
-    {
-        this.td_des=M.copy();
-    }
+    public void setTd_claims(double[] M) {this.td_claims=M;}
 
-    public void setTd_claims(DoubleMatrix2D M)
-    {
-        this.td_claims=M.copy();
-    }
-
-    public void setTd_title(DoubleMatrix2D M)
-    {
-        this.td_title=M.copy();
-    }
-
-
+    public void setTd_title(double[] M) { this.td_title=M;}
+    
     public void setAssignee(String assignee){this.assignee=assignee;}
 
     public void setCategory(String category){this.assignee= category;}
@@ -143,28 +123,23 @@ public class patent
     {
         return this.author;
     }
-
-    public DoubleMatrix2D getTd()
-    {
-        return td;
-    }
-
-    public DoubleMatrix2D getTd_abs()
+    
+    public double[] getTd_abs()
     {
         return td_abs;
     }
 
-    public DoubleMatrix2D getTd_des()
+    public double[] getTd_des()
     {
         return td_des;
     }
 
-    public DoubleMatrix2D getTd_claims()
+    public double[] getTd_claims()
     {
         return td_claims;
     }
 
-    public DoubleMatrix2D getTd_title()
+    public double[] getTd_title()
     {
         return td_title;
     }
@@ -226,5 +201,4 @@ public class patent
         str+="title: "+this.getTitle();
         return str;
     }
-
 }

@@ -250,7 +250,7 @@ public class PatentsGenerator {
 
 
                 } else {
-                    System.out.println(var0.getString("Patent")+" "+var0.getString("LastName"));
+                 //   System.out.println(var0.getString("Patent")+" "+var0.getString("LastName"));
                     var2++;
                 }
 

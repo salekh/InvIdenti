@@ -86,7 +86,7 @@ public class DBScanCore {
                     temp++;
                 }
             }
-            if (temp>=3) corePts[i]=true;
+            if (temp>=minpts) corePts[i]=true;
         }
     }
 

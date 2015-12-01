@@ -105,10 +105,10 @@ public class Evaluation {
 
 
 
-        System.out.println(TP + " " + FP + " " + " " + TN + " " + FN);
+    //    System.out.println(TP + " " + FP + " " + " " + TN + " " + FN);
 
-        System.out.print("lumping:"+(double)FP/(TP+FN));
-        System.out.print("Splitting:"+(double)FN/(TP+FN));
+//        System.out.print("lumping:"+(double)FP/(TP+FN));
+  //      System.out.print("Splitting:"+(double)FN/(TP+FN));
 
         this.lumping=(double)FP/(TP+FN);
         this.splitting=(double)FN/(TP+FN);

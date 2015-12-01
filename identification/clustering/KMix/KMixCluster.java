@@ -27,6 +27,4 @@ public class KMixCluster {
         return this.patentsIndex;
     }
 
-
-
 }
