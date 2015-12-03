@@ -20,14 +20,11 @@ public class LRWeightLearning extends ParameterLearning {
     public AbstractDistance estimateDistanceFunction() {
 
         this.generateLRTraiingData();
-        int maxIteration=4000;
-        double alpha=2;
-        double lamda=2;
+        int maxIteration=1000;
+
         pair<DoubleMatrix,DoubleMatrix> result=this.logisticRTrainingDataGenerator();
 
-
         double[][] var0=new double[numberofOptions+1][1];
-
         for(int i=0;i<numberofOptions+1;i++) {
             var0[i][0]=1.0;
         }
@@ -36,82 +33,68 @@ public class LRWeightLearning extends ParameterLearning {
 
         DoubleMatrix thetas=new DoubleMatrix(var0);
         thetas.transpose();
-
+        outputMatrix(thetas.transpose(),"asd");
         DoubleMatrix X=result.firstarg;
         DoubleMatrix Y=result.secondarg;
 
+        double alpha=0.01/(X.rows/(40*79));
+        double lamda=0;
+
         Y=Y.transpose();
-        DoubleMatrix varM4=new DoubleMatrix();
+
         for(int k=0;k<maxIteration;k++) {
 
 
-            double sum=0;
+            double sum = 0;
 
-            DoubleMatrix varM1 = new DoubleMatrix(X.transpose().toArray2());
-
-
-            varM1 = varM1.transpose().mmul(thetas);
+            DoubleMatrix varM1=applyLogisticonData(X,thetas);
 
 
-            DoubleMatrix varM2 = new DoubleMatrix(varM1.rows, varM1.columns);
+            for (int m = 0; m < Y.rows; m++) {
 
-            varM2.subi(varM1);
+                sum += Y.get(m, 0) * Math.log(varM1.get(m, 0)) + (1 - Y.get(m, 0)) * Math.log(1 - varM1.get(m, 0));
 
-
-
-            MatrixFunctions.expi(varM2);
-
-
-
-            varM2.addi(1);
-
-
-            DoubleMatrix varM3 = new DoubleMatrix(varM2.rows, varM2.columns);
-            varM3.addi(1);
-            varM3.divi(varM2);
-
-            for(int m=0;m<Y.rows;m++) {
-                if(Y.get(m,0)==1) {
-                    sum+=Math.log(varM3.get(m,0));
-                } else {
-                    sum+=Math.log(1-varM3.get(m,0));
-                }
             }
-            sum=-sum/Y.rows;
+
+            sum = -sum ;
 
 
-            varM3.subi(Y);
+            //System.out.println(k+ " " + sum);
 
-            varM4=new DoubleMatrix(varM3.toArray2());
-            MatrixFunctions.absi(varM4);
-          //  if (varM4.sum()/X.rows>previous_error) break;
-            previous_error=varM4.sum()/X.rows;
+            varM1.subi(Y);
+
+            varM1 = X.transpose().mmul(varM1);
 
 
-            varM3 = X.transpose().mmul(varM3);
+            // DoubleMatrix thetas1 = new DoubleMatrix(thetas.toArray2());
 
+            //thetas1 = thetas1.put(0, 0, 0);
+
+
+            varM1.muli(alpha);
             DoubleMatrix thetas_p=new DoubleMatrix(thetas.toArray2());
 
-            DoubleMatrix thetas1 = new DoubleMatrix(thetas.toArray2());
+            // thetas1.muli(lamda * alpha);
 
-            thetas1=thetas1.put(0, 0, 0);
-
-
-
-            varM3.muli(alpha / X.rows);
+            thetas.subi(varM1);
+            //  thetas.subi(thetas1);
 
 
-            thetas1.muli(lamda *alpha/ X.rows);
+
+            //outputMatrix(thetas.transpose(),"final result");
 
 
-            thetas.subi(varM3);
 
-            thetas.subi(thetas1);
+            DoubleMatrix thetas_t=new DoubleMatrix(thetas_p.toArray2());
+            thetas_t=MatrixFunctions.absi(thetas_t);
 
             thetas_p=MatrixFunctions.absi(thetas_p.subi(thetas));
 
+            thetas_p.divi(thetas_t);
 
-            if (thetas_p.sum()/X.columns<0.0005) {
+
+
+            if (thetas_p.sum()/thetas_p.rows<0.005) {
                 System.out.println();
                 System.out.println(X.columns);
                 System.out.println(k);
@@ -119,10 +102,6 @@ public class LRWeightLearning extends ParameterLearning {
             }
 
         }
-
-
-
-
 
         System.out.println("Final correcteness: "+previous_error);
 
@@ -148,7 +127,42 @@ public class LRWeightLearning extends ParameterLearning {
     }
 
 
+    public DoubleMatrix applyLogisticonData(DoubleMatrix X,DoubleMatrix thetas) {
 
+
+
+
+        DoubleMatrix varM1 = new DoubleMatrix(X.transpose().toArray2());
+
+
+        varM1 = varM1.transpose().mmul(thetas);
+
+
+
+
+        DoubleMatrix varM2 = new DoubleMatrix(varM1.rows, varM1.columns);
+
+        varM2.subi(varM1);
+
+
+        MatrixFunctions.expi(varM2);
+
+
+        varM2.addi(1);
+
+        // outputMatrix(varM2,"asd");
+        //
+
+        DoubleMatrix varM3 = new DoubleMatrix(varM2.rows, varM2.columns);
+        varM3.addi(1);
+
+        varM3.divi(varM2);
+
+        //outputMatrix(varM3.transpose(),"check");
+
+        return varM3;
+
+    }
 
     public void outputMatrix(DoubleMatrix x,String name) {
         logger.error("Matrix Name:" +name);
@@ -173,16 +187,18 @@ public class LRWeightLearning extends ParameterLearning {
         for (int i = 0; i < this.patents.size() - 1; i++) {
             for (int j = i + 1; j < this.patents.size(); j++) {
                 int[] tempint = new int[2];
+
                 tempint[0] = i;
                 tempint[1] = j;
+
                 double result;
 
                 if (this.patentsID.get(i).equalsIgnoreCase(this.patentsID.get(j))) {
                     result = 1.0;
-
                 } else {
                     result = 0.0;
                 }
+
                 this.lrTrainingData.add(new pair<>(tempint, result));
             }
         }

@@ -26,16 +26,16 @@ public class main {
     private static Logger logger= LogManager.getLogger(main.class.getName());
 
 
-    String traingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&S";
-    String testingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&SDulplicateName";
-    String infoPath="/Users/leisun/Desktop/ThesisData/PatentData/PatTest.sqlite";
+    String traingPath="/Users/sunlei/Desktop/ThesisData/TrainingData/E&STest";
+    String testingPath="/Users/sunlei/Desktop/ThesisData/TrainingData/E&STest";
+    String infoPath="/Users/sunlei/Desktop/ThesisData/PatentData/PatTest.sqlite";
 
     pair<ArrayList<patent>,ArrayList<String>> training;
     pair<ArrayList<patent>,ArrayList<String>> testing;
 
 
     public main(int num){
-        training=new patentsDataset(traingPath,infoPath,5027,"Benchmark").getPatents();
+        training=new patentsDataset(traingPath,infoPath,1000,"Benchmark").getPatents();
 
         subsetofTrainingwithRandomly(num);
 
@@ -88,7 +88,7 @@ public class main {
 
         Training var4=new Training(training.firstarg,training.secondarg,new LRWeightLearning());
         pair<AbstractDistance,Double> var5=var4.estimateParameter();
-
+        logger.warn(var5.firstarg);
         Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
         double FMeasure=e.evaluate(var5.firstarg,var5.secondarg,new DBScanClusteringPatents());
 
@@ -102,7 +102,7 @@ public class main {
 
     public double crossValidate(){
 
-        int k=5;
+        int k=10;
         ArrayList<patent> patents=new ArrayList<>();
         ArrayList<String> patentsID=new ArrayList<>();
         Boolean shuffle=true;
@@ -201,7 +201,7 @@ public class main {
         ArrayList<Double> lumpings=new ArrayList<>();
         ArrayList<Double> splittings=new ArrayList<>();
 
-        for(int i=5000;i<5001;i+=1000) {
+        for(int i=1000;i<1001;i+=1000) {
         logger.warn("Size: "+i);
             main temp=new main(i);
             //logger.error(i+" "+temp.test()+" "+temp.lumpings.get(0)+" "+temp.splittings.get(0)+";");

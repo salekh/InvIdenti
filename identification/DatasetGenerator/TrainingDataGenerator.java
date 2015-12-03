@@ -134,7 +134,11 @@ public class TrainingDataGenerator {
 
             var2=var1.readLine();
             int var5=10000;
-
+            int var=9795;
+            while(var>0) {
+                var2=var1.readLine();
+                var--;
+            }
             while (var2!=null) { //Control the dataset Size
                 if (var5>=0) {
                     if (var5<1) {
