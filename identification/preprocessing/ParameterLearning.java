@@ -58,11 +58,14 @@ public abstract class ParameterLearning {
      * preprocess the patents;
      */
     protected void preprocess() {
+        double start=System.currentTimeMillis();
+        patentPreprocessingTF preprocess = new patentPreprocessingTF(this.patents);
 
-        patentPreprocessing preprocess = new patentPreprocessing(this.patents);
         preprocess.setLanguage(LanguageCode.ENGLISH);
         preprocess.preprocess();
         this.patents = preprocess.getPatents();
+        double end=System.currentTimeMillis();
+        System.out.println("Preprocessing Time"+(end-start));
 
     }
 

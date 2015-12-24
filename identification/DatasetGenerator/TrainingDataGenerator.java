@@ -71,6 +71,18 @@ public class TrainingDataGenerator {
                 var0.mkdirs();
             }
 
+            if (var2==null||var2.getAbs()==null||var2.getTitle()==null||var2.getClaims()==null||var2.getDescription()==null||var2.getClaims().length()==0||var2.getDescription().length()==0||var2.getTitle().length()==0) {
+                FileWriter fw= null;
+                try {
+                    fw = new FileWriter("faillist.txt",true);
+                    fw.write(var2.patetnt_number+"\n");
+                    fw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
             this.storeText(var3+"/Abstract.txt",var2.getAbs());
             this.storeText(var3+"/Claims.txt",var2.getClaims());
             this.storeText(var3+"/Description.txt",var2.getDescription());
@@ -133,12 +145,13 @@ public class TrainingDataGenerator {
             }
 
             var2=var1.readLine();
-            int var5=10000;
+            int var5=40000;
+           /*
             int var=9795;
             while(var>0) {
                 var2=var1.readLine();
                 var--;
-            }
+            }*/
             while (var2!=null) { //Control the dataset Size
                 if (var5>=0) {
                     if (var5<1) {

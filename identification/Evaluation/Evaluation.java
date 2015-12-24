@@ -49,8 +49,8 @@ public class Evaluation {
         method.setThreshold(threshold);
 
         method.Cluster(distance);
-        logger.error("Clustering Result\n");
-        logger.error(method);
+        //logger.error("Clustering Result\n");
+        //logger.error(method);
         double FMeasurement=getFScoreofClustering(method.getClustersIndex(),patentsID);
 
         logger.warn("F Measurement:"+ FMeasurement);

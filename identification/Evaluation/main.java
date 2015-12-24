@@ -3,6 +3,7 @@ package Evaluation;
 import base.pair;
 import base.patent;
 import clustering.Dbscan.DBScanClusteringPatents;
+import clustering.SimMatrix;
 import clustering.distancefunction.AbstractDistance;
 import clustering.distancefunction.CosDistance;
 import clustering.hierarchy.HierClusteringPatents;
@@ -26,18 +27,18 @@ public class main {
     private static Logger logger= LogManager.getLogger(main.class.getName());
 
 
-    String traingPath="/Users/sunlei/Desktop/ThesisData/TrainingData/E&STest";
-    String testingPath="/Users/sunlei/Desktop/ThesisData/TrainingData/E&STest";
-    String infoPath="/Users/sunlei/Desktop/ThesisData/PatentData/PatTest.sqlite";
+    String traingPath="/Users/leisun/Desktop/ThesisData/TrainingData/ESPubmed";
+    String testingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&STest";
+    String infoPath="/Users/leisun/Desktop/ThesisData/PatentData/PatTest.sqlite";
 
     pair<ArrayList<patent>,ArrayList<String>> training;
     pair<ArrayList<patent>,ArrayList<String>> testing;
 
 
     public main(int num){
-        training=new patentsDataset(traingPath,infoPath,1000,"Benchmark").getPatents();
+        training=new patentsDataset(traingPath,infoPath,4000,"Benchmark").getPatents();
 
-        subsetofTrainingwithRandomly(num);
+       subsetofTrainingwithRandomly(num);
 
         testing=new patentsDataset(testingPath,infoPath,48,"Benchmark").getPatents();
 
@@ -87,9 +88,14 @@ public class main {
     public double testingWithTraining(pair<ArrayList<patent>,ArrayList<String>> training,pair<ArrayList<patent>,ArrayList<String>> testing) {
 
         Training var4=new Training(training.firstarg,training.secondarg,new LRWeightLearning());
+
+
         pair<AbstractDistance,Double> var5=var4.estimateParameter();
         logger.warn(var5.firstarg);
+        logger.warn("Threshold: " + var5.secondarg );
         Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
+//      SimMatrix s=new SimMatrix(testing.firstarg,var5.firstarg);
+  //    s.buildMatrix(var5.secondarg,testing.secondarg);
         double FMeasure=e.evaluate(var5.firstarg,var5.secondarg,new DBScanClusteringPatents());
 
 
@@ -122,6 +128,8 @@ public class main {
         }else {
             patents=training.firstarg;
             patentsID=training.secondarg;
+
+
         }
 
         logger.info("Patents Initialized");
@@ -138,7 +146,6 @@ public class main {
             if (end>patents.size()-1) end=patents.size()-1;
             pair<pair<ArrayList<patent>,ArrayList<String>>,pair<ArrayList<patent>,ArrayList<String>>> var0=this.getTrainingandTesingPatents(start,end,patents,patentsID,shuffleIndex);
             FMeasure.add(testingWithTraining(var0.firstarg,var0.secondarg));
-
         }
 
         logger.info("");
@@ -179,6 +186,7 @@ public class main {
             } else {
                 training.add(patents.get(i));
                 trainingIDs.add(patentsID.get(i));
+
             }
         }
 
@@ -194,6 +202,11 @@ public class main {
 
     public static void main(String[] args) {
 
+
+
+
+
+        long begintime=System.currentTimeMillis();
         double sum=0;
         double sumL=0;
         double sumS=0;
@@ -201,7 +214,7 @@ public class main {
         ArrayList<Double> lumpings=new ArrayList<>();
         ArrayList<Double> splittings=new ArrayList<>();
 
-        for(int i=1000;i<1001;i+=1000) {
+        for(int i=4000;i<4001;i+=900) {
         logger.warn("Size: "+i);
             main temp=new main(i);
             //logger.error(i+" "+temp.test()+" "+temp.lumpings.get(0)+" "+temp.splittings.get(0)+";");
@@ -224,8 +237,9 @@ public class main {
             System.out.print(d+" ");
         }
 
+        long endtime=System.currentTimeMillis();
 
-
+        System.out.println("Time Cost:"+(endtime-begintime));
 
     }
 

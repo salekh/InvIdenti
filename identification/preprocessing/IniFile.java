@@ -20,6 +20,8 @@ public class IniFile {
     private String trainingDataInputPath;
     private String trainingDataOutputPath;
     private String infoDataPath;
+    private String samplePath;
+    private String textPath;
 
     private boolean pCorrelation;
 
@@ -59,6 +61,8 @@ public class IniFile {
             trainingDataInputPath=ini.get("DataSet","TrainingDataInputPath");
             trainingDataOutputPath=ini.get("DataSet","TrainingDataOutputPath");
             infoDataPath=ini.get("DataSet","InfoDataPath");
+            textPath=ini.get("Dataset","TextPath");
+            samplePath=ini.get("Dataset","SamplePath");
 
 
         } catch (IOException e) {
@@ -101,6 +105,8 @@ public class IniFile {
             trainingDataInputPath=ini.get("DataSet","TrainingDataInputPath");
             trainingDataOutputPath=ini.get("DataSet","TrainingDataOutputPath");
             infoDataPath=ini.get("DataSet","InfoDataPath");
+            textPath=ini.get("Dataset","TextPath");
+            samplePath=ini.get("Dataset","SamplePath");
 
 
         } catch (IOException e) {
@@ -140,5 +146,9 @@ public class IniFile {
     public boolean getPCorrelation() {
         return this.pCorrelation;
     }
+
+    public String getSamplePath() {return this.samplePath;}
+
+    public String getTextPath() {return this.textPath;}
 
 }

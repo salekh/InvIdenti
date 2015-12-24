@@ -10,11 +10,11 @@ import java.util.ArrayList;
 /**
  * Created by leisun on 15/11/9.
  */
-public class invClustering extends  patentClustering{
+public class invClustering extends patentClustering{
 
     private SimMatrix simMatrix;
     ArrayList<NameCluster> nameClusters=new ArrayList<>();
-
+    public ArrayList<String> patentsID;
 
     public void Cluster(AbstractDistance d) {
         /**

@@ -128,6 +128,9 @@ public class PatentsGenerator {
             String description=readText(this.textsPath+patentNumber+"/"+"Description.txt");
             String title=readText(this.textsPath+patentNumber+"/"+"Title.txt");
             String coAuthor="";
+          //  if (abs.length()<5||claims.length()<5||description.length()<5||title.length()<5)
+            ///    return null;
+
             while (var0.next()) {
 
                 String patent=var0.getString("Patent");
@@ -151,7 +154,7 @@ public class PatentsGenerator {
                 }
 
 
-                if (authorLastName.equalsIgnoreCase(lastname)||authorFirstName.equalsIgnoreCase(firstname))
+                if (authorLastName.equalsIgnoreCase(lastname)&&authorFirstName.equalsIgnoreCase(firstname))
                 {
                    /*
                     if(abs.length()==0||claims.length()==0||description.length()==0) {
@@ -170,6 +173,9 @@ public class PatentsGenerator {
             }
             if (var2!=null){
                 var2.setCoAuthor(coAuthor);
+            } else
+            {
+
             }
             return var2;
         } catch (SQLException e) {
@@ -199,6 +205,7 @@ public class PatentsGenerator {
                     str+=line;
                     line=r.readLine();
                 }
+                r.close();
                 return str;
             }
         } catch (FileNotFoundException e) {

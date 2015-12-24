@@ -138,7 +138,7 @@ public abstract class patentClustering
     /**Preprocessing for the clustering**/
     protected void preprocess() {
 
-        patentPreprocessing preprocess = new patentPreprocessing(this.patents);
+        patentPreprocessingTF preprocess = new patentPreprocessingTF(this.patents);
         preprocess.setLanguage(this.language);
         preprocess.preprocess();
         this.patents = preprocess.getPatents();

@@ -4,9 +4,13 @@ package clustering;
 import base.pair;
 import base.patent;
 import clustering.distancefunction.CosDistance;
+import info.debatty.java.stringsimilarity.*;
 import com.carrotsearch.hppc.IntArrayList;
 import com.carrotsearch.hppc.IntIntHashMap;
 import com.carrotsearch.hppc.cursors.IntIntCursor;
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.mahout.math.matrix.DoubleMatrix2D;
@@ -39,6 +43,30 @@ public class testMain
     private static Logger l= LogManager.getLogger(testMain.class.getName());
     public static void main(String[] args) {
 //        SqlitePatents s=new SqlitePatents("/Users/sunlei/Desktop/ThesisData/PatentData/PatTest.sqlite");
+
+
+        double[][] x={{1,0,1,0,0,0},{0,1,0,0,0,0},{1,1,0,0,0,0},{1,0,0,1,1,0},{0,0,0,1,0,1}};
+
+        Array2DRowRealMatrix X=new Array2DRowRealMatrix(x);
+
+        SingularValueDecomposition de=new SingularValueDecomposition(X);
+
+
+        Array2DRowRealMatrix U=(Array2DRowRealMatrix) de.getU();
+        Array2DRowRealMatrix T=(Array2DRowRealMatrix) de.getVT();
+
+        double[] singularValue=de.getSingularValues();
+
+
+        for(int i=0;i<singularValue.length;i++) {
+            System.out.println(singularValue[i]);
+        }
+
+        int[] rows={1,2};
+
+
+
+        System.exit(1);
 
         /**
          * Test one patent

@@ -64,7 +64,7 @@ public class patentPreprocessing {
 
     public void preprocess()
     {
-//        this.generateTextVector("FullText");
+//      this.generateTextVector("FullText");
         this.generateTextVector("Abstract");
         this.generateTextVector("Claims");
         this.generateTextVector("Description");
@@ -80,7 +80,7 @@ public class patentPreprocessing {
         {
             String temp=" ";
 
-  //          if (str.equalsIgnoreCase("FullText")) temp=p.getAbs() + " " + p.getClaims() + " " + p.getDescription();
+  //        if (str.equalsIgnoreCase("FullText")) temp=p.getAbs() + " " + p.getClaims() + " " + p.getDescription();
             if (str.equalsIgnoreCase("Abstract")) temp=p.getAbs();
             if (str.equalsIgnoreCase("Claims"))   temp=p.getClaims();
             if (str.equalsIgnoreCase("Description")) temp=p.getDescription();

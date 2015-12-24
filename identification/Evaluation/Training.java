@@ -19,6 +19,8 @@ public class Training {
     public Training(ArrayList<patent> patents, ArrayList<String> patentsID, ParameterLearning method) {
         this.patents=patents;
         this.patentsID=patentsID;
+
+
         this.method=method;
     }
 

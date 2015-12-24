@@ -4,12 +4,15 @@ import base.patent;
 import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.apache.logging.log4j.Logger;
 import org.ini4j.Wini;
+import us.codecraft.webmagic.model.formatter.BasicTypeFormatter;
 
 import javax.naming.ldap.HasControls;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 
@@ -44,8 +47,8 @@ public abstract class AbstractDistance {
 
     protected double weightLocation=1.0;
     protected double weightCoAuthor=1.0;
-    protected double weightLastName=1.0;
-    protected double weightFirstName=1.0;
+    public double weightLastName=1.0;
+    public double weightFirstName=1.0;
 
 
     public boolean show=false;
@@ -128,19 +131,19 @@ public abstract class AbstractDistance {
                 if (this.pCorrelation) return 1.0;
                else return 0.0;
             }
-            /*else {
+            else {
                 if (this.pCorrelation) return 0.0;
                 else return 1.0;
-            }*/
+            }
         }
 
 
 
         if (str1==null || str2==null||str1.length()==0||str2.length()==0) {
           if (this.pCorrelation)  {
-              return 0.25;
+              return 0.0;
           } else {
-              return 0.75;
+              return 1.0;
           }
         }
 
@@ -151,13 +154,18 @@ public abstract class AbstractDistance {
 
         double var1=var0.distance(str1,str2);
 
-        if (var1<0.1) result=0.0; else
-        if (var1<0.2) result=1.0; else
+        if (var1>0.4) var1=1.0;
 
-        if (var1<0.3) result=2.0; else
-        if (var1<0.4) result=3.0; else
-        result=4.0;
+       /*
+        if (var1>0.9) var1=1.0;
+        if (var1>0.7) var1=2.0;
+        else if(var1>0.5) var1=3.0;
+        else if(var1>0.3) var1=4.0;
+        else if(var1>0.1) var1=5.0;
+        else var1=6.0;
 
+        var1=var1/6;
+*/
         if (this.pCorrelation)
         {
             return (1.0-var1);
@@ -178,9 +186,9 @@ public abstract class AbstractDistance {
         double result=0.0;
         if (str1==null || str2==null||str1.length()==0||str2.length()==0) {
            if(pCorrelation) {
-               return 0.33;
+               return 0;
            } else {
-               return 0.67;
+               return 1;
            }
         }
         String[] strs_1=str1.split("/");
@@ -235,25 +243,25 @@ public abstract class AbstractDistance {
         for (Iterator<String> iterator = var0.keySet().iterator(); iterator.hasNext(); ) {
             String var4 = iterator.next();
             if (var1.containsKey(var4)) {
-                result+=1;
+                result+=1.0;
                 ArrayList<String> var5=var0.get(var4);
                 ArrayList<String> var6=var1.get(var4);
                 for(String var7:var5) {
                     if (var6.contains(var7)) {
 
-                        result+=2.0;
+                        result+=1.0;
                     }
                 }
             }
         }
 
-        if (result>5) {
+        if (result>4) {
             result=1.0;
         } else {
-            result/=5.0;
+            result/=4.0;
         }
 
-
+      //  logger.error(str1+" "+str2+" "+result);
         if(pCorrelation) {
             return result;
         } else {
@@ -297,9 +305,9 @@ public abstract class AbstractDistance {
 
         if (coAuthor1==null||coAuthor2==null||coAuthor1.length()==0||coAuthor2.length()==0) {
             if (this.pCorrelation) {
-                return 1.0/6.0;
+                return 0;
             } else {
-                return 5.0/6.0;
+                return 1;
             }
 
         }
@@ -310,6 +318,30 @@ public abstract class AbstractDistance {
         String[] coAuthorNames2=coAuthor2.split(";");
         String[] lessNames;
         String[] moreNames;
+
+        HashSet<String> first=new HashSet<>();
+        HashSet<String> second=new HashSet<>();
+
+        for(String str:coAuthorNames1) {
+            first.add(str);
+        }
+        for(String str:coAuthorNames2) {
+            second.add(str);
+        }
+
+        HashSet<String> intersect=new HashSet<>();
+        HashSet<String> union=new HashSet<>();
+
+        intersect.addAll(first);
+        intersect.retainAll(second);
+
+        union.addAll(first);
+        union.addAll(second);
+
+        result=(double) intersect.size()/union.size();
+
+
+       /*
         if (coAuthorNames1.length>coAuthorNames2.length) {
             lessNames=coAuthorNames2;
             moreNames=coAuthorNames1;
@@ -318,30 +350,34 @@ public abstract class AbstractDistance {
             lessNames=coAuthorNames1;
         }
 
-        NormalizedLevenshtein var0 = new NormalizedLevenshtein();
+
 
         for(String var1:lessNames) {
-            double max=-1;
+
             for (String var2: moreNames) {
-                double temp=(1.0-var0.distance(var1,var2));
-                if (temp>max) max=temp;
+            if (var2.equalsIgnoreCase(var1)) {
+                result+=1.0;
             }
-            result+=max;
+            }
         }
         if (result>6.0) {
             result=6.0;
         }
+
+        }*/
         if (this.pCorrelation) {
-            return result/6.0;
+            return result;
         } else {
-        return (1-result/6.0);
+            return (1-result);
         }
     }
 
 
     public  double compareLocation(String country1,String lat1,String lng1,String country2,String lat2,String lng2) {
         double result=0.0;
-        if (country1.equalsIgnoreCase(country2)) {
+
+
+        if (country1==null||country2==null||country1.equalsIgnoreCase(country2)) {
             if (lat1==null||lat2==null||lng1==null||lng2==null) {
                 result=1.0;
             } else {
@@ -359,7 +395,13 @@ public abstract class AbstractDistance {
                 else if ( distance < 50.0 )
                     result = 2.0;
                 else
+                {
                     result = 1.0;
+                }
+
+                if ((country1==null||country2==null)&&distance>500) {
+                    result=0.0;
+                }
 
             }
 
@@ -446,22 +488,20 @@ public abstract class AbstractDistance {
 
     public String toString() {
         String var0="Distance Type:"+this.distanceType+"\n";
-
+        DecimalFormat df = new DecimalFormat("#0.00");
         var0+="Options:\n";
 
-        var0+="\t"+"FullText    |"+this.weightFullText+"\n";
-        var0+="\t"+"Abstract    |"+this.weightAbstract+"\n";
-        var0+="\t"+"Claims      |"+this.weightClaims+"\n";
-        var0+="\t"+"Description |"+this.weightDes+"\n";
-        var0+="\t"+"Categories  |"+this.weightCategory+"\n";
-        var0+="\t"+"Assignee    |"+this.weightAssignee+"\n";
-        var0+="\t"+"LastName    |"+this.weightLastName+"\n";
-        var0+="\t"+"FirstName   |"+this.weightFirstName+"\n";
-        var0+="\t"+"CoAuthor    |"+this.weightCoAuthor+"\n";
-        var0+="\t"+"Location    |"+this.weightLocation+"\n";
-        var0+="\t"+"Title       |"+this.weightTitle+"\n";
-
-       // var0+="Weights:"+this.weightFullText+","+this.weightAbstract+","+weightClaims+","+weightDes+","+weightAssignee+","+weightCategory+","+weightName+" "+weightCoAuthor+" "+weightLocation;
+        var0+="\t"+"FullText    |"+df.format(this.weightFullText)+" \t|"+this.fulltextCompare+"\n";
+        var0+="\t"+"Abstract    |"+df.format(this.weightAbstract)+" \t|"+this.abstractCompare+"\n";
+        var0+="\t"+"Claims      |"+df.format(this.weightClaims)+" \t|"+this.claimsCompare+"\n";
+        var0+="\t"+"Description |"+df.format(this.weightDes)+" \t|"+this.desComapre+"\n";
+        var0+="\t"+"Categories  |"+df.format(this.weightCategory)+" \t|"+this.categoryCompare+"\n";
+        var0+="\t"+"Assignee    |"+df.format(this.weightAssignee)+" \t|"+this.assigneeCompare+"\n";
+        var0+="\t"+"LastName    |"+df.format(this.weightLastName)+" \t|"+this.lastNameCompare+"\n";
+        var0+="\t"+"FirstName   |"+df.format(this.weightFirstName)+" \t|"+this.firstNameCompare+"\n";
+        var0+="\t"+"CoAuthor    |"+df.format(this.weightCoAuthor)+" \t|"+this.coAuthorCompare+"\n";
+        var0+="\t"+"Location    |"+df.format(this.weightLocation)+" \t|"+this.locationCompare+"\n";
+        var0+="\t"+"Title       |"+df.format(this.weightTitle)+" \t|"+this.titleCompare+"\n";
 
         return var0;
     }
