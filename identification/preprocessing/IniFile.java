@@ -61,8 +61,9 @@ public class IniFile {
             trainingDataInputPath=ini.get("DataSet","TrainingDataInputPath");
             trainingDataOutputPath=ini.get("DataSet","TrainingDataOutputPath");
             infoDataPath=ini.get("DataSet","InfoDataPath");
-            textPath=ini.get("Dataset","TextPath");
-            samplePath=ini.get("Dataset","SamplePath");
+            textPath=ini.get("DataSet","TextPath");
+            samplePath=ini.get("DataSet","SamplePath");
+
 
 
         } catch (IOException e) {
