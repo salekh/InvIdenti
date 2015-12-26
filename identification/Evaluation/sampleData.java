@@ -169,7 +169,7 @@ public class sampleData {
         DoubleMatrix Y=new DoubleMatrix(var1);
 
         System.out.println();
-        logger.info("Finished Generating!");
+        logger.info("Finished Generating!"+X.rows);
 
         return new pair<>(X, Y);
     }
@@ -237,9 +237,13 @@ public class sampleData {
         new learningRate(this.numberofOptions,this.training_matrices.firstarg,this.training_matrices.secondarg);
     }
 
+    public void estimateRegularizationParameter() {
+        new regularizationParameter(this.training_matrices.firstarg,this.training_matrices.secondarg,numberofOptions);
+    }
+
     public static void main(String[] args) {
         sampleData l=new sampleData();
-        l.estimatelearningRate();
-
+        //l.estimatelearningRate();
+        l.estimateRegularizationParameter();
     }
 }
