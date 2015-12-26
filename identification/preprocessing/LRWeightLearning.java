@@ -95,7 +95,7 @@ public class LRWeightLearning extends ParameterLearning {
 
             double initialalpha = 8.1e-5*225*449;
             double alpha = initialalpha;
-            double lamda = 10;
+            double lamda = 5;
 
             boolean finish = false;
             int check = 0;
@@ -104,13 +104,13 @@ public class LRWeightLearning extends ParameterLearning {
 
 
 
-            for (int k = 0; k < maxIteration; k += 1) {
+            for (int k = 0; k < maxIteration; k++) {
 
                 starti = 0;
                 startj = 0;
 
 
-                for (int i = 0; i < numberofTrainingData; i += 10000) {
+              //  for (int i = 0; i < numberofTrainingData; i += 10000) {
 
          /*
             int start=i;
@@ -192,7 +192,7 @@ public class LRWeightLearning extends ParameterLearning {
                     } else {
                         pair<DoubleMatrix, Double> var1 = updateWeights(p.firstarg, p.secondarg, thetas_t, alpha/p.firstarg.rows, lamda);
                         if (var1.secondarg / initial_error < 1e-5) break ;
-                        if (2 * Math.abs(var1.secondarg - previous_error) / (var1.secondarg + previous_error + 1e-3) < 1e-3) {
+                        if (2 * Math.abs(var1.secondarg - previous_error) / (var1.secondarg + previous_error + 1e-5) < 1e-5) {
                             finish=true;
                             break ;
                         }
@@ -255,11 +255,12 @@ public class LRWeightLearning extends ParameterLearning {
 
                 break;
             }*/
-                }
                 if (finish) break;
+                }
 
 
-            }
+
+         //   }
 
             logger.error("Final Log Logistic:" + previous_error);
             System.out.println("final iteration number:" + check);
@@ -414,45 +415,6 @@ public class LRWeightLearning extends ParameterLearning {
 
     }
 
-    /**
-     * Extract the value from the trainingdata.txt
-     * @param start start line
-     * @param end end line
-     * @return the similarity matrix and target value vector
-     */
-    public pair<DoubleMatrix, DoubleMatrix> generateDoubleMatrix(int start,int end){
-        ArrayList<String> strs=new ArrayList<>();
-        try {
-            FileReader fr=new FileReader("TrainingData.txt");
-            LineNumberReader lr=new LineNumberReader(fr);
-            int numberofFeatures=lr.readLine().split(";").length;
-            double [][] x=new double[end-start][numberofFeatures-1];
-            double [][] y=new double[end-start][1];
-            lr.setLineNumber(start);
-            for(int vari=start;vari<end;vari++) {
-                String var0=lr.readLine();
-                if(var0==null) break;
-                String[] var2=var0.split(";");
-                //System.out.println(var0);
-                for(int i=0;i<numberofFeatures-1;i++){
-                    //System.out.print(var2[i]+" ");
-                    x[vari-start][i]=Double.parseDouble(var2[i]);
-                }
-               // System.out.println();
-                y[vari-start][0]=Double.parseDouble(var2[numberofFeatures-1]);
-            }
-            return new pair<DoubleMatrix,DoubleMatrix>(new DoubleMatrix(x),new DoubleMatrix(y));
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-
-    }
 
 
     /**

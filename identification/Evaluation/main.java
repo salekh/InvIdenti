@@ -27,16 +27,16 @@ public class main {
     private static Logger logger= LogManager.getLogger(main.class.getName());
 
 
-    String traingPath="/Users/leisun/Desktop/ThesisData/TrainingData/ESPubmed";
-    String testingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&STest";
-    String infoPath="/Users/leisun/Desktop/ThesisData/PatentData/PatTest.sqlite";
+    String traingPath="/Users/sunlei/Desktop/ThesisData/TrainingData/ES";
+    String testingPath="/Users/sunlei/Desktop/ThesisData/TrainingData/E&STest";
+    String infoPath="/Users/sunlei/Desktop/ThesisData/PatentData/PatTest.sqlite";
 
     pair<ArrayList<patent>,ArrayList<String>> training;
     pair<ArrayList<patent>,ArrayList<String>> testing;
 
 
     public main(int num){
-        training=new patentsDataset(traingPath,infoPath,4000,"Benchmark").getPatents();
+        training=new patentsDataset(traingPath,infoPath,2000,"Benchmark").getPatents();
 
        subsetofTrainingwithRandomly(num);
 
@@ -214,7 +214,7 @@ public class main {
         ArrayList<Double> lumpings=new ArrayList<>();
         ArrayList<Double> splittings=new ArrayList<>();
 
-        for(int i=4000;i<4001;i+=900) {
+        for(int i=500;i<501;i+=900) {
         logger.warn("Size: "+i);
             main temp=new main(i);
             //logger.error(i+" "+temp.test()+" "+temp.lumpings.get(0)+" "+temp.splittings.get(0)+";");

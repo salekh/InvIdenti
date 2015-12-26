@@ -145,6 +145,7 @@ public class TrainingDataGenerator {
             }
 
             var2=var1.readLine();
+
             int var5=40000;
            /*
             int var=9795;
@@ -167,7 +168,7 @@ public class TrainingDataGenerator {
                     stmt.executeUpdate(var7);
 
                 } catch(SQLException e) {
-
+                    System.out.println(var2);
                 }
                 patents.add(var6[1]);
                 var2=var1.readLine();

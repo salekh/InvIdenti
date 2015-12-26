@@ -1,9 +1,11 @@
 package DatasetGenerator;
 
+import base.ProgressBar;
 import base.pair;
 import base.patent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.appender.SyslogAppender;
 import org.carrot2.core.LanguageCode;
 
 import java.io.*;
@@ -110,6 +112,15 @@ public class PatentsGenerator {
     public patent getOnePatentFromText(String patentNumber,String table,String lastname,String firstname) {
 
         String var1;
+        lastname=lastname.trim();
+        firstname=firstname.trim();
+
+
+         lastname=lastname.replaceAll("-"," ").replaceAll("\\.","");
+         firstname=firstname.replaceAll("-"," ").replaceAll("\\.","");
+
+
+
         patent var2=null;
         var1=patentNumber;
         if (patentNumber.length()<8) {
@@ -128,14 +139,13 @@ public class PatentsGenerator {
             String description=readText(this.textsPath+patentNumber+"/"+"Description.txt");
             String title=readText(this.textsPath+patentNumber+"/"+"Title.txt");
             String coAuthor="";
-          //  if (abs.length()<5||claims.length()<5||description.length()<5||title.length()<5)
-            ///    return null;
+
 
             while (var0.next()) {
 
                 String patent=var0.getString("Patent");
-                String authorLastName=var0.getString("Lastname");
-                String authorFirstName=var0.getString("Firstname");
+                String authorLastName=var0.getString("Lastname").trim();
+                String authorFirstName=var0.getString("Firstname").trim();
                 String assignee=var0.getString("Assignee");
                 String category=var0.getString("Class");
                 String lat=var0.getString("Lat");
@@ -153,8 +163,20 @@ public class PatentsGenerator {
                     ID=var0.getString("Invnum_N");
                 }
 
+                boolean lastC=authorLastName.equalsIgnoreCase(lastname)||authorLastName.replaceAll(" ","").equalsIgnoreCase(lastname)||lastname.replaceAll(" ","").equalsIgnoreCase(authorLastName)||authorLastName.replaceAll(" ","").equalsIgnoreCase(lastname.replaceAll(" ",""));
+                if (!lastC) {
+                    int num=Math.min(authorLastName.replace(" ","").length(),lastname.replaceAll(" ","").length());
+                    lastC=lastC||authorLastName.replaceAll(" ","").substring(0,num).equalsIgnoreCase(lastname.replaceAll(" ","").substring(0,num));
 
-                if (authorLastName.equalsIgnoreCase(lastname)&&authorFirstName.equalsIgnoreCase(firstname))
+                }
+                boolean firstC=authorFirstName.equalsIgnoreCase(firstname)||authorFirstName.replaceAll(" ","").equalsIgnoreCase(firstname)||firstname.replaceAll(" ","").equalsIgnoreCase(authorFirstName)||authorFirstName.replaceAll(" ","").equalsIgnoreCase(firstname.replaceAll(" ",""));
+
+                if(!firstC) {
+                    int num=Math.min(authorFirstName.replace(" ","").length(),firstname.replaceAll(" ","").length());
+                    firstC=firstC||authorFirstName.replaceAll(" ","").substring(0,num).equalsIgnoreCase(firstname.replaceAll(" ","").substring(0,num));
+                }
+
+                if (lastC&&firstC)
                 {
                    /*
                     if(abs.length()==0||claims.length()==0||description.length()==0) {
@@ -163,12 +185,16 @@ public class PatentsGenerator {
                     */
 
 
+
                     var2=new patent(patent,abs,claims,description,title,category,assignee,authorLastName,authorFirstName,lat,lng,"",country,asigneeNum);
+
+
 
                     var2.setID(ID);
 
                 } else {
-                    coAuthor+=authorLastName+";";
+
+                    coAuthor+=authorLastName+" "+authorFirstName+";";
                 }
             }
             if (var2!=null){
@@ -177,6 +203,14 @@ public class PatentsGenerator {
             {
 
             }
+/*
+            if (var2==null) {
+                System.out.println(lastname+"+"+firstname);
+                System.out.println(patentNumber);
+                System.out.println(coAuthor);
+                System.exit(0);
+            }
+*/
             return var2;
         } catch (SQLException e) {
             logger.error("No Information found for patent:"+patentNumber);
@@ -225,39 +259,60 @@ public class PatentsGenerator {
     public pair<ArrayList<patent>,ArrayList<String>> getTrainingPatents(String table,int startIndex,int size)  {
         ArrayList<patent> patents=new ArrayList<>();
         ArrayList<String> patentsID=new ArrayList<>();
+        logger.warn("Start to generate patents.");
+        System.out.println();
         String sql="select * from "+table;
         try {
             ResultSet var0=this.stmtTraining.executeQuery(sql);
             int var1=startIndex;
 
-            while (var0.next()) {
+
+           do {
+
                 if (var1 < 2) {
                     break;
 
                 } else {
                     var1--;
                 }
-            }
+            } while (var0.next());
+
 
             int var2=size;
-            while (var0.next()) {
-                if (var2<1) {
-                    break;
 
-                } else {
+            int num1=0;
+            while (var0.next()) {
+
+                if (var2==0) {
+                    break;
+                }
+                if(var2>=1) {
                     var2--;
                 }
+
+                if (size>0) {
+
+                    String bar= ProgressBar.barString((int)((size-var2)*100/size));
+                    System.out.print("\r"+bar);
+
+                }
+
                 patent var3=this.getOnePatentFromText(var0.getString("Patent"), "invpat", var0.getString("LastName"),var0.getString("FirstName"));
+
+
+
                 if (var3!=null)
                 {
-                    patents.add(var3);
 
+                    var3.setID(var0.getString("ID"));
+                    patents.add(var3);
                     patentsID.add(var0.getString("ID"));
 
 
 
-                } else {
-                 //   System.out.println(var0.getString("Patent")+" "+var0.getString("LastName"));
+                } else if (var2>-1) {
+
+                    System.out.println("fail");
                     var2++;
                 }
 
@@ -267,7 +322,10 @@ public class PatentsGenerator {
             e.printStackTrace();
         }
 
+
         pair<ArrayList<patent>,ArrayList<String>> result=new pair<>(patents,patentsID);
+        System.out.println();
+        logger.warn("Finish generate the patents.");
         return result;
     }
 
@@ -298,6 +356,11 @@ public class PatentsGenerator {
             }
 
             int var2=size;
+
+            if (size>0) {
+                String bar= ProgressBar.barString(size-var2);
+                System.out.print(bar);
+            }
             while (var0.next()) {
                 if (var2<1) {
                     break;
@@ -321,6 +384,7 @@ public class PatentsGenerator {
             e.printStackTrace();
         }
 
+        System.out.println();
         pair<ArrayList<patent>,ArrayList<String>> result=new pair<>(patents,patentsID);
         return result;
     }

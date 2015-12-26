@@ -24,8 +24,47 @@ public class patentsDataset {
 
     public patentsDataset(String dataPath,String infoPath,int dataSize,String IDType) {
         //ini=new IniFile();
-        this.trainingDataPath=dataPath+"/trainingData.db";
+
+        if (!dataPath.substring(dataPath.length()-3,dataPath.length()).equalsIgnoreCase(".db"))
+        {
+            this.trainingDataPath=dataPath+"/trainingData.db";
+        } else {
+            System.out.println(dataPath);
+            this.trainingDataPath=dataPath;
+        }
         this.trainingTextPath=dataPath+"/PatentsText/";
+        infoDataPath=infoPath;
+        this.dataSize=dataSize;
+        pair<ArrayList<patent>, ArrayList<String>> var0;
+        PatentsGenerator patentGenerator=new PatentsGenerator(infoDataPath,trainingTextPath,trainingDataPath);
+        if(!IDType.equalsIgnoreCase("Benchmark")) {
+            patentGenerator.setIDType(IDType);
+            var0 = patentGenerator.getTrainingPatentsWithEstimatedID("TrainingData", 1, dataSize);
+        }
+        else {
+
+            var0=patentGenerator.getTrainingPatents("TrainingData", 1, dataSize);
+
+        }
+        patents=var0.firstarg;
+        patentsID=var0.secondarg;
+        patentGenerator.closeDatabase();
+    }
+
+
+
+
+    public patentsDataset(String dataPath,String infoPath,String textPath,int dataSize,String IDType) {
+        //ini=new IniFile();
+
+        if (!dataPath.substring(dataPath.length()-3,dataPath.length()).equalsIgnoreCase(".db"))
+        {
+            this.trainingDataPath=dataPath+"/trainingData.db";
+        } else {
+            System.out.println(dataPath);
+            this.trainingDataPath=dataPath;
+        }
+        this.trainingTextPath=textPath+"/";
         infoDataPath=infoPath;
         this.dataSize=dataSize;
         pair<ArrayList<patent>, ArrayList<String>> var0;
@@ -40,12 +79,13 @@ public class patentsDataset {
         }
         patents=var0.firstarg;
         patentsID=var0.secondarg;
-
-
-
         patentGenerator.closeDatabase();
-
     }
+
+
+
+
+
 
     public pair<ArrayList<patent>,ArrayList<String>>getPatents() {
 

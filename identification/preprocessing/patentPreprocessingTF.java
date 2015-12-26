@@ -163,7 +163,7 @@ public class patentPreprocessingTF {
             double[][] u=new double[original.getRowDimension()][numofs];
 
 
-           System.out.println(((BlockRealMatrix)decomposition.getU()).getColumnDimension());
+         //  System.out.println(((Array2DRowRealMatrix)decomposition.getU()).getColumnDimension());
 
             decomposition.getU().copySubMatrix(0,original.getRowDimension()-1,0,numofs-1,u);
 
