@@ -7,53 +7,102 @@ import org.jblas.MatrixFunctions;
 import org.jblas.util.Random;
 import preprocessing.IniFile;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by sunlei on 15/12/26.
  */
 public class regularizationParameter {
-    DoubleMatrix X_t;
-    DoubleMatrix Y_t;
-    DoubleMatrix X_v;
-    DoubleMatrix Y_v;
+    DoubleMatrix X;
+    DoubleMatrix Y;
+
     IniFile ini=new IniFile();
     int numberofOptions;
+    int numberofTrainingData;
     int K=5;
 
     public regularizationParameter(DoubleMatrix X,DoubleMatrix Y,int numberofOptions){
-        int numberofTrainingData=X.rows;
+        numberofTrainingData=X.rows;
         this.numberofOptions=numberofOptions;
-        int[] training=new int[numberofTrainingData/2];
-        int[] validation=new int[numberofTrainingData-numberofTrainingData/2];
-        for(int i=0;i<X.rows;i++) {
-            if(i<numberofTrainingData/2) {
-                training[i]=i;
-            } else {
-                validation[i-numberofTrainingData/2]=i;
-            }
-        }
-       DoubleMatrix X1=X.getRows(training);
-        DoubleMatrix Y1=Y.getRows(training);
-        DoubleMatrix X2=X.getRows(validation);
-        DoubleMatrix Y2=Y.getRows(validation);
+        this.X=X;
+        this.Y=Y;
 
-        System.out.println(training(X1,Y1,X2,Y2,5));
+        storeText("RegularizationParameter.txt",false,"");
+        storeText("RegularizationParameterWeights.txt",false,"");
+        double[] result;
+       for(double lambada=0.5;lambada<10;lambada+=0.5) {
+           storeText("RegularizationParameterWeights.txt",true,lambada+"\n");
+           result = crossValidation(lambada);
+           storeText("RegularizationParameter.txt",true,lambada+" "+result[0]+" "+result[1]+"\n");
+       }
+
+
     }
 
-    public double[] crossValidation(){
+    public double[] crossValidation(double lambda){
         double[] result=new double[2];
+        ArrayList<Double> error=new ArrayList<>();
+        for(int start=0;start<numberofTrainingData;start+=(numberofTrainingData/5)) {
+            int end=start+(numberofTrainingData/5)-1;
+            if(end>numberofTrainingData-1) {
+                end=numberofTrainingData-1;
+            }
+
+            int[] validation=new int[end-start+1];
+            int[] training=new int[numberofTrainingData-end+start-1];
+            int trainig_i=0;
+            int validation_i=0;
+            for(int i=0;i<numberofTrainingData;i++) {
+                if(i>=start&&i<=end) {
+                    validation[validation_i]=i;
+                    validation_i++;
+                } else {
+                    training[trainig_i]=i;
+                    trainig_i++;
+                }
+            }
+            DoubleMatrix X1=X.getRows(training);
+            DoubleMatrix Y1=Y.getRows(training);
+            DoubleMatrix X2=X.getRows(validation);
+            DoubleMatrix Y2=Y.getRows(validation);
+
+            System.out.println(X1.rows+" "+X2.rows);
+
+
+           error.add (training(X1,Y1,X2,Y2,lambda,start/(numberofTrainingData/5)+1));
+
+
+
+        }
+
+        result[0]=0;
+        for(double d:error) {
+            result[0]+=d;
+
+        }
+        result[0]/=K;
+        result[1]=0;
+        for(double d:error) {
+            result[1]+=(d-result[0])*(d-result[0]);
+        }
+
+        result[1]/=K;
+        result[1]=Math.sqrt(result[1]);
+
         return result;
     }
 
-    public double training(DoubleMatrix X,DoubleMatrix Y,DoubleMatrix X1,DoubleMatrix Y1,double lambda){
-
+    public double training(DoubleMatrix X,DoubleMatrix Y,DoubleMatrix X1,DoubleMatrix Y1,double lambda,int numofIter){
+        System.out.println("The "+numofIter+"th Iteration for "+lambda);
         double[][] var0 = new double[numberofOptions + 1][1];
         for (int i = 0; i < numberofOptions + 1; i++) {
             var0[i][0] = 1.0;
         }
         DoubleMatrix thetas = new DoubleMatrix(var0);
-        int maxIteration=5000;
+        int maxIteration=2000;
         double alpha=9.7148;
 
         //Calculate the initial error;
@@ -78,45 +127,39 @@ public class regularizationParameter {
 
         double initial_error = -sum;
         double previous_error=-sum;
-
+        double relative_change=0;
 
         for(int k=0;k<maxIteration;k++) {
             DoubleMatrix thetas_t = new DoubleMatrix(thetas.toArray2());
             pair<DoubleMatrix, Double> var1 = updateWeights(X, Y, thetas_t, alpha / X.rows, lambda);
             double error = var1.secondarg;
-            if (2 * Math.abs(var1.secondarg - previous_error) / (var1.secondarg + previous_error + 1e-5) < 1e-5) {
+            relative_change=2 * Math.abs(var1.secondarg - previous_error) / (var1.secondarg + previous_error + 1e-4);
+            if ( relative_change< 1e-4) {
                 thetas=new DoubleMatrix(thetas_t.toArray2());
                 previous_error=error;
                 break;
             }
             previous_error=error;
-            System.out.println(previous_error+" "+k);
+            System.out.print("\r"+relative_change+" "+k);
             thetas=new DoubleMatrix(thetas_t.toArray2());
 
         }
 
-
+        System.out.println();
 
         ArrayList<String> optionsName=ini.getOptionsNames();
 
         double[] weights = thetas.toArray();
 
-        ArrayList<Double> weight = new ArrayList<>();
-        int i = 1;
-
-        for (int j = 0; j < optionsName.size(); j++) {
-            if (ini.getOptionValue(optionsName.get(j))) {
-                //logger.warn(optionsName.get(j)+weights[i]);
-                weight.add(weights[i]);
-                i++;
-            } else {
-                weight.add(0.0);
-            }
-
+        String tempS="";
+        for(double d:weights) {
+            tempS+=d+" ";
         }
+        tempS+="\n";
 
-        System.out.println(this.generateDistanceFunction(null,weight));
-        System.out.println("Threshold:"+(-weights[0]));
+        storeText("RegularizationParameterWeights.txt",true,tempS);
+
+
 
 
 
@@ -137,7 +180,7 @@ public class regularizationParameter {
         }
 
 
-        return sum/Y1.rows;
+        return sum;
     }
 
 
@@ -158,6 +201,36 @@ public class regularizationParameter {
 
 
     }
+
+
+
+    public void storeText(String path,boolean follow,String str){
+        if (follow) {
+            try {
+                FileWriter w=new FileWriter(path,follow);
+                w.write(str);
+                w.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                FileWriter w=new FileWriter(path,follow);
+                w.write(str);
+                w.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+
+
+
+
+
 
     /**
      * Update the weights and threshold

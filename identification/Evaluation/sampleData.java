@@ -46,7 +46,7 @@ public class sampleData {
         ArrayList<String> validation_ID=new ArrayList<>();
 
         logger.info("Start to import the sample data");
-        sampleData=new patentsDataset(sampleDataPath,infoPath,textPath,5000,"Benchmark").getPatents();
+        sampleData=new patentsDataset(sampleDataPath,infoPath,textPath,2000,"Benchmark").getPatents();
         logger.info("Sample Data Size: "+sampleData.firstarg.size()+" Patents");
         logger.info("Separate the sample data into training data and validation data");
         for(int i=0;i<sampleData.firstarg.size();i++) {
@@ -243,7 +243,7 @@ public class sampleData {
 
     public static void main(String[] args) {
         sampleData l=new sampleData();
-        //l.estimatelearningRate();
-        l.estimateRegularizationParameter();
+        l.estimatelearningRate();
+        //l.estimateRegularizationParameter();
     }
 }

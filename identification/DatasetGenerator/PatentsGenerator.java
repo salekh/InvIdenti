@@ -311,8 +311,6 @@ public class PatentsGenerator {
 
 
                 } else if (var2>-1) {
-
-                    System.out.println("fail");
                     var2++;
                 }
 
