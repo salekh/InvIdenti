@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab209d6b-4348-46b0-8871-b774722eae25" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/DatasetGenerator/PatentsGenerator.java" afterPath="$PROJECT_DIR$/identification/DatasetGenerator/PatentsGenerator.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/Evaluation/learningRate.java" afterPath="$PROJECT_DIR$/identification/Evaluation/learningRate.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/Evaluation/regularizationParameter.java" afterPath="$PROJECT_DIR$/identification/Evaluation/regularizationParameter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/Evaluation/sampleData.java" afterPath="$PROJECT_DIR$/identification/Evaluation/sampleData.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/invidenti.ini" afterPath="$PROJECT_DIR$/invidenti.ini" />
     </list>
     <ignored path="InvIdenti.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,11 +30,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="regularizationParameter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/Evaluation/regularizationParameter.java">
+      <file leaf-file-name="main.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/Evaluation/main.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="108" column="60" selection-start-line="108" selection-start-column="60" selection-end-line="108" selection-end-column="60" />
+              <caret line="89" column="30" selection-start-line="89" selection-start-column="26" selection-end-line="89" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TrainingDataGenerator.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/DatasetGenerator/TrainingDataGenerator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="171" column="17" selection-start-line="171" selection-start-column="17" selection-end-line="171" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SampleDataGenerator.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/Evaluation/SampleDataGenerator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="regularizationParameter.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/identification/Evaluation/regularizationParameter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.10902896">
+              <caret line="104" column="26" selection-start-line="104" selection-start-column="26" selection-end-line="104" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -55,11 +82,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="learningRate.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="learningRate.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/identification/Evaluation/learningRate.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.66269165">
-              <caret line="59" column="49" selection-start-line="59" selection-start-column="49" selection-end-line="59" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="59" column="38" selection-start-line="59" selection-start-column="38" selection-end-line="59" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -77,14 +104,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testMain.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/clustering/testMain.java">
+      <file leaf-file-name="LRWeightLearning.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+              <caret line="279" column="38" selection-start-line="279" selection-start-column="31" selection-end-line="279" selection-end-column="38" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -94,36 +119,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SqlitePatents.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/preprocessing/SqlitePatents.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="173" column="28" selection-start-line="173" selection-start-column="28" selection-end-line="173" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="invidenti.ini" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/invidenti.ini">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="30" column="47" selection-start-line="30" selection-start-column="47" selection-end-line="30" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-62.0">
-              <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -208,11 +203,11 @@
         <option value="$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java" />
         <option value="$PROJECT_DIR$/invidenti.ini" />
         <option value="$PROJECT_DIR$/identification/DatasetGenerator/PatentsGenerator.java" />
-        <option value="$PROJECT_DIR$/identification/Evaluation/regularizationParameter.java" />
         <option value="$PROJECT_DIR$/RegularizationParameterWeights.txt" />
         <option value="$PROJECT_DIR$/RegularizationParameter.txt" />
         <option value="$PROJECT_DIR$/identification/Evaluation/sampleData.java" />
         <option value="$PROJECT_DIR$/identification/Evaluation/learningRate.java" />
+        <option value="$PROJECT_DIR$/identification/Evaluation/regularizationParameter.java" />
       </list>
     </option>
   </component>
@@ -877,7 +872,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="707" extended-state="1" />
+    <frame x="0" y="23" width="1280" height="707" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1187,24 +1182,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/DatasetGenerator/TrainingDataGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="171" column="17" selection-start-line="171" selection-start-column="17" selection-end-line="171" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/Evaluation/SampleDataGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/identification/clustering/distancefunction/AbstractDistance.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1229,16 +1206,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="279" column="38" selection-start-line="279" selection-start-column="31" selection-end-line="279" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/identification/clustering/SimMatrix.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1251,14 +1218,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="76" column="46" selection-start-line="76" selection-start-column="33" selection-end-line="76" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/Evaluation/main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="89" column="30" selection-start-line="89" selection-start-column="26" selection-end-line="89" selection-end-column="34" />
           <folding />
         </state>
       </provider>
@@ -1331,6 +1290,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/identification/Evaluation/SampleDataGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/identification/Evaluation/sampleData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1341,20 +1308,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/Evaluation/regularizationParameter.java">
+    <entry file="file://$PROJECT_DIR$/identification/Evaluation/learningRate.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="108" column="60" selection-start-line="108" selection-start-column="60" selection-end-line="108" selection-end-column="60" />
+          <caret line="59" column="38" selection-start-line="59" selection-start-column="38" selection-end-line="59" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/Evaluation/learningRate.java">
+    <entry file="file://$PROJECT_DIR$/identification/Evaluation/main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66269165">
-          <caret line="59" column="49" selection-start-line="59" selection-start-column="49" selection-end-line="59" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="89" column="30" selection-start-line="89" selection-start-column="26" selection-end-line="89" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/DatasetGenerator/TrainingDataGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="171" column="17" selection-start-line="171" selection-start-column="17" selection-end-line="171" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="279" column="38" selection-start-line="279" selection-start-column="31" selection-end-line="279" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/Evaluation/regularizationParameter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.10902896">
+          <caret line="104" column="26" selection-start-line="104" selection-start-column="26" selection-end-line="104" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -102,8 +102,8 @@ public class regularizationParameter {
             var0[i][0] = 1.0;
         }
         DoubleMatrix thetas = new DoubleMatrix(var0);
-        int maxIteration=2000;
-        double alpha=9.7148;
+        int maxIteration=5000;
+        double alpha=9.99;
 
         //Calculate the initial error;
         DoubleMatrix varM1 = applyLogisticonData(X, thetas);
