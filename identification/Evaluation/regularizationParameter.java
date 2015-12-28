@@ -1,6 +1,7 @@
 package Evaluation;
 
 import base.pair;
+import base.patent;
 import clustering.distancefunction.CosDistance;
 import org.jblas.DoubleMatrix;
 import org.jblas.MatrixFunctions;
@@ -18,22 +19,24 @@ import java.util.Collections;
 public class regularizationParameter {
     DoubleMatrix X;
     DoubleMatrix Y;
-
+    ArrayList<patent> patents;
+    ArrayList<String> patentsID;
     IniFile ini=new IniFile();
     int numberofOptions;
-    int numberofTrainingData;
+    int numberofPatents;
     int K=5;
 
-    public regularizationParameter(DoubleMatrix X,DoubleMatrix Y,int numberofOptions){
-        numberofTrainingData=X.rows;
+    public regularizationParameter(ArrayList<patent> patents,ArrayList<String> patentsID, int numberofOptions){
+
+        this.numberofPatents=patents.size();
+        this.patents=patents;
+        this.patentsID=patentsID;
         this.numberofOptions=numberofOptions;
-        this.X=X;
-        this.Y=Y;
 
         storeText("RegularizationParameter.txt",false,"");
         storeText("RegularizationParameterWeights.txt",false,"");
         double[] result;
-       for(double lambada=0.5;lambada<10;lambada+=0.5) {
+       for(double lambada=0.0;lambada<=10;lambada+=0.01) {
            storeText("RegularizationParameterWeights.txt",true,lambada+"\n");
            result = crossValidation(lambada);
            storeText("RegularizationParameter.txt",true,lambada+" "+result[0]+" "+result[1]+"\n");
@@ -44,35 +47,44 @@ public class regularizationParameter {
 
     public double[] crossValidation(double lambda){
         double[] result=new double[2];
+        ArrayList<patent> training_p=new ArrayList<>();
+        ArrayList<patent> validation_p=new ArrayList<>();
+        ArrayList<String> training_IDs=new ArrayList<>();
+        ArrayList<String> validation_IDs=new ArrayList<>();
+
         ArrayList<Double> error=new ArrayList<>();
-        for(int start=0;start<numberofTrainingData;start+=(numberofTrainingData/5)) {
-            int end=start+(numberofTrainingData/5)-1;
-            if(end>numberofTrainingData-1) {
-                end=numberofTrainingData-1;
+        for(int start=0;start<numberofPatents;start+=(numberofPatents/5)) {
+            int end=start+(numberofPatents/5)-1;
+            if(end>numberofPatents-1) {
+                end=numberofPatents-1;
             }
 
-            int[] validation=new int[end-start+1];
-            int[] training=new int[numberofTrainingData-end+start-1];
-            int trainig_i=0;
-            int validation_i=0;
-            for(int i=0;i<numberofTrainingData;i++) {
+            training_p.clear();
+            training_IDs.clear();
+            validation_p.clear();
+            validation_p.clear();
+
+            for(int i=0;i<numberofPatents;i++) {
                 if(i>=start&&i<=end) {
-                    validation[validation_i]=i;
-                    validation_i++;
+                    validation_p.add(patents.get(i));
+                    validation_IDs.add(patentsID.get(i));
                 } else {
-                    training[trainig_i]=i;
-                    trainig_i++;
+                    training_IDs.add(patentsID.get(i));
+                    training_p.add(patents.get(i));
                 }
             }
-            DoubleMatrix X1=X.getRows(training);
-            DoubleMatrix Y1=Y.getRows(training);
-            DoubleMatrix X2=X.getRows(validation);
-            DoubleMatrix Y2=Y.getRows(validation);
 
-            System.out.println(X1.rows+" "+X2.rows);
+            pair<DoubleMatrix,DoubleMatrix> training=new trainingDataMatrix(training_p,training_IDs,true).getPatents_Matrices();
+            pair<DoubleMatrix,DoubleMatrix> validation=new trainingDataMatrix(validation_p,validation_IDs,true).getPatents_Matrices();
 
+            DoubleMatrix X1=training.firstarg;
+            DoubleMatrix Y1=training.secondarg;
+            DoubleMatrix X2=validation.firstarg;
+            DoubleMatrix Y2=validation.secondarg;
 
-           error.add (training(X1,Y1,X2,Y2,lambda,start/(numberofTrainingData/5)+1));
+          System.out.println();
+
+           error.add (training(X1,Y1,X2,Y2,lambda,start/(numberofPatents/5)+1));
 
 
 
@@ -96,7 +108,12 @@ public class regularizationParameter {
     }
 
     public double training(DoubleMatrix X,DoubleMatrix Y,DoubleMatrix X1,DoubleMatrix Y1,double lambda,int numofIter){
+
+        System.out.println();
         System.out.println("The "+numofIter+"th Iteration for "+lambda);
+
+
+
         double[][] var0 = new double[numberofOptions + 1][1];
         for (int i = 0; i < numberofOptions + 1; i++) {
             var0[i][0] = 1.0;
@@ -134,7 +151,7 @@ public class regularizationParameter {
             pair<DoubleMatrix, Double> var1 = updateWeights(X, Y, thetas_t, alpha / X.rows, lambda);
             double error = var1.secondarg;
             relative_change=2 * Math.abs(var1.secondarg - previous_error) / (var1.secondarg + previous_error + 1e-4);
-            if ( relative_change< 1e-4) {
+            if ( relative_change< 3e-4) {
                 thetas=new DoubleMatrix(thetas_t.toArray2());
                 previous_error=error;
                 break;
@@ -243,8 +260,9 @@ public class regularizationParameter {
      *
      */
     public pair<DoubleMatrix,Double> updateWeights(DoubleMatrix X, DoubleMatrix Y, DoubleMatrix thetas, double alpha, double lamda) {
-        DoubleMatrix varM1=applyLogisticonData(X,thetas);
 
+
+        DoubleMatrix varM1=applyLogisticonData(X,thetas);
 
 
         double error=0;
@@ -302,6 +320,9 @@ public class regularizationParameter {
     public DoubleMatrix applyLogisticonData(DoubleMatrix X,DoubleMatrix thetas) {
 
         DoubleMatrix varM1 = new DoubleMatrix(X.transpose().toArray2());
+
+
+
         varM1 = varM1.transpose().mmul(thetas);
 
         DoubleMatrix varM2 = new DoubleMatrix(varM1.rows, varM1.columns);
@@ -316,6 +337,8 @@ public class regularizationParameter {
         varM3.addi(1);
 
         varM3.divi(varM2);
+
+
 
         return varM3;
 
