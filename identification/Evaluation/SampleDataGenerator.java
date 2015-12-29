@@ -11,7 +11,7 @@ import java.sql.*;
  * Created by leisun on 15/12/24.
  */
 public class SampleDataGenerator {
-    private int numberofSample=5000;
+    private int numberofSample=1000;
     private String originalDatabasePath;
     private String outputSampleDataPAth;
     private static Logger logger= LogManager.getLogger(SampleDataGenerator.class.getName());
@@ -66,7 +66,7 @@ public class SampleDataGenerator {
             int i=1;
             while(var1.next()) {
                 String var4= ProgressBar.barString((int) i*100/this.numberofSample);
-                System.out.print(var4);
+                System.out.print("\r"+var4);
                 String var7 = "insert into TrainingData (ID,Patent,LastName,FirstName)" + "Values ('"+var1.getString("ID")+"','"+
                         var1.getString("Patent")+"','"+var1.getString("LastName")+"','"+var1.getString("FirstName")+"');";
                 stmt_sample.executeUpdate(var7);

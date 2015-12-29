@@ -23,23 +23,24 @@ public class regularizationParameter {
     ArrayList<String> patentsID;
     IniFile ini=new IniFile();
     int numberofOptions;
+    int number;
     int numberofPatents;
     int K=5;
 
-    public regularizationParameter(ArrayList<patent> patents,ArrayList<String> patentsID, int numberofOptions){
-
+    public regularizationParameter(ArrayList<patent> patents,ArrayList<String> patentsID, int numberofOptions,int num){
+        number=num;
         this.numberofPatents=patents.size();
         this.patents=patents;
         this.patentsID=patentsID;
         this.numberofOptions=numberofOptions;
 
-        storeText("RegularizationParameter.txt",false,"");
-        storeText("RegularizationParameterWeights.txt",false,"");
+        storeText("RegularizationParameter"+num+".txt",false,"");
+        storeText("RegularizationParameterWeights"+num+".txt",false,"");
         double[] result;
-       for(double lambada=0.0;lambada<=10;lambada+=0.01) {
-           storeText("RegularizationParameterWeights.txt",true,lambada+"\n");
+       for(double lambada=0.0;lambada<=6.0;lambada+=0.1) {
+           storeText("RegularizationParameterWeights"+num+".txt",true,lambada+"\n");
            result = crossValidation(lambada);
-           storeText("RegularizationParameter.txt",true,lambada+" "+result[0]+" "+result[1]+"\n");
+           storeText("RegularizationParameter"+num+".txt",true,lambada+" "+result[0]+" "+result[1]+"\n");
        }
 
 
@@ -174,7 +175,7 @@ public class regularizationParameter {
         }
         tempS+="\n";
 
-        storeText("RegularizationParameterWeights.txt",true,tempS);
+        storeText("RegularizationParameterWeights"+this.number+".txt",true,tempS);
 
 
 

@@ -29,6 +29,7 @@ public class sampleData {
     protected ArrayList<String> optionsName;
     protected int numberofOptions=8;
 
+
     protected pair<DoubleMatrix,DoubleMatrix> training_matrices;
     protected pair<DoubleMatrix,DoubleMatrix> validation_matrices;
 
@@ -40,13 +41,14 @@ public class sampleData {
         optionsName=iniFile.getOptionsNames();
 
 
+
         ArrayList<patent> training_p=new ArrayList<>();
         ArrayList<String> training_ID=new ArrayList<>();
         ArrayList<patent> validation_p=new ArrayList<>();
         ArrayList<String> validation_ID=new ArrayList<>();
 
         logger.info("Start to import the sample data");
-        sampleData=new patentsDataset(sampleDataPath,infoPath,textPath,2000,"Benchmark").getPatents();
+        sampleData=new patentsDataset(sampleDataPath,infoPath,textPath,600,"Benchmark").getPatents();
         logger.info("Sample Data Size: "+sampleData.firstarg.size()+" Patents");
         logger.info("Separate the sample data into training data and validation data");
         for(int i=0;i<sampleData.firstarg.size();i++) {
@@ -138,13 +140,19 @@ public class sampleData {
         new learningRate(this.numberofOptions,this.training_matrices.firstarg,this.training_matrices.secondarg);
     }
 
-    public void estimateRegularizationParameter() {
-        new regularizationParameter(training.firstarg,training.secondarg,numberofOptions);
+    public void estimateRegularizationParameter(int num) {
+        new regularizationParameter(training.firstarg,training.secondarg,numberofOptions, num);
     }
 
     public static void main(String[] args) {
-        sampleData l=new sampleData();
+        /*sampleData l=new sampleData();
         //l.estimatelearningRate();
         l.estimateRegularizationParameter();
+    */
+       for(int i=0;i<10;i++) {
+           SampleDataGenerator s = new SampleDataGenerator();
+           sampleData l = new sampleData();
+           l.estimateRegularizationParameter(i);
+       }
     }
 }
