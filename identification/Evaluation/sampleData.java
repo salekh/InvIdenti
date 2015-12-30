@@ -34,7 +34,7 @@ public class sampleData {
     protected pair<DoubleMatrix,DoubleMatrix> validation_matrices;
 
     pair<ArrayList<patent>,ArrayList<String>> sampleData;
-    public sampleData() {
+    public sampleData(int numofData) {
         sampleDataPath=iniFile.getSamplePath();
         infoPath=iniFile.getInfoDataPath();
         textPath=iniFile.getTextPath();
@@ -48,7 +48,7 @@ public class sampleData {
         ArrayList<String> validation_ID=new ArrayList<>();
 
         logger.info("Start to import the sample data");
-        sampleData=new patentsDataset(sampleDataPath,infoPath,textPath,600,"Benchmark").getPatents();
+        sampleData=new patentsDataset(sampleDataPath+"sample.db",infoPath,textPath,numofData,"Benchmark").getPatents();
         logger.info("Sample Data Size: "+sampleData.firstarg.size()+" Patents");
         logger.info("Separate the sample data into training data and validation data");
         for(int i=0;i<sampleData.firstarg.size();i++) {
@@ -144,15 +144,26 @@ public class sampleData {
         new regularizationParameter(training.firstarg,training.secondarg,numberofOptions, num);
     }
 
+    public void estimateEarlyStop() {
+        earlyStop earlyStop=new earlyStop(training.firstarg,training.secondarg,this.numberofOptions);
+    }
+
     public static void main(String[] args) {
         /*sampleData l=new sampleData();
         //l.estimatelearningRate();
         l.estimateRegularizationParameter();
     */
+  /*
        for(int i=0;i<10;i++) {
            SampleDataGenerator s = new SampleDataGenerator();
            sampleData l = new sampleData();
            l.estimateRegularizationParameter(i);
+       }
+       */
+       for(int i=500;i<3000;i+=500) {
+           SampleDataGenerator s = new SampleDataGenerator(i);
+           sampleData l = new sampleData(i);
+           l.estimateEarlyStop();
        }
     }
 }

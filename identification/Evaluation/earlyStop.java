@@ -5,53 +5,78 @@ import base.patent;
 import clustering.distancefunction.CosDistance;
 import org.jblas.DoubleMatrix;
 import org.jblas.MatrixFunctions;
-import org.jblas.util.Random;
 import preprocessing.IniFile;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
- * Created by sunlei on 15/12/26.
+ * Created by sunlei on 15/12/29.
  */
-public class regularizationParameter {
-    DoubleMatrix X;
-    DoubleMatrix Y;
+public class earlyStop {
     ArrayList<patent> patents;
-    ArrayList<String> patentsID;
+    ArrayList<patent> training=new ArrayList<>();
+    ArrayList<patent> validation=new ArrayList<>();
+    ArrayList<patent> testing=new ArrayList<>();
+    ArrayList<String> patentsID=new ArrayList<>();
+    ArrayList<String> trainingID=new ArrayList<>();
+    ArrayList<String> validationID=new ArrayList<>();
+    ArrayList<String> testingID=new ArrayList<>();
+    int numberofPatents;
     IniFile ini=new IniFile();
     int numberofOptions;
-    int number;
-    int numberofPatents;
+
+
+    double valPer=0.2;
+    double testPer=0.2;
+
     int K=5;
 
-    public regularizationParameter(ArrayList<patent> patents,ArrayList<String> patentsID, int numberofOptions,int num){
-        number=num;
-        this.numberofPatents=patents.size();
+    public earlyStop(ArrayList<patent> patents,ArrayList<String> patentsID,int numberofOptions) {
         this.patents=patents;
         this.patentsID=patentsID;
+        numberofPatents=patents.size();
         this.numberofOptions=numberofOptions;
-
-        storeText("RegularizationParameter"+num+".txt",false,"");
-        storeText("RegularizationParameterWeights"+num+".txt",false,"");
-        double[] result;
-       for(double lambada=0.0;lambada<=6.0;lambada+=0.1) {
-           storeText("RegularizationParameterWeights"+num+".txt",true,lambada+"\n");
-           result = crossValidation(lambada);
-           storeText("RegularizationParameter"+num+".txt",true,lambada+" "+result[0]+" "+result[1]+"\n");
-       }
+        crossValidation();
 
 
     }
 
-    public double[] crossValidation(double lambda){
+    public void seperateDataset(int start,int end) {
+
+        training.clear();
+        testing.clear();
+        validation.clear();
+        trainingID.clear();
+        testingID.clear();
+        validationID.clear();
+
+        ArrayList<patent> temp_p=new ArrayList<>();
+        ArrayList<String> temp_i=new ArrayList<>();
+
+        int k=0;
+        for(int i=0;i<this.patents.size();i++) {
+            if (i>=start&&i<=end) {
+                testing.add(patents.get(i));
+                testingID.add(patentsID.get(i));
+            } else {
+                if (k<end-start+1) {
+                    validation.add(patents.get(i));
+                    validationID.add(patentsID.get(i));
+                } else {
+                    trainingID.add(patentsID.get(i));
+                    training.add(patents.get(i));
+                }
+                k++;
+            }
+        }
+
+
+    }
+
+    public double[] crossValidation(){
         double[] result=new double[2];
-        ArrayList<patent> training_p=new ArrayList<>();
-        ArrayList<patent> validation_p=new ArrayList<>();
-        ArrayList<String> training_IDs=new ArrayList<>();
-        ArrayList<String> validation_IDs=new ArrayList<>();
 
         ArrayList<Double> error=new ArrayList<>();
         for(int start=0;start<numberofPatents;start+=(numberofPatents/5)) {
@@ -60,34 +85,22 @@ public class regularizationParameter {
                 end=numberofPatents-1;
             }
 
-            training_p.clear();
-            training_IDs.clear();
-            validation_p.clear();
-            validation_p.clear();
+            seperateDataset(start,end);
 
-            for(int i=0;i<numberofPatents;i++) {
-                if(i>=start&&i<=end) {
-                    validation_p.add(patents.get(i));
-                    validation_IDs.add(patentsID.get(i));
-                } else {
-                    training_IDs.add(patentsID.get(i));
-                    training_p.add(patents.get(i));
-                }
-            }
+            pair<DoubleMatrix,DoubleMatrix> trainings=new trainingDataMatrix(training,trainingID,false).getPatents_Matrices();
+            pair<DoubleMatrix,DoubleMatrix> validations=new trainingDataMatrix(validation,validationID,false).getPatents_Matrices();
+            pair<DoubleMatrix,DoubleMatrix> testings=new trainingDataMatrix(testing,testingID,false).getPatents_Matrices();
 
-            pair<DoubleMatrix,DoubleMatrix> training=new trainingDataMatrix(training_p,training_IDs,false).getPatents_Matrices();
-            pair<DoubleMatrix,DoubleMatrix> validation=new trainingDataMatrix(validation_p,validation_IDs,false).getPatents_Matrices();
+            DoubleMatrix X1=trainings.firstarg;
+            DoubleMatrix Y1=trainings.secondarg;
+            DoubleMatrix X2=testings.firstarg;
+            DoubleMatrix Y2=testings.secondarg;
+            DoubleMatrix X3=validations.firstarg;
+            DoubleMatrix Y3=validations.secondarg;
 
-            DoubleMatrix X1=training.firstarg;
-            DoubleMatrix Y1=training.secondarg;
-            DoubleMatrix X2=validation.firstarg;
-            DoubleMatrix Y2=validation.secondarg;
+            System.out.println();
 
-          System.out.println();
-
-           error.add (training(X1,Y1,X2,Y2,lambda,start/(numberofPatents/5)+1));
-
-
+            error.add (training(X1,Y1,X2,Y2,X3,Y3,0,start/(numberofPatents/5)+1));
 
         }
 
@@ -98,21 +111,32 @@ public class regularizationParameter {
         }
         result[0]/=K;
         result[1]=0;
+
+        String temp="";
+
         for(double d:error) {
+            temp+=d+" ";
             result[1]+=(d-result[0])*(d-result[0]);
         }
+
+
+
+        System.out.println();
 
         result[1]/=K;
         result[1]=Math.sqrt(result[1]);
 
+        storeText("WeightRegularization.txt",false,temp+" "+result[0]+" "+result[1]);
+
+        System.out.println(result[0]+" "+result[1]);
+
         return result;
     }
-
-    public double training(DoubleMatrix X,DoubleMatrix Y,DoubleMatrix X1,DoubleMatrix Y1,double lambda,int numofIter){
+    public double training(DoubleMatrix X,DoubleMatrix Y,DoubleMatrix X1,DoubleMatrix Y1,DoubleMatrix X2,DoubleMatrix Y2,double lambda,int numofIter){
 
         System.out.println();
         System.out.println("The "+numofIter+"th Iteration for "+lambda);
-
+        System.out.println(X.rows+" "+X1.rows+" "+X2.rows);
 
 
         double[][] var0 = new double[numberofOptions + 1][1];
@@ -120,13 +144,14 @@ public class regularizationParameter {
             var0[i][0] = 1.0;
         }
         DoubleMatrix thetas = new DoubleMatrix(var0);
-        int maxIteration=5000;
+        int maxIteration=10000;
         double alpha=9.99;
 
         //Calculate the initial error;
-        DoubleMatrix varM1 = applyLogisticonData(X, thetas);
+
+        DoubleMatrix varM1 = applyLogisticonData(X2, thetas);
         double sum = 0;
-        for (int m = 0; m < Y.rows; m++) {
+        for (int m = 0; m < Y2.rows; m++) {
 
             double temp = varM1.get(m, 0);
 
@@ -134,32 +159,56 @@ public class regularizationParameter {
             if (temp > 1) temp = 1;
             if (temp < 0) temp = 0;
 
-            if (Y.get(m, 0) == 1) {
-                sum += Math.log(temp);
-            } else {
-                sum += Math.log(1 - temp);
-            }
+            sum+=(temp-Y2.get(m,0))*(temp-Y2.get(m,0));
 
             //    sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
         }
 
-        double initial_error = -sum;
-        double previous_error=-sum;
+        double initial_error = sum;
+        double previous_error= sum;
         double relative_change=0;
+
+        System.out.println(previous_error);
 
         for(int k=0;k<maxIteration;k++) {
             DoubleMatrix thetas_t = new DoubleMatrix(thetas.toArray2());
-            pair<DoubleMatrix, Double> var1 = updateWeights(X, Y, thetas_t, alpha / X.rows, lambda);
+            pair<DoubleMatrix, Double> var1 = updateWeights(X, Y, X2,Y2,thetas_t, alpha / X.rows, lambda);
             double error = var1.secondarg;
-            relative_change=2 * Math.abs(var1.secondarg - previous_error) / (var1.secondarg + previous_error + 1e-4);
-            if ( relative_change< 3e-4) {
+        
+            relative_change=2 * Math.abs(var1.secondarg - previous_error) / (var1.secondarg + previous_error + 1e-3);
+
+
+            if (k>2000 && relative_change< 5e-4) {
                 thetas=new DoubleMatrix(thetas_t.toArray2());
                 previous_error=error;
                 break;
+
             }
-            previous_error=error;
-            System.out.print("\r"+relative_change+" "+k);
+
+
+
             thetas=new DoubleMatrix(thetas_t.toArray2());
+            previous_error=error;
+
+            varM1 = applyLogisticonData(X1, thetas);
+            sum = 0;
+            for (int m = 0; m < Y1.rows; m++) {
+
+                double temp = varM1.get(m, 0);
+
+
+                if (temp > 1) temp = 1;
+                if (temp < 0) temp = 0;
+
+                sum+=(temp-Y1.get(m,0))*(temp-Y1.get(m,0));
+
+                //    sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
+            }
+
+
+            // System.out.println(previous_error+" "+sum+" "+k);
+           // System.out.print("\r"+relative_change+" "+k);
+
 
         }
 
@@ -168,20 +217,13 @@ public class regularizationParameter {
         ArrayList<String> optionsName=ini.getOptionsNames();
 
         double[] weights = thetas.toArray();
-
+/*
         String tempS="";
         for(double d:weights) {
             tempS+=d+" ";
         }
         tempS+="\n";
-
-        storeText("RegularizationParameterWeights"+this.number+".txt",true,tempS);
-
-
-
-
-
-
+  */
         varM1 = applyLogisticonData(X1, thetas);
         sum = 0;
         for (int m = 0; m < Y1.rows; m++) {
@@ -194,9 +236,30 @@ public class regularizationParameter {
 
             sum+=(temp-Y1.get(m,0))*(temp-Y1.get(m,0));
 
-            //    sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
         }
 
+
+        ArrayList<Double> weight = new ArrayList<>();
+        int i = 1;
+
+        for (int j = 0; j < optionsName.size(); j++) {
+            if (ini.getOptionValue(optionsName.get(j))) {
+                //logger.warn(optionsName.get(j)+weights[i]);
+                weight.add(weights[i]);
+                i++;
+            } else {
+                weight.add(0.0);
+            }
+
+        }
+
+        double threshold = -weights[0];
+
+        System.out.println(this.generateDistanceFunction(null,weight));
+
+        System.out.println("Threshold:"+threshold);
+
+        System.out.println(sum);
 
         return sum;
     }
@@ -244,12 +307,6 @@ public class regularizationParameter {
     }
 
 
-
-
-
-
-
-
     /**
      * Update the weights and threshold
      * @param X Similarity matrix
@@ -260,17 +317,14 @@ public class regularizationParameter {
      * @return updated weights and threshold vector
      *
      */
-    public pair<DoubleMatrix,Double> updateWeights(DoubleMatrix X, DoubleMatrix Y, DoubleMatrix thetas, double alpha, double lamda) {
+    public pair<DoubleMatrix,Double> updateWeights(DoubleMatrix X, DoubleMatrix Y,DoubleMatrix X1,DoubleMatrix Y1, DoubleMatrix thetas, double alpha, double lamda) {
 
 
         DoubleMatrix varM1=applyLogisticonData(X,thetas);
 
 
-        double error=0;
         varM1.subi(Y);
-        DoubleMatrix error_M=new DoubleMatrix(varM1.toArray2());
 
-        //error=MatrixFunctions.absi(error_M).sum()/X.rows;
 
         varM1 = X.transpose().mmul(varM1);
 
@@ -287,10 +341,10 @@ public class regularizationParameter {
         thetas.subi(varM1);
         thetas.subi(thetas1);
 
-        varM1=applyLogisticonData(X,thetas);
+        varM1=applyLogisticonData(X1,thetas);
 
         double sum=0;
-        for (int m = 0; m < Y.rows; m++) {
+        for (int m = 0; m < Y1.rows; m++) {
 
             double temp=varM1.get(m,0);
 
@@ -298,16 +352,11 @@ public class regularizationParameter {
             if (temp>1) temp=1;
             if (temp<0) temp=0;
 
-            if (Y.get(m,0)==1) {
-                sum+=Math.log(temp);
-            } else {
-                sum+=Math.log(1-temp);
-            }
+            sum+=(temp-Y1.get(m,0))*(temp-Y1.get(m,0));
 
-            //    sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
         }
 
-        return new pair<>(thetas,-sum);
+        return new pair<>(thetas,sum);
 
     }
 
@@ -377,4 +426,5 @@ public class regularizationParameter {
 
         return var0;
     }
+
 }
