@@ -170,40 +170,28 @@ public class earlyStop {
 
         System.out.println(previous_error);
 
+        int num=0;
         for(int k=0;k<maxIteration;k++) {
+            num++;
             DoubleMatrix thetas_t = new DoubleMatrix(thetas.toArray2());
             pair<DoubleMatrix, Double> var1 = updateWeights(X, Y, X2,Y2,thetas_t, alpha / X.rows, lambda);
             double error = var1.secondarg;
-        
-            relative_change=2 * Math.abs(var1.secondarg - previous_error) / (var1.secondarg + previous_error + 1e-3);
+            System.out.println(error+" "+k);
+            relative_change=2 * Math.abs(var1.secondarg - previous_error) / (var1.secondarg + previous_error);
 
 
-            if (k>2000 && relative_change< 5e-4) {
+            if (relative_change< 1e-4) {
                 thetas=new DoubleMatrix(thetas_t.toArray2());
                 previous_error=error;
-                break;
+
 
             }
 
 
 
             thetas=new DoubleMatrix(thetas_t.toArray2());
+
             previous_error=error;
-
-            varM1 = applyLogisticonData(X1, thetas);
-            sum = 0;
-            for (int m = 0; m < Y1.rows; m++) {
-
-                double temp = varM1.get(m, 0);
-
-
-                if (temp > 1) temp = 1;
-                if (temp < 0) temp = 0;
-
-                sum+=(temp-Y1.get(m,0))*(temp-Y1.get(m,0));
-
-                //    sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
-            }
 
 
             // System.out.println(previous_error+" "+sum+" "+k);
@@ -217,13 +205,7 @@ public class earlyStop {
         ArrayList<String> optionsName=ini.getOptionsNames();
 
         double[] weights = thetas.toArray();
-/*
-        String tempS="";
-        for(double d:weights) {
-            tempS+=d+" ";
-        }
-        tempS+="\n";
-  */
+
         varM1 = applyLogisticonData(X1, thetas);
         sum = 0;
         for (int m = 0; m < Y1.rows; m++) {
@@ -260,6 +242,8 @@ public class earlyStop {
         System.out.println("Threshold:"+threshold);
 
         System.out.println(sum);
+
+        System.exit(3);
 
         return sum;
     }
@@ -341,6 +325,26 @@ public class earlyStop {
         thetas.subi(varM1);
         thetas.subi(thetas1);
 
+
+      //  varM1=applyLogisticonData(X,thetas);
+/*
+        double sum=0;
+        for (int m = 0; m < Y.rows; m++) {
+
+            double temp=varM1.get(m,0);
+
+
+            if (temp>1) temp=1;
+            if (temp<0) temp=0;
+
+            sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
+
+
+        }
+
+        //System.out.print(-sum+" ");
+*/
+
         varM1=applyLogisticonData(X1,thetas);
 
         double sum=0;
@@ -352,11 +356,14 @@ public class earlyStop {
             if (temp>1) temp=1;
             if (temp<0) temp=0;
 
-            sum+=(temp-Y1.get(m,0))*(temp-Y1.get(m,0));
+            sum += Y1.get(m, 0) * Math.log(temp) + (1 - Y1.get(m, 0)) * Math.log(1-temp);
+
 
         }
 
-        return new pair<>(thetas,sum);
+
+
+        return new pair<>(thetas,-sum);
 
     }
 

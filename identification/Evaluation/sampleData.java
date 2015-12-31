@@ -148,6 +148,9 @@ public class sampleData {
         earlyStop earlyStop=new earlyStop(training.firstarg,training.secondarg,this.numberofOptions);
     }
 
+    public void estimateBatchSize(){
+        BatchSize batchSize=new BatchSize(training.firstarg,training.secondarg,this.numberofOptions);
+    }
     public static void main(String[] args) {
         /*sampleData l=new sampleData();
         //l.estimatelearningRate();
@@ -160,10 +163,10 @@ public class sampleData {
            l.estimateRegularizationParameter(i);
        }
        */
-       for(int i=500;i<3000;i+=500) {
-           SampleDataGenerator s = new SampleDataGenerator(i);
-           sampleData l = new sampleData(i);
-           l.estimateEarlyStop();
+       for(int i=3000;i<3001;i+=500) {
+           //SampleDataGenerator s = new SampleDataGenerator(3000);
+           sampleData l = new sampleData(3000);
+           l.estimateBatchSize();
        }
     }
 }
