@@ -22,6 +22,7 @@ public class sampleData {
     String sampleDataPath;
     String textPath;
     String infoPath;
+
     private static Logger logger= LogManager.getLogger(sampleData.class.getName());
     private pair<ArrayList<patent>,ArrayList<String>> training;
     private pair<ArrayList<patent>,ArrayList<String>> validation;
@@ -151,6 +152,11 @@ public class sampleData {
     public void estimateBatchSize(){
         BatchSize batchSize=new BatchSize(training.firstarg,training.secondarg,this.numberofOptions);
     }
+
+
+    public void estimatePQ(){
+       pq q=new pq(training.firstarg,training.secondarg,this.numberofOptions);
+    }
     public static void main(String[] args) {
         /*sampleData l=new sampleData();
         //l.estimatelearningRate();
@@ -164,9 +170,9 @@ public class sampleData {
        }
        */
        for(int i=3000;i<3001;i+=500) {
-           //SampleDataGenerator s = new SampleDataGenerator(3000);
+           SampleDataGenerator s = new SampleDataGenerator(3000);
            sampleData l = new sampleData(3000);
-           l.estimateBatchSize();
+           l.estimatePQ();
        }
     }
 }

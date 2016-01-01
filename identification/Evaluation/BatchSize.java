@@ -19,6 +19,7 @@ import java.util.Collections;
 public class BatchSize {
 
     int batchSize=100;
+    int pqthreshold=5;
 
     ArrayList<patent> patents=new ArrayList<>();
     ArrayList<String> patentsID=new ArrayList<>();
@@ -70,7 +71,7 @@ public class BatchSize {
             training(X1,Y1,X2, Y2, X3, Y3, 0, 0);
             double endtime=System.currentTimeMillis();
             times.add(endtime-time);
-            System.exit(3);
+
 
         }
         for(double d:times) {
@@ -149,7 +150,7 @@ public class BatchSize {
         System.out.println("The "+numofIter+"th Iteration for "+lambda);
         System.out.println(X1.rows+" "+X2.rows);
         ArrayList<Double> errors=new ArrayList<>();
-        int errorBatchSize=50;
+        int errorBatchSize=5;
 
         double[][] var0 = new double[numberofOptions + 1][1];
         for (int i = 0; i < numberofOptions + 1; i++) {
@@ -176,14 +177,14 @@ public class BatchSize {
             //    sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
         }
 
-        double initial_error = sum;
-        double previous_error= sum;
+
         double relative_change=0;
 
-        System.out.println(previous_error);
+
         pair<pair<DoubleMatrix, DoubleMatrix>, pair<Integer, Integer>> batch;
         int num=0;
         int updates=0;
+        double minerror=Double.MAX_VALUE;
         label:
 
         for(int k=0;k<maxIteration;k++) {
@@ -191,7 +192,6 @@ public class BatchSize {
 
             int starti,startj;
             starti=startj=0;
-
 
             for(int i=0;i<patents.size()*(patents.size()-1)/2;i+=batchSize){
                 if (i+batchSize<patents.size()*(patents.size()-1)/2) {
@@ -206,59 +206,43 @@ public class BatchSize {
                     startj=0;
                 }
                 DoubleMatrix thetas_t = new DoubleMatrix(thetas.toArray2());
+
                 pair<DoubleMatrix, Double> var1 = updateWeights(batch.firstarg.firstarg, batch.firstarg.secondarg, X2,Y2,thetas_t, alpha / batch.firstarg.firstarg.rows, lambda);
 
-              //  if (updates<=errorBatchSize) {
-                //    updates++;
-                  //  errors.add(var1.secondarg);
-                //}
-                double error = var1.secondarg;
-
-                relative_change=2 * Math.abs(var1.secondarg - previous_error) / (var1.secondarg + previous_error);
-                //if (updates>=errorBatchSize) {
-
-                  //  double max = Collections.max(errors);
-                   // double min = Collections.min(errors);
-                    //relative_change = 2 * Math.abs(max - min) / (max + min);
-
-                    if (k > 0 && relative_change < 1e-4) {
-                        System.out.println(previous_error+" "+error);
-                        System.out.println(relative_change);
-                        thetas = new DoubleMatrix(thetas_t.toArray2());
-                        previous_error = error;
-                        //break label;
-
-                    }
-
-//                }
-
+                thetas = new DoubleMatrix(thetas_t.toArray2());
 
                 num+=batchSize;
-
-
                 if (num>=X2.rows) {
+                    double errorForValidation=calculateTheError(X2,Y2,thetas);
+                    double errorForTraining=calculateTheError(X,Y,thetas);
+                    if (errorForValidation<minerror) minerror=errorForValidation;
 
-                    varM1 = applyLogisticonData(X, thetas);
-                    for (int m = 0; m < Y.rows; m++) {
+                    System.out.println(errorForTraining+" "+errorForValidation);
 
-                        double temp = varM1.get(m, 0);
+                    if (updates<errorBatchSize) {
+                        updates++;
+
+                        errors.add(errorForValidation);
+                    } else {
+                        errors.remove(0);
+                        errors.add(var1.secondarg);
 
 
-                        if (temp > 1) temp = 1;
-                        if (temp < 0) temp = 0;
+                        if (k > 0) {
 
-                        sum+=(temp-Y.get(m,0))*(temp-Y.get(m,0));
-
-                        //    sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
+                            double PQ=calculatePQ(minerror,errors);
+                            System.out.println("PQ"+PQ+" "+minerror);
+                            if (PQ>5) break label;
+                        }
                     }
 
-                    System.out.println(-sum+" "+error);
+
+
                     num=0;
                 }
 
-                thetas=new DoubleMatrix(thetas_t.toArray2());
 
-                previous_error=error;
+
 
             }
 
@@ -271,19 +255,6 @@ public class BatchSize {
 
         double[] weights = thetas.toArray();
 
-        varM1 = applyLogisticonData(X1, thetas);
-        sum = 0;
-        for (int m = 0; m < Y1.rows; m++) {
-
-            double temp = varM1.get(m, 0);
-
-
-            if (temp > 1) temp = 1;
-            if (temp < 0) temp = 0;
-
-            sum+=(temp-Y1.get(m,0))*(temp-Y1.get(m,0));
-
-        }
 
 
         ArrayList<Double> weight = new ArrayList<>();
@@ -306,10 +277,51 @@ public class BatchSize {
 
         System.out.println("Threshold:"+threshold);
 
-        System.out.println(sum);
 
         return sum;
     }
+
+
+    public double calculatePQ(double minerror,ArrayList<Double> errors){
+
+        double GL=100*(errors.get(errors.size()-1)/minerror-1);
+
+        double PQ=0;
+        double sum=0;
+        for(double d:errors) {
+
+            sum+=d;
+        }
+
+        PQ=GL/(100*(sum/(Collections.min(errors)*errors.size())-1));
+
+
+
+        return PQ;
+
+    }
+
+    public double calculateTheError(DoubleMatrix X,DoubleMatrix Y,DoubleMatrix thetas){
+        DoubleMatrix varM=applyLogisticonData(X, thetas);
+
+        double sum = 0;
+        for (int m = 0; m < Y.rows; m++) {
+
+            double temp = varM.get(m, 0);
+
+
+            if (temp > 1) temp = 1;
+            if (temp < 0) temp = 0;
+
+            sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
+
+        }
+
+        return -sum;
+
+    }
+
+
 
 
     public void outputMatrix(DoubleMatrix x,String name) {
