@@ -243,7 +243,7 @@ public abstract class AbstractDistance {
         for (Iterator<String> iterator = var0.keySet().iterator(); iterator.hasNext(); ) {
             String var4 = iterator.next();
             if (var1.containsKey(var4)) {
-                result+=1.0;
+                result+=0.5;
                 ArrayList<String> var5=var0.get(var4);
                 ArrayList<String> var6=var1.get(var4);
                 for(String var7:var5) {
