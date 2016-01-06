@@ -57,7 +57,7 @@ public class pq {
             generateSeperatedDisFunctions();
 
 
-            for(int i=50;i<=500;i+=50) {
+            for(int i=10;i<=200;i+=10) {
                 this.batchSize=i;
                 crossValidation();
 
@@ -231,7 +231,7 @@ public class pq {
             System.out.println("The "+numofIter+"th Iteration for "+this.batchSize);
             System.out.println(X1.rows+" "+X2.rows);
             ArrayList<Double> errors=new ArrayList<>();
-            int errorBatchSize=5;
+            int errorBatchSize=10;
 
             double[][] var0 = new double[numberofOptions + 1][1];
             for (int i = 0; i < numberofOptions + 1; i++) {
@@ -259,19 +259,25 @@ public class pq {
 
             for(int k=0;k<maxIteration;k++) {
 
-            System.out.println("Poch: "+k);
+                System.out.println("Poch "+k);
                 int starti,startj;
                 starti=startj=0;
 
+                pair<ArrayList<patent>,ArrayList<String>> temp=shufflePatents(training,trainingID);
+                training=temp.firstarg;
+                trainingID=temp.secondarg;
+
+
                 for(int i=0;i<X.rows;i+=batchSize){
                   double t=System.currentTimeMillis();
+
                     if (i+batchSize<training.size()*(training.size()-1)/2) {
                         batch=geneerateAMiniBatchLRTrainingData(starti,startj,batchSize);
                     } else {
                         batch=geneerateAMiniBatchLRTrainingData(starti,startj,training.size()*(training.size()-1)/2-i);
-
-
                     }
+
+
                     starti=batch.secondarg.firstarg;
                     startj=batch.secondarg.secondarg+1;
                     if (startj>patents.size()) {
@@ -284,18 +290,18 @@ public class pq {
 
                     thetas = new DoubleMatrix(thetas_t.toArray2());
                     double t2=System.currentTimeMillis();
-                    if (num==0) {
-                       // System.out.println(t2 - t);
-                    }
 
 
-                    num+=batchSize;
+
+                    num+=batch.firstarg.firstarg.rows;
+
+
                     if (num>=X2.rows) {
                         errorForValidation=calculateTheError(X2,Y2,thetas);
-                        //System.out.println(errorForValidation);
+                        System.out.println(errorForValidation);
                         errorForTraining=calculateTheError(X,Y,thetas);
                         if (errorForValidation<minerror) minerror=errorForValidation;
-                        System.out.println(errorForTraining+" "+errorForValidation);
+                      //  System.out.println(errorForTraining+" "+errorForValidation);
 
                         if (updates<errorBatchSize) {
                             updates++;
@@ -307,14 +313,14 @@ public class pq {
 
 
                             if (k > 0) {
-                                pair<Double,Double> var2=calculatePQ(minerror,errors);
+                       //         pair<Double,Double> var2=calculatePQ(minerror,errors);
                                 // System.out.println("PQ"+PQ+" "+minerror+" "+errors.get(errors.size()-1));
-                                 //double std=calculateStd(errors);
+                                pair<Double,Double> var2 =calculateStd(errors);
                                 //System.out.println(std);
-                                double PQ=var2.firstarg;
-                                double progress=var2.secondarg;
-                                System.out.println("Criterion "+PQ+" "+progress);
-                                if (PQ>this.pqthreshold||progress<0.02||errorForValidation<0.5e-4) break label;
+                                double std=var2.firstarg;
+                                double mean=var2.secondarg;
+                               // System.out.println("Criterion "+PQ+" "+progress);
+                                if (std<=5e-6||std/mean<0.05||errorForValidation<1e-5) break label;
                             }
                         }
 
@@ -332,6 +338,7 @@ public class pq {
             }
 
             System.out.println();
+
 
             ArrayList<String> optionsName=ini.getOptionsNames();
 
@@ -366,7 +373,25 @@ public class pq {
         }
 
 
-        public double calculateStd(ArrayList<Double> errors) {
+        private pair<ArrayList<patent>,ArrayList<String>> shufflePatents(ArrayList<patent> patents,ArrayList<String> patentsID) {
+            ArrayList<Integer> indexes=new ArrayList<>();
+            for(int i=0;i<patents.size();i++) {
+                indexes.add(i);
+            }
+            Collections.shuffle(indexes);
+            ArrayList<patent> temp_p=new ArrayList<>();
+            ArrayList<String> temp_i=new ArrayList<>();
+            for(int i=0;i<indexes.size();i++) {
+                temp_p.add(patents.get(indexes.get(i)));
+                temp_i.add(patentsID.get(indexes.get(i)));
+
+            }
+
+            return new pair<>(temp_p,temp_i);
+        }
+
+
+        public pair<Double,Double> calculateStd(ArrayList<Double> errors) {
             double mean=0;
             for(double var0:errors) {
                 mean+=var0;
@@ -378,7 +403,7 @@ public class pq {
             }
             std=std/errors.size();
             std=Math.sqrt(std);
-            return std/mean;
+            return new pair<>(std,mean);
         }
 
         public pair<Double,Double> calculatePQ(double minerror,ArrayList<Double> errors){

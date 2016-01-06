@@ -50,7 +50,7 @@ public class BatchSize {
         this.patentsID=patentsID;
         numberofPatents=patents.size();
         this.numberofOptions=numberofOptions;
-        seperateDataset(0,numberofPatents/K+1);
+        seperateDataset(0,numberofPatents/K-1);
         generateSeperatedDisFunctions();
 
 
@@ -66,12 +66,13 @@ public class BatchSize {
         DoubleMatrix Y3=validations.secondarg;
 
         ArrayList<Double> times=new ArrayList<>();
-        for(int i=500;i<=1000;i+=50) {
+        for(int i=10;i<=200;i+=10) {
+            this.batchSize=i;
          double time=System.currentTimeMillis();
             training(X1,Y1,X2, Y2, X3, Y3, 0, 0);
             double endtime=System.currentTimeMillis();
             times.add(endtime-time);
-
+            System.out.println(endtime-time);
 
         }
         for(double d:times) {
@@ -79,6 +80,101 @@ public class BatchSize {
         }
 
 }
+
+
+    public double[] crossValidation(){
+        double[] result=new double[2];
+
+        ArrayList<Double> error=new ArrayList<>();
+        ArrayList<Double> time=new ArrayList<>();
+        for(int start=0;start<numberofPatents;start+=(numberofPatents/5)) {
+            int end=start+(numberofPatents/5)-1;
+
+            System.out.println("rows "+start+" "+end);
+
+            if(end>numberofPatents-1) {
+                end=numberofPatents-1;
+            }
+
+            seperateDataset(start,end);
+
+            pair<DoubleMatrix,DoubleMatrix> trainings=new trainingDataMatrix(training,trainingID,false).getPatents_Matrices();
+            pair<DoubleMatrix,DoubleMatrix> validations=new trainingDataMatrix(validation,validationID,false).getPatents_Matrices();
+            pair<DoubleMatrix,DoubleMatrix> testings=new trainingDataMatrix(testing,testingID,false).getPatents_Matrices();
+
+            DoubleMatrix X1=trainings.firstarg;
+            DoubleMatrix Y1=trainings.secondarg;
+            DoubleMatrix X2=testings.firstarg;
+            DoubleMatrix Y2=testings.secondarg;
+            DoubleMatrix X3=validations.firstarg;
+            DoubleMatrix Y3=validations.secondarg;
+
+            double starttime=System.currentTimeMillis();
+
+
+            error.add (training(X1,Y1,X2,Y2,X3,Y3,0,start/(numberofPatents/5)+1));
+
+            double endtime=System.currentTimeMillis();
+
+            time.add(endtime-starttime);
+        }
+
+        result[0]=0;
+
+
+        for(double d:error) {
+            result[0]+=d;
+        }
+
+        result[0]/=K;
+        result[1]=0;
+
+        String temp="";
+
+        for(double d:error) {
+            temp+=d+" ";
+            result[1]+=(d-result[0])*(d-result[0]);
+        }
+
+
+
+        System.out.println();
+
+        result[1]/=K;
+        result[1]=Math.sqrt(result[1]);
+
+
+
+        double[] resultt=new double[2];
+
+        resultt[0]=0;
+        for(double d:time) {
+            resultt[0]+=d;
+        }
+
+        resultt[0]/=K;
+        resultt[1]=0;
+
+        String tempt="";
+
+        for(double d:time) {
+            tempt+=d+" ";
+            resultt[1]+=(d-resultt[0])*(d-resultt[0]);
+        }
+
+        resultt[1]/=K;
+        resultt[1]=Math.sqrt(resultt[1]);
+
+
+        storeText("pq.txt",true,temp+" "+result[0]+" "+result[1]+"\n");
+        storeText("time.txt",true,tempt+" "+resultt[0]+" "+resultt[1]+"\n");
+
+        System.out.println(result[0]+" "+result[1]);
+
+        return result;
+    }
+
+
 
 
 
@@ -97,10 +193,10 @@ public class BatchSize {
         label:
         for(int i=starti;i<patents.size();i++) {
             for(int j=0;j<patents.size();j++) {
-                    if(first) {
-                        j=startj;
-                        first=false;
-                    }
+                if(first) {
+                    j=startj;
+                    first=false;
+                }
 
                 if (i>j) {
                     x[index][0] = 1.0;
@@ -126,13 +222,13 @@ public class BatchSize {
 
                     index++;
                 }
-                    if(index>=batchsize) {
-                        endi=i;
-                        endj=j;
+                if(index>=batchsize) {
+                    endi=i;
+                    endj=j;
 
-                        break label;
-                    }
+                    break label;
                 }
+            }
         }
 
 
@@ -147,36 +243,18 @@ public class BatchSize {
     public double training(DoubleMatrix X,DoubleMatrix Y,DoubleMatrix X1,DoubleMatrix Y1,DoubleMatrix X2,DoubleMatrix Y2,double lambda,int numofIter){
 
         System.out.println();
-        System.out.println("The "+numofIter+"th Iteration for "+lambda);
+        System.out.println("The "+numofIter+"th Iteration for "+this.batchSize);
         System.out.println(X1.rows+" "+X2.rows);
         ArrayList<Double> errors=new ArrayList<>();
-        int errorBatchSize=5;
+        int errorBatchSize=10;
 
         double[][] var0 = new double[numberofOptions + 1][1];
         for (int i = 0; i < numberofOptions + 1; i++) {
             var0[i][0] = 1.0;
         }
         DoubleMatrix thetas = new DoubleMatrix(var0);
-        int maxIteration=10000;
+        int maxIteration=3000;
         double alpha=9.99;
-
-        //Calculate the initial error;
-
-        DoubleMatrix varM1 = applyLogisticonData(X2, thetas);
-        double sum = 0;
-        for (int m = 0; m < Y2.rows; m++) {
-
-            double temp = varM1.get(m, 0);
-
-
-            if (temp > 1) temp = 1;
-            if (temp < 0) temp = 0;
-
-            sum+=(temp-Y2.get(m,0))*(temp-Y2.get(m,0));
-
-            //    sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
-        }
-
 
         double relative_change=0;
 
@@ -185,19 +263,29 @@ public class BatchSize {
         int num=0;
         int updates=0;
         double minerror=Double.MAX_VALUE;
+
+        double errorForValidation=calculateTheError(X2,Y2,thetas);
+
+        double errorForTraining=calculateTheError(X,Y,thetas);
+
+        System.out.println(errorForTraining+" "+errorForValidation);
+
         label:
 
         for(int k=0;k<maxIteration;k++) {
 
-
+            System.out.println("Poch: "+k);
             int starti,startj;
             starti=startj=0;
 
-            for(int i=0;i<patents.size()*(patents.size()-1)/2;i+=batchSize){
-                if (i+batchSize<patents.size()*(patents.size()-1)/2) {
+            for(int i=0;i<X.rows;i+=batchSize){
+                double t=System.currentTimeMillis();
+                if (i+batchSize<training.size()*(training.size()-1)/2) {
                     batch=geneerateAMiniBatchLRTrainingData(starti,startj,batchSize);
                 } else {
-                    batch=geneerateAMiniBatchLRTrainingData(starti,startj,patents.size()*(patents.size()-1)/2-i);
+                    batch=geneerateAMiniBatchLRTrainingData(starti,startj,training.size()*(training.size()-1)/2-i);
+
+
                 }
                 starti=batch.secondarg.firstarg;
                 startj=batch.secondarg.secondarg+1;
@@ -210,13 +298,18 @@ public class BatchSize {
                 pair<DoubleMatrix, Double> var1 = updateWeights(batch.firstarg.firstarg, batch.firstarg.secondarg, X2,Y2,thetas_t, alpha / batch.firstarg.firstarg.rows, lambda);
 
                 thetas = new DoubleMatrix(thetas_t.toArray2());
+                double t2=System.currentTimeMillis();
+                if (num==0) {
+                     System.out.println(t2 - t);
+                }
+
 
                 num+=batchSize;
                 if (num>=X2.rows) {
-                    double errorForValidation=calculateTheError(X2,Y2,thetas);
-                    double errorForTraining=calculateTheError(X,Y,thetas);
+                    errorForValidation=calculateTheError(X2,Y2,thetas);
+                    //System.out.println(errorForValidation);
+                    errorForTraining=calculateTheError(X,Y,thetas);
                     if (errorForValidation<minerror) minerror=errorForValidation;
-
                     System.out.println(errorForTraining+" "+errorForValidation);
 
                     if (updates<errorBatchSize) {
@@ -225,14 +318,18 @@ public class BatchSize {
                         errors.add(errorForValidation);
                     } else {
                         errors.remove(0);
-                        errors.add(var1.secondarg);
+                        errors.add(errorForValidation);
 
 
                         if (k > 0) {
-
-                            double PQ=calculatePQ(minerror,errors);
-                            System.out.println("PQ"+PQ+" "+minerror);
-                            if (PQ>5) break label;
+                            //         pair<Double,Double> var2=calculatePQ(minerror,errors);
+                            // System.out.println("PQ"+PQ+" "+minerror+" "+errors.get(errors.size()-1));
+                            pair<Double,Double> var2 =calculateStd(errors);
+                            //System.out.println(std);
+                            double std=var2.firstarg;
+                            double mean=var2.secondarg;
+                            // System.out.println("Criterion "+PQ+" "+progress);
+                            if (std<=1e-5||std/mean<0.02||errorForValidation<0.5e-4) break label;
                         }
                     }
 
@@ -262,7 +359,6 @@ public class BatchSize {
 
         for (int j = 0; j < optionsName.size(); j++) {
             if (ini.getOptionValue(optionsName.get(j))) {
-                //logger.warn(optionsName.get(j)+weights[i]);
                 weight.add(weights[i]);
                 i++;
             } else {
@@ -277,27 +373,48 @@ public class BatchSize {
 
         System.out.println("Threshold:"+threshold);
 
+        double sum=calculateTheError(X1,Y1,thetas);
+
+
 
         return sum;
     }
 
 
-    public double calculatePQ(double minerror,ArrayList<Double> errors){
+    public pair<Double,Double> calculateStd(ArrayList<Double> errors) {
+        double mean=0;
+        for(double var0:errors) {
+            mean+=var0;
+        }
+        mean=mean/errors.size();
+        double std=0;
+        for (double var0:errors) {
+            std+=(var0-mean)*(var0-mean);
+        }
+        std=std/errors.size();
+        std=Math.sqrt(std);
+        return new pair<>(std,mean);
+    }
 
+    public pair<Double,Double> calculatePQ(double minerror,ArrayList<Double> errors){
+
+        int size=5;
         double GL=100*(errors.get(errors.size()-1)/minerror-1);
 
         double PQ=0;
         double sum=0;
-        for(double d:errors) {
+        for(int i=0;i<5;i++) {
 
-            sum+=d;
+            sum+=errors.get(i);
         }
+
+        double progress=(sum/(Collections.min(errors)*errors.size())-1);
 
         PQ=GL/(100*(sum/(Collections.min(errors)*errors.size())-1));
 
 
 
-        return PQ;
+        return new pair<>(PQ,progress);
 
     }
 
@@ -317,7 +434,7 @@ public class BatchSize {
 
         }
 
-        return -sum;
+        return (-sum)/X.rows;
 
     }
 
@@ -401,25 +518,9 @@ public class BatchSize {
         thetas.subi(thetas1);
 
 
-        varM1=applyLogisticonData(X1,thetas);
-
-        double sum=0;
-        for (int m = 0; m < Y1.rows; m++) {
-
-            double temp=varM1.get(m,0);
 
 
-            if (temp>1) temp=1;
-            if (temp<0) temp=0;
-
-            sum += Y1.get(m, 0) * Math.log(temp) + (1 - Y1.get(m, 0)) * Math.log(1-temp);
-
-
-        }
-
-
-
-        return new pair<>(thetas,-sum);
+        return new pair<>(thetas,0.0);
 
     }
 
@@ -463,7 +564,7 @@ public class BatchSize {
      * @param weights distance function weights
      * @return the generated distance function
      */
-    public CosDistance generateDistanceFunction(ArrayList<Integer> attrIndex,ArrayList<Double> weights) {
+    public CosDistance generateDistanceFunction(ArrayList<Integer> attrIndex, ArrayList<Double> weights) {
         CosDistance var0=new CosDistance();
         if (attrIndex!=null) {
             boolean[] var1=new  boolean[this.ini.getOptionsNames().size()];
@@ -536,17 +637,29 @@ public class BatchSize {
                 testing.add(patents.get(i));
                 testingID.add(patentsID.get(i));
             } else {
-                if (k<end-start+1) {
-                    validation.add(patents.get(i));
-                    validationID.add(patentsID.get(i));
-                } else {
-                    trainingID.add(patentsID.get(i));
-                    training.add(patents.get(i));
-                }
-                k++;
+                temp_i.add(patentsID.get(i));
+                temp_p.add(patents.get(i));
             }
         }
+        ArrayList<Integer> index=new ArrayList<>();
+        for(int i=0;i<temp_i.size();i++) {
+            index.add(i);
+        }
+      //  Collections.shuffle(index);
+        for(int i=0;i<temp_p.size();i++) {
+            if (k<temp_p.size()*0.2) {
+                validation.add(temp_p.get(index.get(i)));
+                validationID.add(temp_i.get(index.get(i)));
+            }else{
+                training.add(temp_p.get(index.get(i)));
+                trainingID.add(temp_i.get(index.get(i)));
+            }
+            k++;
+        }
+
+        System.out.println(training.size()+" "+testing.size()+" "+validation.size());
     }
+
 
 
 
