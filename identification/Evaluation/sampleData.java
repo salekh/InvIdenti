@@ -170,7 +170,7 @@ public class sampleData {
        }
        */
        for(int i=3000;i<3001;i+=500) {
-           SampleDataGenerator s = new SampleDataGenerator(7000);
+           //SampleDataGenerator s = new SampleDataGenerator(7000);
            sampleData l = new sampleData(3000);
            l.estimatePQ();
        }

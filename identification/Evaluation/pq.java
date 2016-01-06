@@ -58,7 +58,7 @@ public class pq {
             generateSeperatedDisFunctions();
 
 
-            for(int i=10;i<=200;i+=10) {
+            for(int i=30;i<=30;i+=10) {
                 this.batchSize=i;
                 crossValidation();
 
@@ -235,7 +235,7 @@ public class pq {
                 var0[i][0] = 1.0;
             }
             DoubleMatrix thetas = new DoubleMatrix(var0);
-            int maxIteration=50;
+            int maxIteration=20;
             double alpha=9.99;
 
             double relative_change=0;
