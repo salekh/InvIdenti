@@ -10,9 +10,13 @@ import clustering.hierarchy.HierClusteringPatents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.plugins.convert.TypeConverters;
+import org.carrot2.core.LanguageCode;
 import preprocessing.IniFile;
 import preprocessing.LRWeightLearning;
+import preprocessing.patentPreprocessingTF;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -26,21 +30,21 @@ public class main {
     public double sums=0;
     private static Logger logger= LogManager.getLogger(main.class.getName());
 
-
-    String traingPath="/Users/sunlei/Desktop/ThesisData/TrainingData/ES";
-    String testingPath="/Users/sunlei/Desktop/ThesisData/TrainingData/E&STest";
-    String infoPath="/Users/sunlei/Desktop/ThesisData/PatentData/PatTest.sqlite";
+    IniFile ini=new IniFile();
+    String traingPath="/Users/leisun/Desktop/ThesisData/ES/training.db";
+    String testingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&STest";
+    String infoPath="/Users/leisun/Desktop/ThesisData/ES/PatTest.sqlite";
 
     pair<ArrayList<patent>,ArrayList<String>> training;
     pair<ArrayList<patent>,ArrayList<String>> testing;
 
 
     public main(int num){
-        training=new patentsDataset(traingPath,infoPath,2000,"Benchmark").getPatents();
-
+        training=new patentsDataset(traingPath,infoPath,ini.getTextPath(),5000,"Benchmark").getPatents();
+        System.out.println(training.firstarg.size());
        subsetofTrainingwithRandomly(num);
 
-        testing=new patentsDataset(testingPath,infoPath,48,"Benchmark").getPatents();
+//        testing=new patentsDataset(testingPath,infoPath,48,"Benchmark").getPatents();
 
     }
 
@@ -91,6 +95,12 @@ public class main {
 
 
         pair<AbstractDistance,Double> var5=var4.estimateParameter();
+
+
+        storeText("ClusteringDistance.txt",true,var5.firstarg.getWeights());
+
+
+
         logger.warn(var5.firstarg);
         logger.warn("Threshold: " + var5.secondarg );
         Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
@@ -108,7 +118,7 @@ public class main {
 
     public double crossValidate(){
 
-        int k=10;
+        int k=5;
         ArrayList<patent> patents=new ArrayList<>();
         ArrayList<String> patentsID=new ArrayList<>();
         Boolean shuffle=true;
@@ -132,6 +142,18 @@ public class main {
 
         }
 
+        storeText("ClusteringDistance.txt",true,"Patents:"+patents.size()+"\n");
+
+        double startT=System.currentTimeMillis();
+        patentPreprocessingTF preprocess = new patentPreprocessingTF(patents);
+
+        preprocess.setLanguage(LanguageCode.ENGLISH);
+        preprocess.preprocess();
+        patents = preprocess.getPatents();
+        double endT=System.currentTimeMillis();
+        System.out.println("Preprocessing Time"+(endT-startT));
+
+
         logger.info("Patents Initialized");
         logger.info("Patents total number:"+patents.size());
         logger.info("");
@@ -147,29 +169,59 @@ public class main {
             pair<pair<ArrayList<patent>,ArrayList<String>>,pair<ArrayList<patent>,ArrayList<String>>> var0=this.getTrainingandTesingPatents(start,end,patents,patentsID,shuffleIndex);
             FMeasure.add(testingWithTraining(var0.firstarg,var0.secondarg));
         }
-
+        String result="Patent Numer: "+patents.size()+"\n";
         logger.info("");
         double sum=0;
         for(double d:FMeasure) {
+            result+=d+" ";
             System.out.print(d+",");
             sum+=d;
         }
         logger.info("");
         logger.error(sum/k);
         double F1=sum/k;
+        result+=F1+"\n";
         sum=0;
         for(double d:lumpings) {
+            result+=d+" ";
             sum+=d;
         }
         suml=sum/k;
         logger.error("Average Lumping:"+sum/k);
+        result+=suml+"\n";
         sum=0;
         for(double d:splittings) {
+            result+=d+" ";
             sum+=d;
         }
         sums=sum/k;
+        result+=sums+"\n";
+        storeText("Clustering.txt",true,result);
         logger.error("Average splitting:"+sum/k);
+
         return (F1);
+    }
+
+
+    public void storeText(String path,boolean follow,String str){
+        if (follow) {
+            try {
+                FileWriter w=new FileWriter(path,follow);
+                w.write(str);
+                w.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                FileWriter w=new FileWriter(path,follow);
+                w.write(str);
+                w.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public pair<pair<ArrayList<patent>,ArrayList<String>>,pair<ArrayList<patent>,ArrayList<String>>> getTrainingandTesingPatents(int start, int end, ArrayList<patent> patents, ArrayList<String> patentsID, ArrayList<Integer> shuffleIndex) {
@@ -214,10 +266,9 @@ public class main {
         ArrayList<Double> lumpings=new ArrayList<>();
         ArrayList<Double> splittings=new ArrayList<>();
 
-        for(int i=500;i<501;i+=900) {
+        for(int i=1000;i<3000;i+=500) {
         logger.warn("Size: "+i);
             main temp=new main(i);
-            //logger.error(i+" "+temp.test()+" "+temp.lumpings.get(0)+" "+temp.splittings.get(0)+";");
             F1s.add(temp.crossValidate());
             lumpings.add(temp.lumpings.get(0));
             splittings.add(temp.splittings.get(0));

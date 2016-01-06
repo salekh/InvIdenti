@@ -125,12 +125,15 @@ public abstract class patentClustering
         this.patents=patents;
     }
 
-    public void ininitialize(ArrayList<patent> patents) {
+    public void ininitialize(ArrayList<patent> patents,boolean ini) {
         this.patents=patents;
         this.initilization=true;
         clustersIndex.clear();
         clusters.clear();
-        preprocess();
+
+      if(!ini){
+          preprocess();
+      }
     }
 
     public abstract void Cluster(AbstractDistance distance);

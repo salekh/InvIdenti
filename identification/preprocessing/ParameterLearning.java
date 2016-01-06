@@ -16,22 +16,23 @@ public abstract class ParameterLearning {
 
 
     public abstract AbstractDistance estimateDistanceFunction();
-    protected static Logger logger= LogManager.getLogger(ParameterLearning.class.getName());
+
+    protected static Logger logger = LogManager.getLogger(ParameterLearning.class.getName());
     protected ArrayList<patent> patents;
     protected ArrayList<String> patentsID;
     protected ArrayList<String> optionsName;
-    protected int numberofOptions=8;
-    protected boolean initialization=false;
-    double threshold=-Double.MAX_VALUE;
+    protected int numberofOptions = 8;
+    protected boolean initialization = false;
+    double threshold = -Double.MAX_VALUE;
 
     protected ArrayList<AbstractDistance> distances;
     IniFile ini;
 
 
-    public ParameterLearning(){
-            ini=new IniFile();
-            this.optionsName=ini.getOptionsNames();
-            generateSeperatedDisFunctions();
+    public ParameterLearning() {
+        ini = new IniFile();
+        this.optionsName = ini.getOptionsNames();
+        generateSeperatedDisFunctions();
     }
 
 
@@ -42,16 +43,20 @@ public abstract class ParameterLearning {
 
     /**
      * Initialize the Parameter Learning with arraylist of patents and arraylist of patentsID
-     * @param patents arraylist of patents
+     *
+     * @param patents   arraylist of patents
      * @param patentsID arraylist of patentsID
      */
 
-    public void initilize(ArrayList<patent>patents,ArrayList<String>patentsID){
-        this.patents=patents;
-        this.patentsID=patentsID;
-        preprocess();
-        initialization=true;
+    public void initilize(ArrayList<patent> patents, ArrayList<String> patentsID, boolean initilization) {
+        this.patents = patents;
+        this.patentsID = patentsID;
+        if (!initilization) {
+            preprocess();
+        }
+        this.initialization = true;
     }
+
 
 
    /**

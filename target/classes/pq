@@ -37,7 +37,6 @@ public class pq {
         ArrayList<String> testingID=new ArrayList<>();
 
         IniFile ini=new IniFile();
-        ArrayList<String> optionsName=ini.getOptionsNames();
 
 
         int numberofOptions;
@@ -164,47 +163,50 @@ public class pq {
 
 
 
-    public pair<pair<DoubleMatrix,DoubleMatrix>,pair<Integer,Integer>> geneerateAMiniBatchLRTrainingData(ArrayList<Integer> ID1,ArrayList<Integer>ID2,int starti,int startj,int batchsize){
-        boolean firsttry=true;
+        public pair<pair<DoubleMatrix,DoubleMatrix>,pair<Integer,Integer>> geneerateAMiniBatchLRTrainingData(int starti,int startj,int batchsize){
+            boolean first=true;
 
-        double[][] x=new double[batchsize][numberofOptions+1];
-        double[][] y=new double[batchsize][1];
-        int index=0;
+            double[][] x=new double[batchsize][numberofOptions+1];
+            double[][] y=new double[batchsize][1];
+            int index=0;
 
-        int endi,endj;
-        endi=endj=ID1.size();
-        pair<Integer,Integer> continueIndex;
-        label:
-        for(int i=starti;i<ID1.size();i++) {
-            for(int j=0;j<ID2.size();j++) {
-                if(firsttry) {
-                    j=startj;
-                    firsttry=false;
-                }
-                if(ID2.get(j)>ID1.get(i)) {
-                    x[index][0]=1.0;
-                    if (this.trainingID.get(ID1.get(i)).equalsIgnoreCase(this.trainingID.get(ID2.get(j)))) {
-                        y[index][0]=1.0;
-                    } else {
-                        y[index][0] = 0.0;
+            int endi,endj;
+            endi=endj=patents.size();
 
-
+            ArrayList<String> optionsName=ini.getOptionsNames();
+            pair<Integer,Integer> continueIndex;
+            label:
+            for(int i=starti;i<patents.size();i++) {
+                for(int j=0;j<patents.size();j++) {
+                    if(first) {
+                        j=startj;
+                        first=false;
                     }
 
+                    if (i>j) {
+                        x[index][0] = 1.0;
+                        if (this.patentsID.get(i).equalsIgnoreCase(this.patentsID.get(j))) {
+                            y[index][0] = 1.0;
+                        } else {
+                            y[index][0] = 0.0;
 
-                    int var2=1;
 
-
-                    for(int m=0;m<optionsName.size();m++) {
-                        if (ini.getOptionValue(optionsName.get(m))) {
-                            x[index][var2]=distances.get(m).distance(training.get(ID1.get(i)), training.get(ID2.get(j)));
-                            var2++;
                         }
 
 
-                    }
+                        int var2 = 1;
 
-                    index++;
+
+                        for (int m = 0; m < optionsName.size(); m++) {
+
+                            if (ini.getOptionValue(optionsName.get(m))) {
+                                x[index][var2] = distances.get(m).distance(patents.get(i), patents.get(j));
+                                var2++;
+                            }
+                        }
+
+                        index++;
+                    }
                     if(index>=batchsize) {
                         endi=i;
                         endj=j;
@@ -213,12 +215,13 @@ public class pq {
                     }
                 }
             }
+
+
+
+            continueIndex=new pair<>(endi,endj);
+
+            return new pair<>(new pair<>(new DoubleMatrix(x),new DoubleMatrix(y)),continueIndex);
         }
-
-        continueIndex=new pair<>(endi,endj);
-
-        return new pair<>(new pair<>(new DoubleMatrix(x),new DoubleMatrix(y)),continueIndex);
-    }
 
 
 
@@ -252,14 +255,6 @@ public class pq {
 
             System.out.println(errorForTraining+" "+errorForValidation);
 
-            ArrayList<Integer> ID1=new ArrayList<>();
-            ArrayList<Integer> ID2=new ArrayList<>();
-            for(int i=0;i<training.size();i++) {
-                ID1.add(i);
-                ID2.add(i);
-            }
-
-
             label:
 
             for(int k=0;k<maxIteration;k++) {
@@ -268,28 +263,24 @@ public class pq {
                 int starti,startj;
                 starti=startj=0;
 
-                Collections.shuffle(ID1);
-                Collections.shuffle(ID2);
-
                 pair<ArrayList<patent>,ArrayList<String>> temp=shufflePatents(training,trainingID);
                 training=temp.firstarg;
                 trainingID=temp.secondarg;
-
 
 
                 for(int i=0;i<X.rows;i+=batchSize){
                   double t=System.currentTimeMillis();
 
                     if (i+batchSize<training.size()*(training.size()-1)/2) {
-                        batch=geneerateAMiniBatchLRTrainingData(ID1,ID2,starti,startj,batchSize);
+                        batch=geneerateAMiniBatchLRTrainingData(starti,startj,batchSize);
                     } else {
-                        batch=geneerateAMiniBatchLRTrainingData(ID1,ID2,starti,startj,training.size()*(training.size()-1)/2-i);
+                        batch=geneerateAMiniBatchLRTrainingData(starti,startj,training.size()*(training.size()-1)/2-i);
                     }
 
 
                     starti=batch.secondarg.firstarg;
                     startj=batch.secondarg.secondarg+1;
-                    if (startj>=training.size()) {
+                    if (startj>patents.size()) {
                         starti++;
                         startj=0;
                     }
@@ -307,10 +298,10 @@ public class pq {
 
                     if (num>=X2.rows) {
                         errorForValidation=calculateTheError(X2,Y2,thetas);
-                        //System.out.println(errorForValidation);
+                        System.out.println(errorForValidation);
                         errorForTraining=calculateTheError(X,Y,thetas);
                         if (errorForValidation<minerror) minerror=errorForValidation;
-                        System.out.println(errorForTraining+" "+errorForValidation);
+                      //  System.out.println(errorForTraining+" "+errorForValidation);
 
                         if (updates<errorBatchSize) {
                             updates++;
@@ -329,7 +320,7 @@ public class pq {
                                 double std=var2.firstarg;
                                 double mean=var2.secondarg;
                                // System.out.println("Criterion "+PQ+" "+progress);
-                                if (std<=5e-6||std/mean<0.05||errorForValidation<1e-6) break label;
+                                if (std<=5e-6||std/mean<0.05||errorForValidation<1e-5) break label;
                             }
                         }
 

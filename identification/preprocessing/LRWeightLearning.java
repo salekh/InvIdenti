@@ -1,6 +1,8 @@
 package preprocessing;
 
+import Evaluation.trainingDataMatrix;
 import base.pair;
+import base.patent;
 import clustering.distancefunction.AbstractDistance;
 
 import clustering.distancefunction.CosDistance;
@@ -18,461 +20,158 @@ import java.util.Collections;
  */
 public class LRWeightLearning extends ParameterLearning {
 
-    private ArrayList<pair<int[],Double>> lrTrainingData=new ArrayList<>();
-
-    public AbstractDistance estimateDistanceFunction() {
-        System.out.println("Start Training");
-        double start=System.currentTimeMillis();
-
-        Boolean miniBatch=false;
+    ArrayList<patent> training=new ArrayList<>();
+    ArrayList<String> trainingID=new ArrayList<>();
+    ArrayList<patent> validation=new ArrayList<>();
+    ArrayList<String> validationID=new ArrayList<>();
+    int batchSize=30;
 
 
-        pair<pair<DoubleMatrix, DoubleMatrix>, pair<Integer, Integer>> batch_o=null ;
-        int numberofTrainingData=patents.size()*(patents.size()-1)/2;
+    public AbstractDistance estimateDistanceFunction(){
+        seperateDataset();
+        pair<DoubleMatrix,DoubleMatrix> validations=new trainingDataMatrix(validation,validationID,false).getPatents_Matrices();
+        DoubleMatrix X=validations.firstarg;
+        DoubleMatrix Y=validations.secondarg;
 
+
+        ArrayList<Double> errors=new ArrayList<>();
+        int errorBatchSize=10;
+
+        double[][] var0 = new double[numberofOptions + 1][1];
+        for (int i = 0; i < numberofOptions + 1; i++) {
+            var0[i][0] = 1.0;
+        }
+        DoubleMatrix thetas = new DoubleMatrix(var0);
+
+        pair<pair<DoubleMatrix, DoubleMatrix>, pair<Integer, Integer>> batch;
+
+        int maxIteration=10;
+        double alpha=9.99;
+        double lambda=0;
+
+
+        int num=0;
+        int updates=0;
+        double minerror=Double.MAX_VALUE;
+        double errorForValidation=calculateTheError(X,Y,thetas);
+
+        System.out.println("Initial Error: "+errorForValidation);
 
         ArrayList<Integer> ID1=new ArrayList<>();
         ArrayList<Integer> ID2=new ArrayList<>();
-
-        for(int i=0;i<patents.size();i++) {
+        for(int i=0;i<training.size();i++) {
             ID1.add(i);
             ID2.add(i);
         }
 
-       Collections.shuffle(ID1);
-       Collections.shuffle(ID2);
+        label:
 
-        int starti=0;
-        int startj=0;
+        for(int k=0;k<maxIteration;k++) {
 
-        int maxIteration=2000;
-
-        ArrayList<ArrayList<Double>> checkCovergence=new ArrayList<>();
-
-
-        if (numberofTrainingData>=4000*7999) {
-            miniBatch=true;
-        } else {
-            batch_o = geneerateAMiniBatchLRTrainingData(ID1, ID2, starti, startj, numberofOptions, numberofTrainingData);
-        }
-        /**
-         * Training Data generating
-         */
-        //pair<DoubleMatrix,DoubleMatrix> result=this.logisticRTrainingDataGenerator();
-
-
-        /**
-         * Convergence check initilization
-         */
-        for(int i=0;i<1;i++) {
-            checkCovergence.add(new ArrayList<Double>());
-        }
-
-
-        /**
-         * Initilize the weights and threshold
-         */
-
-
-
-
-
-            double[][] var0 = new double[numberofOptions + 1][1];
-            for (int i = 0; i < numberofOptions + 1; i++) {
-                var0[i][0] = 1.0;
-            }
-            DoubleMatrix thetas = new DoubleMatrix(var0);
-
-
-            thetas.transpose();
-
-            // DoubleMatrix X=result.firstarg;
-            // DoubleMatrix Y=result.secondarg;
-            // ArrayList<pair<DoubleMatrix,DoubleMatrix>> xy=getBatches(X,Y,79*40);
-            // X=null;
-            // Y=null;
-
-
-            double initialalpha = 8.1e-5*225*449;
-            double alpha = initialalpha;
-            double lamda = 5;
-
-            boolean finish = false;
-            int check = 0;
-            double previous_error = 0;
-            double initial_error = 0;
-
-
-
-            for (int k = 0; k < maxIteration; k++) {
-
-                starti = 0;
-                startj = 0;
-
-
-              //  for (int i = 0; i < numberofTrainingData; i += 10000) {
-
-         /*
-            int start=i;
-            int end=i+10000-1;
-            if (end>numberofTrainingData) end=numberofTrainingData;
-
-            pair<DoubleMatrix,DoubleMatrix> p=generateDoubleMatrix(start,end);
-
-*/
-
-                    pair<DoubleMatrix, DoubleMatrix> p;
-/*
-                    if (miniBatch) {
-                        pair<pair<DoubleMatrix, DoubleMatrix>, pair<Integer, Integer>> batch;
-                        if (i + 10000 < numberofTrainingData) {
-                            batch = geneerateAMiniBatchLRTrainingData(ID1, ID2, starti, startj, numberofOptions, 10000);
-                        } else {
-
-                            batch = geneerateAMiniBatchLRTrainingData(ID1, ID2, starti, startj, numberofOptions, numberofTrainingData - i);
-                        }
-
-                        p = batch.firstarg;
-                        pair<Integer, Integer> indexes = batch.secondarg;
-
-                        // System.out.println(p.firstarg.rows+" "+p.secondarg.rows);
-
-
-                        starti = indexes.firstarg;
-                        startj = indexes.secondarg + 1;
-
-                        if (startj >= ID2.size()) {
-                            starti++;
-                            startj = 0;
-                        }
-                    } else {*/
-                        p = batch_o.firstarg;
-              //      }
-
-
-                    DoubleMatrix thetas_t = new DoubleMatrix(thetas.toArray2());
-
-/*
-            for (int vari = 0; vari < p.firstarg.rows; vari++) {
-                for (int varj = 0; varj < p.firstarg.columns; varj++) {
-                    System.out.print(p.firstarg.get(vari, varj) + " ");
-                }
-                System.out.println();
-            }
-
-            for(int vari=0;vari<p.firstarg.rows;vari++) {
-                System.out.println(p.secondarg.get(vari,0));
-            }
-*/
-
-                    if (check == 0) {
-                        DoubleMatrix varM1 = applyLogisticonData(p.firstarg, thetas_t);
-                        double sum = 0;
-                        for (int m = 0; m < p.secondarg.rows; m++) {
-
-                            double temp = varM1.get(m, 0);
-
-
-                            if (temp > 1) temp = 1;
-                            if (temp < 0) temp = 0;
-
-                            if (p.secondarg.get(m, 0) == 1) {
-                                sum += Math.log(temp);
-                            } else {
-                                sum += Math.log(1 - temp);
-                            }
-
-                            //    sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
-                        }
-
-                        initial_error = -sum;
-                        previous_error = initial_error;
-
-                        System.out.println("initial value:" + initial_error);
-                    } else {
-                        pair<DoubleMatrix, Double> var1 = updateWeights(p.firstarg, p.secondarg, thetas_t, alpha/p.firstarg.rows, lamda);
-                        if (var1.secondarg / initial_error < 1e-5) break ;
-                        if (2 * Math.abs(var1.secondarg - previous_error) / (var1.secondarg + previous_error + 1e-5) < 1e-5) {
-                            finish=true;
-                            break ;
-                        }
-
-
-                        thetas = var1.firstarg;
-                        previous_error = var1.secondarg;
-
-                        System.out.println(var1.secondarg + " " + check + " " + alpha);
-
-                    }
-                    check++;
-
-/*
-            if (check == 0) previous_error = var1.secondarg;
-
-
-            if ((check > 0 && var1.secondarg <= previous_error) || check == 0) {
-
-                thetas = var1.firstarg;
-
-
-                //  if (check>0&&Math.abs(previous_error-var1.secondarg)/Math.abs(previous_error)<0.001) finish=true;
-
-
-                previous_error = var1.secondarg;
-
-                if (check < 50) {
-                    for (int var2 = 0; var2 < checkCovergence.size(); var2++) {
-                        checkCovergence.get(var2).add(var1.secondarg);
-                    }
-                } else {
-                    for (int var2 = 0; var2 < checkCovergence.size(); var2++) {
-                        checkCovergence.get(var2).remove(0);
-                        checkCovergence.get(var2).add(var1.secondarg);
-                        if (!finish) finish = getCovergence(checkCovergence);
-
-                    }
-                }
-
-                System.out.print(thetas.get(2, 0) + " ");
-
-
-                //System.out.println("a "+ previous_error+" "+var1.secondarg+" "+alpha);
-
-                check++;
-                //if (check>0) alpha=1.05*alpha;
-            } else {
-                //     System.out.println("b "+previous_error+" "+var1.secondarg+" "+alpha);
-                alpha = alpha / 2;
-
-            }
-            if (finish) {
-
-                // logger.error("Final Log Logistic:"+ var1.secondarg);
-                break label;
-            }
-
-            if (!miniBatch) {
-
-                break;
-            }*/
-                if (finish) break;
-                }
-
-
-
-         //   }
-
-            logger.error("Final Log Logistic:" + previous_error);
-            System.out.println("final iteration number:" + check);
-
-
+            Collections.shuffle(ID1);
+            Collections.shuffle(ID2);
             System.out.println();
+            int starti,startj;
+            starti=startj=0;
+
+            pair<ArrayList<patent>,ArrayList<String>> temp=shufflePatents(training,trainingID);
+            training=temp.firstarg;
+            trainingID=temp.secondarg;
 
 
-            double[] weights = thetas.toArray();
+            for(int i=0;i<training.size()*(training.size()-1)/2;i+=batchSize){
 
-            ArrayList<Double> weight = new ArrayList<>();
-            int i = 1;
-
-            for (int j = 0; j < optionsName.size(); j++) {
-                if (ini.getOptionValue(optionsName.get(j))) {
-                    //logger.warn(optionsName.get(j)+weights[i]);
-                    weight.add(weights[i]);
-                    i++;
+                if (i+batchSize<training.size()*(training.size()-1)/2) {
+                    batch=geneerateAMiniBatchLRTrainingData(ID1,ID2,starti,startj,batchSize);
                 } else {
-                    weight.add(0.0);
+
+                    batch=geneerateAMiniBatchLRTrainingData(ID1,ID2,starti,startj,training.size()*(training.size()-1)/2-i);
+
                 }
 
+
+                starti=batch.secondarg.firstarg;
+                startj=batch.secondarg.secondarg+1;
+                if (startj>training.size()) {
+                    starti++;
+                    startj=0;
+                }
+                DoubleMatrix thetas_t = new DoubleMatrix(thetas.toArray2());
+
+                thetas_t = updateWeights(batch.firstarg.firstarg, batch.firstarg.secondarg,thetas_t, alpha / batch.firstarg.firstarg.rows, lambda);
+
+                thetas = new DoubleMatrix(thetas_t.toArray2());
+
+
+
+
+                num+=batch.firstarg.firstarg.rows;
+
+
+                if (num>=X.rows) {
+                    errorForValidation=calculateTheError(X,Y,thetas);
+                    System.out.println(errorForValidation);
+
+                    if (errorForValidation<minerror) minerror=errorForValidation;
+                    //  System.out.println(errorForTraining+" "+errorForValidation);
+
+                    if (updates<errorBatchSize) {
+                        updates++;
+
+                        errors.add(errorForValidation);
+                    } else {
+                        errors.remove(0);
+                        errors.add(errorForValidation);
+
+
+                        if (k > -1) {
+                            pair<Double,Double> var2 =calculateStd(errors);
+                            double std=var2.firstarg;
+                            double mean=var2.secondarg;
+                            if (std<1e-5||std/mean<0.05||errorForValidation<1e-5) break label;
+                        }
+                    }
+
+
+
+                    num=0;
+                }
+
+
+
+
             }
 
-            this.threshold = -weights[0];
-            double end = System.currentTimeMillis();
 
-            System.out.println("Time for learning:" + (end - start));
-
-
-        return generateDistanceFunction(null,weight);
-
-    }
-
-    /**
-     * Check the convergence
-     * @param var0 the last 50 iteration weights values
-     * @return
-     */
-    public boolean getCovergence(ArrayList<ArrayList<Double>> var0){
-        double sum=0;
-
-
-        for(ArrayList<Double> var1:var0) {
-            sum+=Math.abs(Collections.max(var1)-Collections.min(var1))/Math.abs(Collections.max(var1));
         }
 
 
+        double[] weights = thetas.toArray();
 
+        ArrayList<Double> weight = new ArrayList<>();
+        int i = 1;
 
-       // if (Math.abs(last-secondlast)/Math.max(last,secondlast)<0.01) return true; else return false;
-
-
-
-        if (sum<0.01*var0.size()) return true; else return false;
-    }
-
-    /**
-     * Update the weights and threshold
-     * @param X Similarity matrix
-     * @param Y target value matrix
-     * @param thetas weights and threshold vector
-     * @param alpha learning rate
-     * @param lamda regularization factor
-     * @return updated weights and threshold vector
-     *
-     */
-    public pair<DoubleMatrix,Double> updateWeights(DoubleMatrix X,DoubleMatrix Y,DoubleMatrix thetas,double alpha,double lamda) {
-        DoubleMatrix varM1=applyLogisticonData(X,thetas);
-
-
-
-        double error=0;
-        varM1.subi(Y);
-        DoubleMatrix error_M=new DoubleMatrix(varM1.toArray2());
-
-        //error=MatrixFunctions.absi(error_M).sum()/X.rows;
-
-        varM1 = X.transpose().mmul(varM1);
-
-
-        DoubleMatrix thetas1 = new DoubleMatrix(thetas.toArray2());
-
-        thetas1 = thetas1.put(0, 0, 0);
-
-        varM1.muli(alpha);
-
-
-        thetas1.muli(lamda * alpha);
-
-        thetas.subi(varM1);
-        thetas.subi(thetas1);
-
-        varM1=applyLogisticonData(X,thetas);
-
-        double sum=0;
-        for (int m = 0; m < Y.rows; m++) {
-
-            double temp=varM1.get(m,0);
-
-
-            if (temp>1) temp=1;
-            if (temp<0) temp=0;
-
-            if (Y.get(m,0)==1) {
-                sum+=Math.log(temp);
+        for (int j = 0; j < optionsName.size(); j++) {
+            if (ini.getOptionValue(optionsName.get(j))) {
+                weight.add(weights[i]);
+                i++;
             } else {
-                sum+=Math.log(1-temp);
+                weight.add(0.0);
             }
 
-            //    sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
         }
 
-        return new pair<>(thetas,-sum);
+
+        this.threshold=-weights[0];
+
+        return (this.generateDistanceFunction(null,weight));
 
     }
 
 
 
 
-
-    /**
-     * @param X Similarity Matrix
-     * @param Y target value matrix
-     * @param batchsize batch size
-     * @return the mini-Batch similarity matrices and target value matrices.
-     */
-
-    ArrayList<pair<DoubleMatrix,DoubleMatrix>> getBatches(DoubleMatrix X,DoubleMatrix Y,int batchsize) {
-        ArrayList<pair<DoubleMatrix, DoubleMatrix>> result = new ArrayList<>();
-
-        if (X.rows <= batchsize) {
-            result.add(new pair<>(X, Y));
-            return result;
-        }
-
-        int totallines = X.rows;
-
-        for (int i = 0; i < totallines; i += batchsize) {
-            int begin = i;
-            int end = i + batchsize - 1;
-            if (end >= totallines) end = totallines - 1;
-            int[] var = new int[end - begin + 1];
-            for (int var0 = 0; var0 <= (end - begin); var0++) {
-                var[var0] = begin + var0;
-            }
-            //logger.error(i);
-            result.add(new pair<>(new DoubleMatrix(X.getRows(var).toArray2()), new DoubleMatrix(Y.getRows(var).toArray2())));
-        }
-
-        return result;
-
-    }
-
-
-
-    /**
-     * Apply sigmoid function on the similarity matrix
-     * @param X the similarity matrix
-     * @param thetas the weights and the threshold
-     * @return the Matrix after applying the sigmoid function on the similarity matrix
-     */
-
-    public DoubleMatrix applyLogisticonData(DoubleMatrix X,DoubleMatrix thetas) {
-
-        DoubleMatrix varM1 = new DoubleMatrix(X.transpose().toArray2());
-        varM1 = varM1.transpose().mmul(thetas);
-
-        DoubleMatrix varM2 = new DoubleMatrix(varM1.rows, varM1.columns);
-
-        varM2.subi(varM1);
-
-        MatrixFunctions.expi(varM2);
-
-        varM2.addi(1);
-
-        DoubleMatrix varM3 = new DoubleMatrix(varM2.rows, varM2.columns);
-        varM3.addi(1);
-
-        varM3.divi(varM2);
-
-        return varM3;
-
-    }
-
-
-    /**
-     * Output a matrix
-     * @param x the matrix
-     * @param name the name of the matrix
-     */
-    public void outputMatrix(DoubleMatrix x,String name) {
-        logger.error("Matrix Name:" +name);
-        int var0=0;
-        for (int i=0;i<x.rows;i++) {
-            String temp="";
-            for(int j=0;j<x.columns;j++) {
-
-                    temp+=x.get(i,j)+" ";
-
-
-            }
-            logger.error(temp);
-        }
-
-
-
-    }
-
-
-
-    public pair<pair<DoubleMatrix,DoubleMatrix>,pair<Integer,Integer>> geneerateAMiniBatchLRTrainingData(ArrayList<Integer>ID1,ArrayList<Integer>ID2,int starti,int startj,int numberofFeatures,int batchsize){
+    public pair<pair<DoubleMatrix,DoubleMatrix>,pair<Integer,Integer>> geneerateAMiniBatchLRTrainingData(ArrayList<Integer> ID1,ArrayList<Integer>ID2,int starti,int startj,int batchsize){
         boolean firsttry=true;
 
         double[][] x=new double[batchsize][numberofOptions+1];
@@ -491,9 +190,9 @@ public class LRWeightLearning extends ParameterLearning {
                 }
                 if(ID2.get(j)>ID1.get(i)) {
                     x[index][0]=1.0;
-                    if (this.patentsID.get(ID1.get(i)).equalsIgnoreCase(this.patentsID.get(ID2.get(j)))) {
-                       y[index][0]=1.0;
-                           } else {
+                    if (this.trainingID.get(ID1.get(i)).equalsIgnoreCase(this.trainingID.get(ID2.get(j)))) {
+                        y[index][0]=1.0;
+                    } else {
                         y[index][0] = 0.0;
 
 
@@ -505,7 +204,7 @@ public class LRWeightLearning extends ParameterLearning {
 
                     for(int m=0;m<optionsName.size();m++) {
                         if (ini.getOptionValue(optionsName.get(m))) {
-                            x[index][var2]=distances.get(m).distance(patents.get(ID1.get(i)), patents.get(ID2.get(j)));
+                            x[index][var2]=distances.get(m).distance(training.get(ID1.get(i)), training.get(ID2.get(j)));
                             var2++;
                         }
 
@@ -530,104 +229,289 @@ public class LRWeightLearning extends ParameterLearning {
 
 
 
-    /**
-     * Generating the training data of the matrix type.
-     */
-    public void generateLRTraininngData() {
-
-        /**
-         * Clean the Training Data
-         */
 
 
-
-       this.lrTrainingData.clear();
-
-
-        for (int i = 0; i < this.patents.size() - 1; i++) {
-            for (int j = i + 1; j < this.patents.size(); j++) {
-                int[] tempint = new int[2];
-
-                tempint[0] = i;
-                tempint[1] = j;
-
-                double result;
-
-                if (this.patentsID.get(i).equalsIgnoreCase(this.patentsID.get(j))) {
-                    result = 1.0;
-                } else {
-                    result = 0.0;
-                }
-
-                 this.lrTrainingData.add(new pair<>(tempint, result));
-
-                }
-            }
-
-    }
-
-
-    /**
-     * Generating a trainig data and transformed into a String
-     * @param var0 the two patent number and the target value
-     * @return the transformed string.
-     */
-    public String generateAData(pair<int[],Double> var0) {
-        String temp=1.0+";";
-
-
-        for(int j=0;j<optionsName.size();j++) {
-            if (ini.getOptionValue(optionsName.get(j))) {
-
-                temp+=distances.get(j).distance(patents.get(var0.firstarg[0]), patents.get(var0.firstarg[1]))+";";
-
-            }
+    private pair<ArrayList<patent>,ArrayList<String>> shufflePatents(ArrayList<patent> patents,ArrayList<String> patentsID) {
+        ArrayList<Integer> indexes=new ArrayList<>();
+        for(int i=0;i<patents.size();i++) {
+            indexes.add(i);
+        }
+        Collections.shuffle(indexes);
+        ArrayList<patent> temp_p=new ArrayList<>();
+        ArrayList<String> temp_i=new ArrayList<>();
+        for(int i=0;i<indexes.size();i++) {
+            temp_p.add(patents.get(indexes.get(i)));
+            temp_i.add(patentsID.get(indexes.get(i)));
 
         }
 
-        temp+=var0.secondarg+"\n";
-
-        return temp;
+        return new pair<>(temp_p,temp_i);
     }
 
 
+    public pair<Double,Double> calculateStd(ArrayList<Double> errors) {
+        double mean=0;
+        for(double var0:errors) {
+            mean+=var0;
+        }
+        mean=mean/errors.size();
+        double std=0;
+        for (double var0:errors) {
+            std+=(var0-mean)*(var0-mean);
+        }
+        std=std/errors.size();
+        std=Math.sqrt(std);
+        return new pair<>(std,mean);
+    }
 
-    /** Generating the training data of the matrix form
-     * @return the similarity matrix and the target value vector
-     */
-    public pair<DoubleMatrix,DoubleMatrix> logisticRTrainingDataGenerator() {
+    public pair<Double,Double> calculatePQ(double minerror,ArrayList<Double> errors){
 
+        int size=5;
+        double GL=100*(errors.get(errors.size()-1)/minerror-1);
 
-
-        double[][] var0=new double[this.lrTrainingData.size()][numberofOptions+1];
-        double[][] var1=new double[this.lrTrainingData.size()][1];
-
-        int i=0;
+        double PQ=0;
         double sum=0;
-        for(pair<int[],Double> p:this.lrTrainingData) {
-            var0[i][0]=1.0;
-            int var2=1;
+        for(int i=0;i<5;i++) {
 
-            for(int j=0;j<optionsName.size();j++) {
-                if (ini.getOptionValue(optionsName.get(j))) {
-
-                    var0[i][var2]=distances.get(j).distance(patents.get(p.firstarg[0]), patents.get(p.firstarg[1]));
-
-                    var2++;
-                }
-
-            }
-            var1[i][0]=p.secondarg;
-            i++;
+            sum+=errors.get(i);
         }
 
-        DoubleMatrix X=new DoubleMatrix(var0);
+        double progress=(sum/(Collections.min(errors)*errors.size())-1);
 
-        DoubleMatrix Y=new DoubleMatrix(var1);
+        PQ=GL/(100*(sum/(Collections.min(errors)*errors.size())-1));
 
 
-        System.out.println("Finished Generating!");
 
-        return new pair<>(X, Y);
+        return new pair<>(PQ,progress);
+
     }
+
+    public double calculateTheError(DoubleMatrix X,DoubleMatrix Y,DoubleMatrix thetas){
+        DoubleMatrix varM=applyLogisticonData(X, thetas);
+
+        double sum = 0;
+        for (int m = 0; m < Y.rows; m++) {
+
+            double temp = varM.get(m, 0);
+
+
+            if (temp > 1) temp = 1;
+            if (temp < 0) temp = 0;
+
+            sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
+
+        }
+
+        return (-sum)/X.rows;
+
+    }
+
+
+
+
+    public void outputMatrix(DoubleMatrix x,String name) {
+        System.out.println("Matrix Name:" +name);
+        int var0=0;
+        for (int i=0;i<x.rows;i++) {
+            String temp="";
+            for(int j=0;j<x.columns;j++) {
+
+                temp+=x.get(i,j)+" ";
+
+
+            }
+            System.out.println(temp);
+        }
+
+
+
+    }
+
+
+
+    public void storeText(String path,boolean follow,String str){
+        if (follow) {
+            try {
+                FileWriter w=new FileWriter(path,follow);
+                w.write(str);
+                w.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                FileWriter w=new FileWriter(path,follow);
+                w.write(str);
+                w.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    /**
+     * Update the weights and threshold
+     * @param X Similarity matrix
+     * @param Y target value matrix
+     * @param thetas weights and threshold vector
+     * @param alpha learning rate
+     * @param lamda regularization factor
+     * @return updated weights and threshold vector
+     *
+     */
+    public DoubleMatrix updateWeights(DoubleMatrix X, DoubleMatrix Y, DoubleMatrix thetas, double alpha, double lamda) {
+
+
+        DoubleMatrix varM1=applyLogisticonData(X,thetas);
+
+
+        varM1.subi(Y);
+
+
+        varM1 = X.transpose().mmul(varM1);
+
+
+        DoubleMatrix thetas1 = new DoubleMatrix(thetas.toArray2());
+
+        thetas1 = thetas1.put(0, 0, 0);
+
+        varM1.muli(alpha);
+
+
+        thetas1.muli(lamda * alpha);
+
+        thetas.subi(varM1);
+        thetas.subi(thetas1);
+
+
+        return thetas;
+
+    }
+
+    /**
+     * Apply sigmoid function on the similarity matrix
+     * @param X the similarity matrix
+     * @param thetas the weights and the threshold
+     * @return the Matrix after applying the sigmoid function on the similarity matrix
+     */
+
+    public DoubleMatrix applyLogisticonData(DoubleMatrix X,DoubleMatrix thetas) {
+
+        DoubleMatrix varM1 = new DoubleMatrix(X.transpose().toArray2());
+
+
+
+        varM1 = varM1.transpose().mmul(thetas);
+
+        DoubleMatrix varM2 = new DoubleMatrix(varM1.rows, varM1.columns);
+
+        varM2.subi(varM1);
+
+        MatrixFunctions.expi(varM2);
+
+        varM2.addi(1);
+
+        DoubleMatrix varM3 = new DoubleMatrix(varM2.rows, varM2.columns);
+        varM3.addi(1);
+
+        varM3.divi(varM2);
+
+
+
+        return varM3;
+
+    }
+
+    /**
+     * Generate a distance function based on a arraylist of weights and a arraylist of index
+     * @param attrIndex distance function index
+     * @param weights distance function weights
+     * @return the generated distance function
+     */
+    public CosDistance generateDistanceFunction(ArrayList<Integer> attrIndex, ArrayList<Double> weights) {
+        CosDistance var0=new CosDistance();
+        if (attrIndex!=null) {
+            boolean[] var1=new  boolean[this.ini.getOptionsNames().size()];
+            for(int i=0;i<this.ini.getOptionsNames().size();i++) {
+                if (attrIndex.contains(i)) {
+                    var1[i]=true;
+                } else {
+                    var1[i]=false;
+                }
+            }
+            var0.setOptions(var1);
+        }
+        if (weights!=null&&weights.size()>=this.ini.getOptionsNames().size()) {
+            double[] var2=new double[this.ini.getOptionsNames().size()];
+            for(int i=0;i<this.ini.getOptionsNames().size();i++) {
+                var2[i]=weights.get(i);
+            }
+
+            var0.setWeights(var2);
+        }
+
+
+
+        return var0;
+    }
+
+    /**
+     * geneerate all the seperated distance functions based on the options needed
+     */
+
+    public void generateSeperatedDisFunctions(){
+        ArrayList<String> optionsName=ini.getOptionsNames();
+
+
+        this.distances=new ArrayList<>();
+        int var0=0;
+
+        for(int i=0;i<optionsName.size();i++) {
+
+            ArrayList<Integer> var1 = new ArrayList<>();
+            var1.add(i);
+
+            distances.add(this.generateDistanceFunction(var1, null));
+
+            if (ini.getOptionValue(optionsName.get(i))) var0++;
+
+        }
+
+        this.numberofOptions=var0;
+    }
+
+
+
+
+    public void seperateDataset() {
+
+        training.clear();
+        validation.clear();
+        trainingID.clear();
+        validationID.clear();
+
+
+        ArrayList<Integer> index=new ArrayList<>();
+        for(int i=0;i<patents.size();i++) {
+            index.add(i);
+        }
+        int k=0;
+        Collections.shuffle(index);
+        for(int i=0;i<index.size();i++) {
+            if (k<index.size()*0.2) {
+                validation.add(patents.get(index.get(i)));
+                validationID.add(patentsID.get(index.get(i)));
+            }else{
+                training.add(patents.get(index.get(i)));
+                trainingID.add(patentsID.get(index.get(i)));
+            }
+            k++;
+        }
+
+        System.out.println("Training Data Size:"+training.size());
+        System.out.println("Testing Data Size:"+validation.size());
+    }
+
 }

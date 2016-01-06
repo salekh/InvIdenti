@@ -138,13 +138,13 @@ public class patentPreprocessingTF {
 
             System.out.println("After: "+ var19.rows());
 
-
+            System.out.println(1);
             Array2DRowRealMatrix original=new Array2DRowRealMatrix(var19.toArray());
 
             SingularValueDecomposition decomposition=new SingularValueDecomposition(original);
 
 
-
+            System.out.println(2);
 
             double[] singularvalues=decomposition.getSingularValues();
 
@@ -175,7 +175,7 @@ public class patentPreprocessingTF {
 
             var19=new DenseDoubleMatrix2D(M.toArray2());
 
-
+            System.out.println(23);
 
             IntArrayList intA=new IntArrayList();
 
