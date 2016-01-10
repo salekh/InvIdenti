@@ -24,11 +24,12 @@ public class LRWeightLearning extends ParameterLearning {
     ArrayList<String> trainingID=new ArrayList<>();
     ArrayList<patent> validation=new ArrayList<>();
     ArrayList<String> validationID=new ArrayList<>();
-    int batchSize=20;
+    int batchSize=0;
 
 
     public AbstractDistance estimateDistanceFunction(){
         seperateDataset();
+        batchSize=(training.size()*(training.size()-1)/2);
         pair<DoubleMatrix,DoubleMatrix> validations=new trainingDataMatrix(validation,validationID,false).getPatents_Matrices();
         DoubleMatrix X=validations.firstarg;
         DoubleMatrix Y=validations.secondarg;
@@ -45,7 +46,7 @@ public class LRWeightLearning extends ParameterLearning {
 
         pair<pair<DoubleMatrix, DoubleMatrix>, pair<Integer, Integer>> batch;
 
-        int maxIteration=10;
+        int maxIteration=3000;
         double alpha=9.2*batchSize/(training.size()*(training.size()-1)/2);
         System.out.println(alpha);
         double lambda=0;
@@ -56,6 +57,8 @@ public class LRWeightLearning extends ParameterLearning {
         double minerror=Double.MAX_VALUE;
         double errorForValidation=calculateTheError(X,Y,thetas);
 
+
+
         System.out.println("Initial Error: "+errorForValidation);
 
         ArrayList<Integer> ID1=new ArrayList<>();
@@ -64,7 +67,7 @@ public class LRWeightLearning extends ParameterLearning {
             ID1.add(i);
             ID2.add(i);
         }
-
+        batch=geneerateAMiniBatchLRTrainingData(ID1,ID2,0,0,batchSize);
         label:
 
         for(int k=0;k<maxIteration;k++) {
@@ -82,6 +85,7 @@ public class LRWeightLearning extends ParameterLearning {
 
             for(int i=0;i<training.size()*(training.size()-1)/2;i+=batchSize){
 
+              /*
                 if (i+batchSize<training.size()*(training.size()-1)/2) {
                     batch=geneerateAMiniBatchLRTrainingData(ID1,ID2,starti,startj,batchSize);
                 } else {
@@ -89,7 +93,7 @@ public class LRWeightLearning extends ParameterLearning {
                     batch=geneerateAMiniBatchLRTrainingData(ID1,ID2,starti,startj,training.size()*(training.size()-1)/2-i);
 
                 }
-
+*/
 
                 starti=batch.secondarg.firstarg;
                 startj=batch.secondarg.secondarg+1;
@@ -129,7 +133,12 @@ public class LRWeightLearning extends ParameterLearning {
                             pair<Double,Double> var2 =calculateStd(errors);
                             double std=var2.firstarg;
                             double mean=var2.secondarg;
-                            if (std<1e-6||std/mean<0.02||errorForValidation<1e-6) break label;
+                            if (std<1e-6||std/mean<0.001||errorForValidation<1e-6)
+                            {
+                                System.out.println("asd"+ std +" "+std/mean+" "+errorForValidation);
+                                System.exit(3);
+                                break label;
+                            }
                         }
                     }
 

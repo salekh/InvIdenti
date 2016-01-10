@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by sunlei on 15/11/15.
+ * Created by leisun on 15/11/15.
  */
 public class main {
     ArrayList<Double> lumpings=new ArrayList<>();
@@ -31,16 +31,16 @@ public class main {
     private static Logger logger= LogManager.getLogger(main.class.getName());
 
     IniFile ini=new IniFile();
-    String traingPath="/Users/sunlei/Desktop/ThesisData/ES/training.db";
-    String testingPath="/Users/sunlei/Desktop/ThesisData/TrainingData/E&STest";
-    String infoPath="/Users/sunlei/Desktop/ThesisData/ES/PatTest.sqlite";
+    String traingPath="/Users/leisun/Desktop/ThesisData/ES/training.db";
+    String testingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&STest";
+    String infoPath="/Users/leisun/Desktop/ThesisData/ES/PatTest.sqlite";
 
     pair<ArrayList<patent>,ArrayList<String>> training;
     pair<ArrayList<patent>,ArrayList<String>> testing;
 
 
     public main(int num){
-        training=new patentsDataset(traingPath,infoPath,ini.getTextPath(),8000,"Benchmark").getPatents();
+        training=new patentsDataset(traingPath,infoPath,ini.getTextPath(),2000,"Benchmark").getPatents();
         System.out.println(training.firstarg.size());
        subsetofTrainingwithRandomly(num);
 
@@ -266,7 +266,7 @@ public class main {
         ArrayList<Double> lumpings=new ArrayList<>();
         ArrayList<Double> splittings=new ArrayList<>();
 
-        for(int i=6000;i<=18000;i+=20000) {
+        for(int i=1000;i<=18000;i+=20000) {
         logger.warn("Size: "+i);
             main temp=new main(i);
             F1s.add(temp.crossValidate());
