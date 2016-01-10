@@ -57,9 +57,10 @@ public class learningRate {
 
         System.out.println("error"+initial_error);
 
-        for(double step=1e-6;step<1e-4;step+=1e-6){
+        for(double step=0;step<20;step+=0.1){
+
             DoubleMatrix thetas_t=new DoubleMatrix(thetas.toArray2());
-            double error=updateWeights(X,Y,thetas_t,step,0).secondarg;
+            double error=updateWeights(X,Y,thetas_t,step/X.rows,0).secondarg;
             System.out.println(step+" "+(initial_error-error));
         }
 

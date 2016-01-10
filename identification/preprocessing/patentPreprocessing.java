@@ -42,7 +42,7 @@ public class patentPreprocessing {
         /**
          * Set the matrix size to build the term frequency.
          */
-        this.matrixBuilder.maximumMatrixSize=250*150*4;
+        this.matrixBuilder.maximumMatrixSize=Pts.size()*1000;
     }
 
     public void setLanguage(LanguageCode code) {
@@ -121,7 +121,7 @@ public class patentPreprocessing {
             }
 
             DoubleMatrix2D var19;
-            if (this.useDimensionalityReduction && this.clusterCount * 2 < preprocessingContext.documents.size()) {
+            if (this.useDimensionalityReduction) {
                 this.matrixReducer.reduce(var18, this.clusterCount * 2);
                 var19 = var18.coefficientMatrix.viewDice();
             } else {

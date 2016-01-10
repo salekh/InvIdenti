@@ -39,7 +39,7 @@ public class pq {
         IniFile ini=new IniFile();
         ArrayList<String> optionsName=ini.getOptionsNames();
 
-
+        double learningrate=1;
         int numberofOptions;
         int numberofPatents;
 
@@ -56,10 +56,10 @@ public class pq {
             this.numberofOptions=numberofOptions;
            // seperateDataset(0,numberofPatents/K+1);
             generateSeperatedDisFunctions();
+            double[] l={10,10,5,1};
 
+            for(int i=0;i<4;i++) {
 
-            for(int i=30;i<=30;i+=10) {
-                this.batchSize=i;
                 crossValidation();
 
             }
@@ -74,7 +74,8 @@ public class pq {
 
         ArrayList<Double> error=new ArrayList<>();
         ArrayList<Double> time=new ArrayList<>();
-        for(int start=0;start<numberofPatents;start+=(numberofPatents/5)) {
+       // for(int start=0;start<numberofPatents;start+=(numberofPatents/5)) {
+         for(int start=0;start<=0;start++) {
             int end=start+(numberofPatents/5)-1;
 
             System.out.println("rows "+start+" "+end);
@@ -83,19 +84,21 @@ public class pq {
                 end=numberofPatents-1;
             }
 
-            seperateDataset(start,end);
+            seperateDataset(-1,-1);
 
             pair<DoubleMatrix,DoubleMatrix> trainings=new trainingDataMatrix(training,trainingID,false).getPatents_Matrices();
             pair<DoubleMatrix,DoubleMatrix> validations=new trainingDataMatrix(validation,validationID,false).getPatents_Matrices();
-            pair<DoubleMatrix,DoubleMatrix> testings=new trainingDataMatrix(testing,testingID,false).getPatents_Matrices();
+            //pair<DoubleMatrix,DoubleMatrix> testings=new trainingDataMatrix(testing,testingID,false).getPatents_Matrices();
 
             DoubleMatrix X1=trainings.firstarg;
             DoubleMatrix Y1=trainings.secondarg;
-            DoubleMatrix X2=testings.firstarg;
-            DoubleMatrix Y2=testings.secondarg;
+            DoubleMatrix X2=validations.firstarg;
+            DoubleMatrix Y2=validations.secondarg;
             DoubleMatrix X3=validations.firstarg;
             DoubleMatrix Y3=validations.secondarg;
+             this.learningrate=5*2400*2399/(training.size()*(training.size()-1)/2);
 
+             System.out.println(this.learningrate);
             double starttime=System.currentTimeMillis();
 
             error.add (training(X1,Y1,X2,Y2,X3,Y3,0,start/(numberofPatents/5)+1));
@@ -103,6 +106,8 @@ public class pq {
             double endtime=System.currentTimeMillis();
 
             time.add(endtime-starttime);
+
+
         }
 
         result[0]=0;
@@ -236,8 +241,9 @@ public class pq {
             }
             DoubleMatrix thetas = new DoubleMatrix(var0);
             int maxIteration=20;
-            double alpha=9.99;
+            double alpha=this.learningrate;
 
+            System.out.println(alpha);
             double relative_change=0;
 
 
@@ -321,7 +327,7 @@ public class pq {
                             errors.add(errorForValidation);
 
 
-                            if (k > 0) {
+                            if (k > 5) {
                        //         pair<Double,Double> var2=calculatePQ(minerror,errors);
                                 // System.out.println("PQ"+PQ+" "+minerror+" "+errors.get(errors.size()-1));
                                 pair<Double,Double> var2 =calculateStd(errors);
@@ -329,7 +335,8 @@ public class pq {
                                 double std=var2.firstarg;
                                 double mean=var2.secondarg;
                                // System.out.println("Criterion "+PQ+" "+progress);
-                                if (std<=5e-6||std/mean<0.05||errorForValidation<1e-6) break label;
+                                break label;
+                                //if (std<=5e-6||std/mean<0.05||errorForValidation<1e-6) break label;
                             }
                         }
 
@@ -664,7 +671,7 @@ public class pq {
             for(int i=0;i<temp_i.size();i++) {
                 index.add(i);
             }
-            Collections.shuffle(index);
+            //Collections.shuffle(index);
             for(int i=0;i<temp_p.size();i++) {
                 if (k<temp_p.size()*0.2) {
                     validation.add(temp_p.get(index.get(i)));

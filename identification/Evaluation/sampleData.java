@@ -28,7 +28,7 @@ public class sampleData {
     private pair<ArrayList<patent>,ArrayList<String>> validation;
 
     protected ArrayList<String> optionsName;
-    protected int numberofOptions=8;
+    protected int numberofOptions;
 
 
     protected pair<DoubleMatrix,DoubleMatrix> training_matrices;
@@ -138,10 +138,12 @@ public class sampleData {
     }
 
     public void estimatelearningRate(){
-        new learningRate(this.numberofOptions,this.training_matrices.firstarg,this.training_matrices.secondarg);
+        pair<DoubleMatrix,DoubleMatrix> result=new trainingDataMatrix(training.firstarg,training.secondarg,false).getPatents_Matrices();
+        new learningRate(this.numberofOptions,result.firstarg,result.secondarg);
     }
 
     public void estimateRegularizationParameter(int num) {
+
         new regularizationParameter(training.firstarg,training.secondarg,numberofOptions, num);
     }
 
@@ -169,10 +171,10 @@ public class sampleData {
            l.estimateRegularizationParameter(i);
        }
        */
-       for(int i=3000;i<3001;i+=500) {
-           //SampleDataGenerator s = new SampleDataGenerator(7000);
-           sampleData l = new sampleData(3000);
-           l.estimatePQ();
+       for(int i=2000;i<=6000;i+=4000) {
+           SampleDataGenerator s = new SampleDataGenerator(7000);
+           sampleData l = new sampleData(i);
+           l.estimatelearningRate();
        }
     }
 }

@@ -8,6 +8,8 @@ import com.carrotsearch.hppc.cursors.IntIntCursor;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.BlockRealMatrix;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.mahout.math.matrix.DoubleMatrix2D;
 import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.carrot2.core.Document;
@@ -38,13 +40,15 @@ public class patentPreprocessingTF {
     public final TermDocumentMatrixBuilder matrixBuilder = new TermDocumentMatrixBuilder();
     public final TermDocumentMatrixReducer matrixReducer = new TermDocumentMatrixReducer();
 
+    private static Logger logger= LogManager.getLogger(patentPreprocessingTF.class.getName());
 
     public patentPreprocessingTF(ArrayList<patent> Pts) {
         this.patents = Pts;
         /**
          * Set the matrix size to build the term frequency.
          */
-        this.matrixBuilder.maximumMatrixSize=250*150*32;
+        this.matrixBuilder.maximumMatrixSize=Pts.size()*1000;
+        this.matrixBuilder.maxWordDf=1.0;
     }
 
     public void setLanguage(LanguageCode code) {
@@ -91,6 +95,7 @@ public class patentPreprocessingTF {
             docs.add(new Document("",temp));
         }
 
+        logger.info("Term Frequency Generating "+str+"...");
 
         PreprocessingContext preprocessingContext = this.preprocessingPipeline.preprocess(this.docs, (String) null, language);
 
@@ -125,7 +130,7 @@ public class patentPreprocessingTF {
 
             DoubleMatrix2D var19;
 
-            System.out.println("Stems number:"+preprocessingContext.allStems.tf.length);
+
 
 
 
@@ -135,16 +140,17 @@ public class patentPreprocessingTF {
 
             var19=normalize(var19);
 
+            logger.info("Singular Value Decomposition...");
 
-            System.out.println("After: "+ var19.rows());
 
-            System.out.println(1);
+
+
             Array2DRowRealMatrix original=new Array2DRowRealMatrix(var19.toArray());
 
             SingularValueDecomposition decomposition=new SingularValueDecomposition(original);
 
 
-            System.out.println(2);
+
 
             double[] singularvalues=decomposition.getSingularValues();
 
@@ -175,7 +181,7 @@ public class patentPreprocessingTF {
 
             var19=new DenseDoubleMatrix2D(M.toArray2());
 
-            System.out.println(23);
+
 
             IntArrayList intA=new IntArrayList();
 
@@ -195,7 +201,7 @@ public class patentPreprocessingTF {
 
         }
 
-
+        logger.info("Finish the text preprocessing...");
 
 
 

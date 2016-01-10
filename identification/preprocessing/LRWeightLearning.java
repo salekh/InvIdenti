@@ -24,7 +24,7 @@ public class LRWeightLearning extends ParameterLearning {
     ArrayList<String> trainingID=new ArrayList<>();
     ArrayList<patent> validation=new ArrayList<>();
     ArrayList<String> validationID=new ArrayList<>();
-    int batchSize=30;
+    int batchSize=20;
 
 
     public AbstractDistance estimateDistanceFunction(){
@@ -46,7 +46,8 @@ public class LRWeightLearning extends ParameterLearning {
         pair<pair<DoubleMatrix, DoubleMatrix>, pair<Integer, Integer>> batch;
 
         int maxIteration=10;
-        double alpha=9.99;
+        double alpha=9.2*batchSize/(training.size()*(training.size()-1)/2);
+        System.out.println(alpha);
         double lambda=0;
 
 
@@ -92,7 +93,7 @@ public class LRWeightLearning extends ParameterLearning {
 
                 starti=batch.secondarg.firstarg;
                 startj=batch.secondarg.secondarg+1;
-                if (startj>training.size()) {
+                if (startj>=training.size()) {
                     starti++;
                     startj=0;
                 }
@@ -124,11 +125,11 @@ public class LRWeightLearning extends ParameterLearning {
                         errors.add(errorForValidation);
 
 
-                        if (k > -1) {
+                        if (k > 0) {
                             pair<Double,Double> var2 =calculateStd(errors);
                             double std=var2.firstarg;
                             double mean=var2.secondarg;
-                            if (std<1e-5||std/mean<0.05||errorForValidation<1e-5) break label;
+                            if (std<1e-6||std/mean<0.02||errorForValidation<1e-6) break label;
                         }
                     }
 
@@ -221,7 +222,7 @@ public class LRWeightLearning extends ParameterLearning {
                 }
             }
         }
-        System.out.println();
+
         continueIndex=new pair<>(endi,endj);
 
         return new pair<>(new pair<>(new DoubleMatrix(x),new DoubleMatrix(y)),continueIndex);

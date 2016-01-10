@@ -508,7 +508,7 @@ public abstract class AbstractDistance {
 
 
     public String getWeights(){
-        return this.weightAbstract+" "+weightAbstract+" "+weightClaims+" "+weightTitle+" "+weightFirstName+" "+weightLastName+" "+weightCategory+" "+weightAssignee+" "+weightCoAuthor+" "+weightLocation+"\n";
+        return this.weightAbstract+" "+weightAbstract+" "+weightClaims+" "+weightTitle+" "+weightFirstName+" "+weightLastName+" "+weightCategory+" "+weightAssignee+" "+weightCoAuthor+" "+weightLocation;
     }
 
 
