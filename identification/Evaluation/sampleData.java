@@ -138,8 +138,8 @@ public class sampleData {
     }
 
     public void estimatelearningRate(){
-        pair<DoubleMatrix,DoubleMatrix> result=new trainingDataMatrix(training.firstarg,training.secondarg,false).getPatents_Matrices();
-        new learningRate(this.numberofOptions,result.firstarg,result.secondarg);
+       // pair<DoubleMatrix,DoubleMatrix> result=new trainingDataMatrix(training.firstarg,training.secondarg,false).getPatents_Matrices();
+        new miniBatchLearningRate(this.numberofOptions,training.firstarg,training.secondarg);
     }
 
     public void estimateRegularizationParameter(int num) {
@@ -171,9 +171,9 @@ public class sampleData {
            l.estimateRegularizationParameter(i);
        }
        */
-       for(int i=2000;i<=6000;i+=4000) {
+       for(int i=3000;i<=6000;i+=4000) {
            SampleDataGenerator s = new SampleDataGenerator(7000);
-           sampleData l = new sampleData(i);
+           sampleData l = new sampleData(4000);
            l.estimatelearningRate();
        }
     }
