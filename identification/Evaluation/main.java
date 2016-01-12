@@ -13,6 +13,7 @@ import org.apache.logging.log4j.core.config.plugins.convert.TypeConverters;
 import org.carrot2.core.LanguageCode;
 import preprocessing.IniFile;
 import preprocessing.LRWeightLearning;
+import preprocessing.LRWithBoldDriver;
 import preprocessing.patentPreprocessingTF;
 
 import java.io.FileWriter;
@@ -34,9 +35,9 @@ public class main {
     private static Logger logger= LogManager.getLogger(main.class.getName());
 
     IniFile ini=new IniFile();
-    String traingPath="/Users/sunlei/Desktop/ThesisData/ES/training.db";
-    String testingPath="/Users/sunlei/Desktop/ThesisData/TrainingData/E&STest";
-    String infoPath="/Users/sunlei/Desktop/ThesisData/ES/PatTest.sqlite";
+    String traingPath="/Users/leisun/Desktop/ThesisData/ES/training.db";
+    String testingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&STest";
+    String infoPath="/Users/leisun/Desktop/ThesisData/ES/PatTest.sqlite";
 
     pair<ArrayList<patent>,ArrayList<String>> training;
     pair<ArrayList<patent>,ArrayList<String>> testing;
@@ -101,7 +102,7 @@ public class main {
      */
     public pair<Double,Double> testingWithTraining(pair<ArrayList<patent>,ArrayList<String>> training,pair<ArrayList<patent>,ArrayList<String>> testing) {
 
-        Training var4=new Training(training.firstarg,training.secondarg,new LRWeightLearning());
+        Training var4=new Training(training.firstarg,training.secondarg,new LRWithBoldDriver());
 
 
         pair<AbstractDistance,Double> var5=var4.estimateParameter();
@@ -162,7 +163,7 @@ public class main {
         ArrayList<Double> FMeasure_hi=new ArrayList<>();
 
         for(int i=0;i<k;i++){
-            logger.info("The"+i+"th cross validation for "+patents.size());
+            logger.info("The "+(i+1)+"th cross validation for "+patents.size());
             int start=i*numberoftesting;
             int end=start+numberoftesting;
             if (end>patents.size()-1) end=patents.size()-1;
@@ -307,7 +308,7 @@ public class main {
 
 
 
-        for(int i=1000;i<=8000;i+=1000) {
+        for(int i=2000;i<=8000;i+=1000) {
 
         logger.warn("Size: "+i);
             main temp=new main(i);
