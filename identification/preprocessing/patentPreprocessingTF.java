@@ -47,7 +47,7 @@ public class patentPreprocessingTF {
         /**
          * Set the matrix size to build the term frequency.
          */
-        this.matrixBuilder.maximumMatrixSize=Pts.size()*1000;
+        this.matrixBuilder.maximumMatrixSize=Pts.size()*300;
         this.matrixBuilder.maxWordDf=1.0;
     }
 

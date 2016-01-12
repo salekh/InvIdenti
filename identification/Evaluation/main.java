@@ -24,37 +24,38 @@ import java.util.Collections;
  * Created by leisun on 15/11/15.
  */
 public class main {
-    ArrayList<Double> lumpings=new ArrayList<>();
-    ArrayList<Double> splittings=new ArrayList<>();
+    ArrayList<Double> lumpings_db=new ArrayList<>();
+    ArrayList<Double> splittings_db=new ArrayList<>();
+    ArrayList<Double> lumpings_hi=new ArrayList<>();
+    ArrayList<Double> splittings_hi=new ArrayList<>();
+
     public double suml=0;
     public double sums=0;
     private static Logger logger= LogManager.getLogger(main.class.getName());
 
     IniFile ini=new IniFile();
-    String traingPath="/Users/leisun/Desktop/ThesisData/ES/training.db";
-    String testingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&STest";
-    String infoPath="/Users/leisun/Desktop/ThesisData/ES/PatTest.sqlite";
+    String traingPath="/Users/sunlei/Desktop/ThesisData/ES/training.db";
+    String testingPath="/Users/sunlei/Desktop/ThesisData/TrainingData/E&STest";
+    String infoPath="/Users/sunlei/Desktop/ThesisData/ES/PatTest.sqlite";
 
     pair<ArrayList<patent>,ArrayList<String>> training;
     pair<ArrayList<patent>,ArrayList<String>> testing;
 
 
     public main(int num){
-<<<<<<< HEAD
-        training=new patentsDataset(traingPath,infoPath,ini.getTextPath(),4000,"Benchmark").getPatents();
-=======
-        training=new patentsDataset(traingPath,infoPath,ini.getTextPath(),2000,"Benchmark").getPatents();
->>>>>>> origin/master
-        System.out.println(training.firstarg.size());
-       subsetofTrainingwithRandomly(num);
 
-//        testing=new patentsDataset(testingPath,infoPath,48,"Benchmark").getPatents();
+        training=new patentsDataset(traingPath,infoPath,ini.getTextPath(),8000,"Benchmark").getPatents();
+
+        System.out.println(training.firstarg.size());
+        subsetofTrainingwithRandomly(num);
+        //testing=new patentsDataset(testingPath,infoPath,48,"Benchmark").getPatents();
 
     }
 
 
     public double test(){
-        return testingWithTraining(training,null);
+        return 0;
+        //return testingWithTraining(training,null);
     }
 
     public void subsetofTrainingwithRandomly(int num){
@@ -87,42 +88,50 @@ public class main {
 
         //Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
         Evaluation e=new Evaluation(training.firstarg,training.secondarg);
-
-       e.evaluate(var3.firstarg,var3.secondarg,new HierClusteringPatents());
+        e.evaluate(var3.firstarg,var3.secondarg,new HierClusteringPatents());
        // e.evaluate(new CosDistance(),8.68,new HierClusteringPatents());
 
     }
 
-    public double testingWithTraining(pair<ArrayList<patent>,ArrayList<String>> training,pair<ArrayList<patent>,ArrayList<String>> testing) {
+    /**
+     * Training the model and test the performance on a test dataset.
+     * @param training training dataset
+     * @param testing testing dataset
+     * @return
+     */
+    public pair<Double,Double> testingWithTraining(pair<ArrayList<patent>,ArrayList<String>> training,pair<ArrayList<patent>,ArrayList<String>> testing) {
 
         Training var4=new Training(training.firstarg,training.secondarg,new LRWeightLearning());
 
 
         pair<AbstractDistance,Double> var5=var4.estimateParameter();
 
-
         storeText("ClusteringDistance.txt",true,var5.firstarg.getWeights()+" "+var5.secondarg+"\n");
-
-
 
         logger.warn(var5.firstarg);
         logger.warn("Threshold: " + var5.secondarg );
+
+
         Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
-//      SimMatrix s=new SimMatrix(testing.firstarg,var5.firstarg);
-  //    s.buildMatrix(var5.secondarg,testing.secondarg);
-        double FMeasure=e.evaluate(var5.firstarg,var5.secondarg,new DBScanClusteringPatents());
+        double FMeasure_DB=e.evaluate(var5.firstarg,var5.secondarg,new DBScanClusteringPatents());
+        this.lumpings_db.add(e.lumping);
+        this.splittings_db.add(e.splitting);
+        double FMeasure_Hi=e.evaluate(var5.firstarg,var5.secondarg,new HierClusteringPatents());
+        this.lumpings_hi.add(e.lumping);
+        this.splittings_hi.add(e.splitting);
 
-
-        this.lumpings.add(e.lumping);
-        this.splittings.add(e.splitting);
-
-        return FMeasure;
+        return new pair<>(FMeasure_DB,FMeasure_Hi);
 
     }
 
-    public double crossValidate(){
+    /**
+     * Cross validation
+     * @param k K-fold
+     * @return the average Fmeasure
+     */
+    public double crossValidate(int k){
 
-        int k=5;
+
         ArrayList<patent> patents=new ArrayList<>();
         ArrayList<String> patentsID=new ArrayList<>();
         Boolean shuffle=true;
@@ -133,6 +142,7 @@ public class main {
             shuffleIndex.add(i);
         }
 
+        //Shuffle the patents list
         if(shuffle) {
            Collections.shuffle(shuffleIndex);
             for (int i = 0; i < training.firstarg.size(); i++) {
@@ -143,50 +153,41 @@ public class main {
             patents=training.firstarg;
             patentsID=training.secondarg;
 
-
         }
 
         storeText("ClusteringDistance.txt",true,"Patents:"+patents.size()+"\n");
 
-        double startT=System.currentTimeMillis();
-        patentPreprocessingTF preprocess = new patentPreprocessingTF(patents);
-
-        preprocess.setLanguage(LanguageCode.ENGLISH);
-        preprocess.preprocess();
-        patents = preprocess.getPatents();
-        double endT=System.currentTimeMillis();
-        System.out.println("Preprocessing Time"+(endT-startT));
-
-
-        logger.info("Patents Initialized");
-        logger.info("Patents total number:"+patents.size());
-        logger.info("");
-
-
         int numberoftesting=patents.size()/k;
+        ArrayList<Double> FMeasure_db=new ArrayList<>();
+        ArrayList<Double> FMeasure_hi=new ArrayList<>();
 
-        ArrayList<Double> FMeasure=new ArrayList<>();
         for(int i=0;i<k;i++){
+            logger.info("The"+i+"th cross validation for "+patents.size());
             int start=i*numberoftesting;
             int end=start+numberoftesting;
             if (end>patents.size()-1) end=patents.size()-1;
             pair<pair<ArrayList<patent>,ArrayList<String>>,pair<ArrayList<patent>,ArrayList<String>>> var0=this.getTrainingandTesingPatents(start,end,patents,patentsID,shuffleIndex);
-            FMeasure.add(testingWithTraining(var0.firstarg,var0.secondarg));
+            pair<Double,Double> fs=testingWithTraining(var0.firstarg,var0.secondarg);
+            FMeasure_db.add(fs.firstarg);
+            FMeasure_hi.add(fs.secondarg);
         }
-        String result="Patent Numer: "+patents.size()+"\n";
+
+
+
+        String result="Patent Numer: "+patents.size()+"\n"+"DBScan:\n";
         logger.info("");
         double sum=0;
-        for(double d:FMeasure) {
+        for(double d:FMeasure_db) {
             result+=d+" ";
             System.out.print(d+",");
             sum+=d;
         }
         logger.info("");
-        logger.error(sum/k);
+        logger.error("F measure for the DBScan:"+ sum/k);
         double F1=sum/k;
         result+=F1+"\n";
         sum=0;
-        for(double d:lumpings) {
+        for(double d:lumpings_db) {
             result+=d+" ";
             sum+=d;
         }
@@ -194,7 +195,35 @@ public class main {
         logger.error("Average Lumping:"+sum/k);
         result+=suml+"\n";
         sum=0;
-        for(double d:splittings) {
+        for(double d:splittings_db) {
+            result+=d+" ";
+            sum+=d;
+        }
+        sums=sum/k;
+        result+=sums+"\n";
+        logger.error("Average splitting:"+sum/k);
+
+        result+="Hierarchical Clustering:\n";
+        sum=0;
+        for(double d:FMeasure_hi) {
+            result+=d+" ";
+            System.out.print(d+",");
+            sum+=d;
+        }
+        logger.info("");
+        logger.error("F measure for the Hierarchical Clustering:"+ sum/k);
+        F1=sum/k;
+        result+=F1+"\n";
+        sum=0;
+        for(double d:lumpings_db) {
+            result+=d+" ";
+            sum+=d;
+        }
+        suml=sum/k;
+        logger.error("Average Lumping:"+sum/k);
+        result+=suml+"\n";
+        sum=0;
+        for(double d:splittings_db) {
             result+=d+" ";
             sum+=d;
         }
@@ -206,6 +235,14 @@ public class main {
         return (F1);
     }
 
+
+
+    /**
+     * Store the text into a text file
+     * @param path text path
+     * @param follow rewrite option
+     * @param str content to write
+     */
 
     public void storeText(String path,boolean follow,String str){
         if (follow) {
@@ -228,7 +265,17 @@ public class main {
 
     }
 
+    /**
+     * Seperate the patents set into training set and testing set
+     * @param start start index
+     * @param end end index
+     * @param patents patents list
+     * @param patentsID patents id list
+     * @param shuffleIndex randonm index list
+     * @return training set and testing set
+     */
     public pair<pair<ArrayList<patent>,ArrayList<String>>,pair<ArrayList<patent>,ArrayList<String>>> getTrainingandTesingPatents(int start, int end, ArrayList<patent> patents, ArrayList<String> patentsID, ArrayList<Integer> shuffleIndex) {
+
         ArrayList<patent> training=new ArrayList<>();
         ArrayList<patent> testing=new ArrayList<>();
         ArrayList<String> trainingIDs=new ArrayList<>();
@@ -242,59 +289,32 @@ public class main {
             } else {
                 training.add(patents.get(i));
                 trainingIDs.add(patentsID.get(i));
-
             }
         }
-
         logger.info("");
-
         pair<ArrayList<patent>,ArrayList<String>> one = new pair<>(training,trainingIDs);
         pair<ArrayList<patent>,ArrayList<String>> second = new pair<>(testing,testingIDs);
 
-        return new pair<pair<ArrayList<patent>,ArrayList<String>>,pair<ArrayList<patent>,ArrayList<String>>>(one,second);
+        return new pair<>(one,second);
 
     }
 
 
     public static void main(String[] args) {
-
-
-
-
-
         long begintime=System.currentTimeMillis();
-        double sum=0;
-        double sumL=0;
-        double sumS=0;
-        ArrayList<Double> F1s=new ArrayList<>();
-        ArrayList<Double> lumpings=new ArrayList<>();
-        ArrayList<Double> splittings=new ArrayList<>();
 
-<<<<<<< HEAD
-        for(int i=2000;i<=18000;i+=2000) {
-=======
-        for(int i=1000;i<=18000;i+=20000) {
->>>>>>> origin/master
+
+
+
+
+        for(int i=1000;i<=8000;i+=1000) {
+
         logger.warn("Size: "+i);
             main temp=new main(i);
-            F1s.add(temp.crossValidate());
-            lumpings.add(temp.lumpings.get(0));
-            splittings.add(temp.splittings.get(0));
+            temp.crossValidate(5);
+
         }
 
-        for(double d:F1s) {
-            System.out.print(d+" ");
-        }
-        System.out.println();
-
-        for(double d:lumpings) {
-            System.out.print(d+" ");
-        }
-        System.out.println();
-
-        for(double d:splittings) {
-            System.out.print(d+" ");
-        }
 
         long endtime=System.currentTimeMillis();
 

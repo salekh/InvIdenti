@@ -40,17 +40,19 @@ public class Evaluation {
 
 
     public Evaluation(ArrayList<patent> patents,ArrayList<String> IDs) {
-        this.patents=patents;
+
         this.patentsID=IDs;
+        this.patents=preprocess(patents);
+
     }
 
     public double evaluate(AbstractDistance distance,double threshold,patentClustering method){
+
         method.ininitialize(patents,true);
         method.setThreshold(threshold);
 
         method.Cluster(distance);
-        //logger.error("Clustering Result\n");
-        //logger.error(method);
+
         double FMeasurement=getFScoreofClustering(method.getClustersIndex(),patentsID);
 
         logger.warn("F Measurement:"+ FMeasurement);
@@ -133,7 +135,20 @@ public class Evaluation {
         }
     }
 
+    /**
+     * preprocess the patents;
+     */
+    protected ArrayList<patent> preprocess(ArrayList<patent> patents) {
+        double start=System.currentTimeMillis();
+        patentPreprocessingTF preprocess = new patentPreprocessingTF(patents);
 
+        preprocess.setLanguage(LanguageCode.ENGLISH);
+        preprocess.preprocess();
+        double end=System.currentTimeMillis();
+        System.out.println("Preprocessing Time"+(end-start));
+
+        return patents;
+    }
 
 /*
 

@@ -26,6 +26,7 @@ public class Training {
 
     public pair<AbstractDistance,Double> estimateParameter() {
 
+        method.setInitialization(true);
         method.initilize(patents,patentsID,true);
         CosDistance distance=(CosDistance)method.estimateDistanceFunction();
         return new pair<>(distance,method.getThreshold());

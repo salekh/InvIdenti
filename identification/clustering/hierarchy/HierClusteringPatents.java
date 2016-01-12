@@ -66,7 +66,7 @@ public class HierClusteringPatents extends patentClustering
      */
     public void Cluster(AbstractDistance distance) {
 
-        logger.warn(distance);
+
 
         if (!initilization) {
             logger.error("Clustering method: no patents are initialized");

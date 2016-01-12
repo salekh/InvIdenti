@@ -40,6 +40,9 @@ public abstract class ParameterLearning {
         return this.threshold;
     }
 
+    public void setInitialization(boolean var) {
+        initialization=var;
+    }
 
     /**
      * Initialize the Parameter Learning with arraylist of patents and arraylist of patentsID

@@ -7,6 +7,7 @@ import clustering.distancefunction.AbstractDistance;
 
 import clustering.distancefunction.CosDistance;
 import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
+import org.carrot2.core.LanguageCode;
 import org.jblas.DoubleMatrix;
 import org.jblas.MatrixFunctions;
 
@@ -24,19 +25,15 @@ public class LRWeightLearning extends ParameterLearning {
     ArrayList<String> trainingID=new ArrayList<>();
     ArrayList<patent> validation=new ArrayList<>();
     ArrayList<String> validationID=new ArrayList<>();
-    int batchSize=0;
 
 
     public AbstractDistance estimateDistanceFunction(){
         seperateDataset();
-        batchSize=(training.size()*(training.size()-1)/2);
+        logger.info("Generating validation matrix...");
         pair<DoubleMatrix,DoubleMatrix> validations=new trainingDataMatrix(validation,validationID,false).getPatents_Matrices();
+
         DoubleMatrix X=validations.firstarg;
         DoubleMatrix Y=validations.secondarg;
-
-
-        ArrayList<Double> errors=new ArrayList<>();
-        int errorBatchSize=10;
 
         double[][] var0 = new double[numberofOptions + 1][1];
         for (int i = 0; i < numberofOptions + 1; i++) {
@@ -44,126 +41,44 @@ public class LRWeightLearning extends ParameterLearning {
         }
         DoubleMatrix thetas = new DoubleMatrix(var0);
 
-        pair<pair<DoubleMatrix, DoubleMatrix>, pair<Integer, Integer>> batch;
 
-<<<<<<< HEAD
+
 
         int maxIteration=5000;
-=======
-        int maxIteration=3000;
->>>>>>> origin/master
-        double alpha=9.2*batchSize/(training.size()*(training.size()-1)/2);
-        System.out.println(alpha);
+        double alpha=9.3;
         double lambda=0;
 
 
-        int num=0;
-        int updates=0;
-        double minerror=Double.MAX_VALUE;
+
         double errorForValidation=calculateTheError(X,Y,thetas);
 
+        double previous_error=errorForValidation;
 
+        logger.info("Generating training matrix...");
+        pair<DoubleMatrix,DoubleMatrix> trainingMatrice=new trainingDataMatrix(training,trainingID,false).getPatents_Matrices();
+        logger.warn("Start the training...");
 
-        System.out.println("Initial Error: "+errorForValidation);
-
-        ArrayList<Integer> ID1=new ArrayList<>();
-        ArrayList<Integer> ID2=new ArrayList<>();
-        for(int i=0;i<training.size();i++) {
-            ID1.add(i);
-            ID2.add(i);
-        }
-        batch=geneerateAMiniBatchLRTrainingData(ID1,ID2,0,0,batchSize);
         label:
 
         for(int k=0;k<maxIteration;k++) {
 
-            Collections.shuffle(ID1);
-            Collections.shuffle(ID2);
-            System.out.println();
-            int starti,startj;
-            starti=startj=0;
 
-            pair<ArrayList<patent>,ArrayList<String>> temp=shufflePatents(training,trainingID);
-            training=temp.firstarg;
-            trainingID=temp.secondarg;
+            DoubleMatrix thetas_t = new DoubleMatrix(thetas.toArray2());
 
+            thetas_t = updateWeights(trainingMatrice.firstarg, trainingMatrice.secondarg,thetas_t, alpha / trainingMatrice.firstarg.rows, lambda);
 
-            for(int i=0;i<training.size()*(training.size()-1)/2;i+=batchSize){
+            thetas = new DoubleMatrix(thetas_t.toArray2());
 
-              /*
-                if (i+batchSize<training.size()*(training.size()-1)/2) {
-                    batch=geneerateAMiniBatchLRTrainingData(ID1,ID2,starti,startj,batchSize);
-                } else {
-
-                    batch=geneerateAMiniBatchLRTrainingData(ID1,ID2,starti,startj,training.size()*(training.size()-1)/2-i);
-
-                }
-*/
-
-                starti=batch.secondarg.firstarg;
-                startj=batch.secondarg.secondarg+1;
-                if (startj>=training.size()) {
-                    starti++;
-                    startj=0;
-                }
-                DoubleMatrix thetas_t = new DoubleMatrix(thetas.toArray2());
-
-                thetas_t = updateWeights(batch.firstarg.firstarg, batch.firstarg.secondarg,thetas_t, alpha / batch.firstarg.firstarg.rows, lambda);
-
-                thetas = new DoubleMatrix(thetas_t.toArray2());
-
-
-
-
-                num+=batch.firstarg.firstarg.rows;
-
-
-                if (num>=X.rows) {
-                    errorForValidation=calculateTheError(X,Y,thetas);
-                    System.out.println(errorForValidation);
-
-                    if (errorForValidation<minerror) minerror=errorForValidation;
-                    //  System.out.println(errorForTraining+" "+errorForValidation);
-
-                    if (updates<errorBatchSize) {
-                        updates++;
-
-                        errors.add(errorForValidation);
-                    } else {
-                        errors.remove(0);
-                        errors.add(errorForValidation);
-
-
-                        if (k > 0) {
-                            pair<Double,Double> var2 =calculateStd(errors);
-                            double std=var2.firstarg;
-                            double mean=var2.secondarg;
-<<<<<<< HEAD
-                            if (std<1e-7||std/mean<0.0005||errorForValidation<1e-5) break label;
-=======
-                            if (std<1e-6||std/mean<0.001||errorForValidation<1e-6)
-                            {
-                                System.out.println("asd"+ std +" "+std/mean+" "+errorForValidation);
-                                System.exit(3);
-                                break label;
-                            }
->>>>>>> origin/master
-                        }
-                    }
-
-
-
-                    num=0;
-                }
-
-
-
-
-            }
+            errorForValidation=calculateTheError(X,Y,thetas);
 
             System.out.println(errorForValidation);
-            System.exit(3);
 
+            if (errorForValidation<1e-4||(previous_error-errorForValidation)<1e-7||Math.abs((previous_error-errorForValidation)/previous_error)<1e-5) {
+                previous_error=errorForValidation;
+                break label;
+            }
+
+            previous_error=errorForValidation;
 
         }
 
@@ -186,127 +101,35 @@ public class LRWeightLearning extends ParameterLearning {
 
         this.threshold=-weights[0];
 
+        logger.debug("Finish the training...");
         return (this.generateDistanceFunction(null,weight));
 
     }
 
 
+    /**
+     * preprocess the patents;
+     */
+    protected ArrayList<patent> preprocess(ArrayList<patent> patents) {
+        double start=System.currentTimeMillis();
+        patentPreprocessingTF preprocess = new patentPreprocessingTF(patents);
 
+        preprocess.setLanguage(LanguageCode.ENGLISH);
+        preprocess.preprocess();
+        double end=System.currentTimeMillis();
+        System.out.println("Preprocessing Time"+(end-start));
 
-    public pair<pair<DoubleMatrix,DoubleMatrix>,pair<Integer,Integer>> geneerateAMiniBatchLRTrainingData(ArrayList<Integer> ID1,ArrayList<Integer>ID2,int starti,int startj,int batchsize){
-        boolean firsttry=true;
-
-        double[][] x=new double[batchsize][numberofOptions+1];
-        double[][] y=new double[batchsize][1];
-        int index=0;
-
-        int endi,endj;
-        endi=endj=ID1.size();
-        pair<Integer,Integer> continueIndex;
-        label:
-        for(int i=starti;i<ID1.size();i++) {
-            for(int j=0;j<ID2.size();j++) {
-                if(firsttry) {
-                    j=startj;
-                    firsttry=false;
-                }
-                if(ID2.get(j)>ID1.get(i)) {
-                    x[index][0]=1.0;
-                    if (this.trainingID.get(ID1.get(i)).equalsIgnoreCase(this.trainingID.get(ID2.get(j)))) {
-                        y[index][0]=1.0;
-                    } else {
-                        y[index][0] = 0.0;
-
-
-                    }
-
-
-                    int var2=1;
-
-
-                    for(int m=0;m<optionsName.size();m++) {
-                        if (ini.getOptionValue(optionsName.get(m))) {
-                            x[index][var2]=distances.get(m).distance(training.get(ID1.get(i)), training.get(ID2.get(j)));
-                            var2++;
-                        }
-
-
-                    }
-
-                    index++;
-                    if(index>=batchsize) {
-                        endi=i;
-                        endj=j;
-
-                        break label;
-                    }
-                }
-            }
-        }
-
-        continueIndex=new pair<>(endi,endj);
-
-        return new pair<>(new pair<>(new DoubleMatrix(x),new DoubleMatrix(y)),continueIndex);
+        return patents;
     }
 
 
-
-
-
-    private pair<ArrayList<patent>,ArrayList<String>> shufflePatents(ArrayList<patent> patents,ArrayList<String> patentsID) {
-        ArrayList<Integer> indexes=new ArrayList<>();
-        for(int i=0;i<patents.size();i++) {
-            indexes.add(i);
-        }
-        Collections.shuffle(indexes);
-        ArrayList<patent> temp_p=new ArrayList<>();
-        ArrayList<String> temp_i=new ArrayList<>();
-        for(int i=0;i<indexes.size();i++) {
-            temp_p.add(patents.get(indexes.get(i)));
-            temp_i.add(patentsID.get(indexes.get(i)));
-
-        }
-
-        return new pair<>(temp_p,temp_i);
-    }
-
-
-    public pair<Double,Double> calculateStd(ArrayList<Double> errors) {
-        double mean=0;
-        for(double var0:errors) {
-            mean+=var0;
-        }
-        mean=mean/errors.size();
-        double std=0;
-        for (double var0:errors) {
-            std+=(var0-mean)*(var0-mean);
-        }
-        std=std/errors.size();
-        std=Math.sqrt(std);
-        return new pair<>(std,mean);
-    }
-
-    public pair<Double,Double> calculatePQ(double minerror,ArrayList<Double> errors){
-
-        int size=5;
-        double GL=100*(errors.get(errors.size()-1)/minerror-1);
-
-        double PQ=0;
-        double sum=0;
-        for(int i=0;i<5;i++) {
-
-            sum+=errors.get(i);
-        }
-
-        double progress=(sum/(Collections.min(errors)*errors.size())-1);
-
-        PQ=GL/(100*(sum/(Collections.min(errors)*errors.size())-1));
-
-
-
-        return new pair<>(PQ,progress);
-
-    }
+    /**
+     * Calculate the error of the training or the validation
+     * @param X feature matrix
+     * @param Y target matrix
+     * @param thetas weights vector
+     * @return
+     */
 
     public double calculateTheError(DoubleMatrix X,DoubleMatrix Y,DoubleMatrix thetas){
         DoubleMatrix varM=applyLogisticonData(X, thetas);
@@ -329,8 +152,11 @@ public class LRWeightLearning extends ParameterLearning {
     }
 
 
-
-
+    /**
+     * output the matrix
+     * @param x matrix
+     * @param name matrix name
+     */
     public void outputMatrix(DoubleMatrix x,String name) {
         System.out.println("Matrix Name:" +name);
         int var0=0;
@@ -479,32 +305,6 @@ public class LRWeightLearning extends ParameterLearning {
         return var0;
     }
 
-    /**
-     * geneerate all the seperated distance functions based on the options needed
-     */
-
-    public void generateSeperatedDisFunctions(){
-        ArrayList<String> optionsName=ini.getOptionsNames();
-
-
-        this.distances=new ArrayList<>();
-        int var0=0;
-
-        for(int i=0;i<optionsName.size();i++) {
-
-            ArrayList<Integer> var1 = new ArrayList<>();
-            var1.add(i);
-
-            distances.add(this.generateDistanceFunction(var1, null));
-
-            if (ini.getOptionValue(optionsName.get(i))) var0++;
-
-        }
-
-        this.numberofOptions=var0;
-    }
-
-
 
 
     public void seperateDataset() {
@@ -531,7 +331,9 @@ public class LRWeightLearning extends ParameterLearning {
             }
             k++;
         }
-
+        logger.info("Start to preprocessing the patents text...");
+        training=preprocess(training);
+        validation=preprocess(validation);
         System.out.println("Training Data Size:"+training.size());
         System.out.println("Testing Data Size:"+validation.size());
     }
