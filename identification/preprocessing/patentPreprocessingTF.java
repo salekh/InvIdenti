@@ -47,7 +47,7 @@ public class patentPreprocessingTF {
         /**
          * Set the matrix size to build the term frequency.
          */
-        this.matrixBuilder.maximumMatrixSize=Pts.size()*2000;
+        this.matrixBuilder.maximumMatrixSize=Pts.size()*1000;
         this.matrixBuilder.maxWordDf=1.0;
     }
 
@@ -140,9 +140,11 @@ public class patentPreprocessingTF {
 
             var19=normalize(var19);
 
+            System.out.println(var19.rows());
+
             logger.info("Singular Value Decomposition...");
 
-
+/*
 
 
             Array2DRowRealMatrix original=new Array2DRowRealMatrix(var19.toArray());
@@ -162,7 +164,7 @@ public class patentPreprocessingTF {
             int numofs=0;
             for (double d:singularvalues) {
                 sum1+=d*d;
-                if (sum1>0.9*sum) break;
+                if (numofs>299) break;
                 numofs++;
             }
 
@@ -181,7 +183,8 @@ public class patentPreprocessingTF {
 
             var19=new DenseDoubleMatrix2D(M.toArray2());
 
-
+            System.out.println(var19.rows());
+*/
 
             IntArrayList intA=new IntArrayList();
 

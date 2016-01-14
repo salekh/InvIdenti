@@ -133,10 +133,14 @@ public class PatentsGenerator {
 
 
         try {
+
             ResultSet var0=stmt.executeQuery(sql);
             String abs=readText(this.textsPath + patentNumber + "/" + "Abstract.txt");
+            abs=getFirstWords(300,abs);
             String claims=readText(this.textsPath + patentNumber + "/" + "Claims.txt");
+            claims=getFirstWords(300,claims);
             String description=readText(this.textsPath+patentNumber+"/"+"Description.txt");
+            description=getFirstWords(300,description);
             String title=readText(this.textsPath+patentNumber+"/"+"Title.txt");
             String coAuthor="";
 
@@ -327,6 +331,19 @@ public class PatentsGenerator {
         return result;
     }
 
+
+    private String getFirstWords(int num,String str) {
+        String temp="";
+        String[] words=str.split(" ");
+        int i=0;
+        for(String w:words) {
+            if (i>=num) break;
+            temp+=w+" ";
+            i++;
+        }
+        return temp;
+
+    }
 
     /**
      *

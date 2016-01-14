@@ -36,7 +36,7 @@ public class main {
 
     IniFile ini=new IniFile();
     String traingPath="/Users/leisun/Desktop/ThesisData/ES/training.db";
-    String testingPath="/Users/leisun/Desktop/ThesisData/TrainingData/E&STest";
+    String testingPath="/Users/leisun/Desktop/ThesisData/ES/testing.db";
     String infoPath="/Users/leisun/Desktop/ThesisData/ES/PatTest.sqlite";
 
     pair<ArrayList<patent>,ArrayList<String>> training;
@@ -45,11 +45,11 @@ public class main {
 
     public main(int num){
 
-        training=new patentsDataset(traingPath,infoPath,ini.getTextPath(),8000,"Benchmark").getPatents();
+        training=new patentsDataset(traingPath,infoPath,ini.getTextPath(),2000,"Benchmark").getPatents();
 
-        System.out.println(training.firstarg.size());
+        //System.out.println(training.firstarg.size());
         subsetofTrainingwithRandomly(num);
-        //testing=new patentsDataset(testingPath,infoPath,48,"Benchmark").getPatents();
+      //  testing=new patentsDataset(testingPath,infoPath,"/Users/leisun/Desktop/ThesisData/ES/PatentsText",25000,"Benchmark").getPatents();
 
     }
 
@@ -79,17 +79,19 @@ public class main {
     public void testingWithTraining(){
 
 
-        Training var2=new Training(training.firstarg,training.secondarg,new LRWeightLearning());
-        pair<AbstractDistance,Double> var3=var2.estimateParameter();
+        //Training var2=new Training(training.firstarg,training.secondarg,new LRWeightLearning());
+        //pair<AbstractDistance,Double> var3=var2.estimateParameter();
 
 
-        System.out.println(var3.firstarg);
+        //System.out.println(var3.firstarg);
 
-        System.out.println(var3.secondarg);
+        //System.out.println(var3.secondarg);
 
         //Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
-        Evaluation e=new Evaluation(training.firstarg,training.secondarg);
-        e.evaluate(var3.firstarg,var3.secondarg,new HierClusteringPatents());
+        System.out.println("TEsting:"+testing.firstarg.size());
+        Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
+        //System.out.println(new CosDistance());
+        System.out.println(e.evaluate(new CosDistance(),13.45,new HierClusteringPatents()));
        // e.evaluate(new CosDistance(),8.68,new HierClusteringPatents());
 
     }
@@ -305,10 +307,11 @@ public class main {
         long begintime=System.currentTimeMillis();
 
 
+   //     main temp=new main(10);
+     //  temp.testingWithTraining();
 
 
-
-        for(int i=2000;i<=8000;i+=1000) {
+        for(int i=2000;i<=5000;i+=1000) {
 
         logger.warn("Size: "+i);
             main temp=new main(i);

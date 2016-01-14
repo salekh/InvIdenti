@@ -29,6 +29,7 @@ public class LRWithBoldDriver extends ParameterLearning{
     public AbstractDistance estimateDistanceFunction(){
         seperateDataset();
         logger.info("Generating validation matrix...");
+        System.out.println(validation.size());
         pair<DoubleMatrix,DoubleMatrix> validations=new trainingDataMatrix(validation,validationID,false).getPatents_Matrices();
 
         DoubleMatrix X=validations.firstarg;
@@ -36,7 +37,7 @@ public class LRWithBoldDriver extends ParameterLearning{
 
         double[][] var0 = new double[numberofOptions + 1][1];
         for (int i = 0; i < numberofOptions + 1; i++) {
-            var0[i][0] = 1.0;
+            var0[i][0] = 0.0;
         }
         DoubleMatrix thetas = new DoubleMatrix(var0);
 
@@ -53,7 +54,6 @@ public class LRWithBoldDriver extends ParameterLearning{
 
         logger.info("Generating training matrix...");
         pair<DoubleMatrix,DoubleMatrix> trainingMatrice=new trainingDataMatrix(training,trainingID,false).getPatents_Matrices();
-
 
         double errorForTraining=calculateTheError(trainingMatrice.firstarg,trainingMatrice.secondarg,thetas);
 
@@ -85,11 +85,12 @@ public class LRWithBoldDriver extends ParameterLearning{
 
                 double errorforValidation=calculateTheError(X,Y,thetas_t);
                 System.out.println(errorForTraining+" "+" "+errorforValidation+" "+alpha);
-
-                if (errorForTraining<1e-5||( previous_error - errorForTraining) < 1e-5|| Math.abs((previous_error - errorForTraining) / previous_error) < 1e-5||alpha<1e-10||errorforValidation>previoud_error_v) {
+               // outputMatrix(thetas_t.transpose(),"as");
+                if (errorForTraining<1e-5||( previous_error - errorForTraining) < 1e-5|| Math.abs((previous_error - errorForTraining) / previous_error)<1e-3||previoud_error_v<errorforValidation||alpha<1e-10) {
                     previous_error = errorForTraining;
                     previoud_error_v=errorforValidation;
                     thetas = new DoubleMatrix(thetas_t.toArray2());
+
                     break label;
                 }
 
