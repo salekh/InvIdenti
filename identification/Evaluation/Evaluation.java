@@ -42,13 +42,16 @@ public class Evaluation {
     public Evaluation(ArrayList<patent> patents,ArrayList<String> IDs) {
 
         this.patentsID=IDs;
-        this.patents=preprocess(patents);
+        this.patents=patents;
+        //this.patents=preprocess(patents);
 
     }
 
     public double evaluate(AbstractDistance distance,double threshold,patentClustering method){
 
+
         method.ininitialize(patents,true);
+
         method.setThreshold(threshold);
 
         method.Cluster(distance);

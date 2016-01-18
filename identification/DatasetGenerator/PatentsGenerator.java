@@ -334,6 +334,7 @@ public class PatentsGenerator {
 
     private String getFirstWords(int num,String str) {
         String temp="";
+        if (str==null) return "";
         String[] words=str.split(" ");
         int i=0;
         for(String w:words) {

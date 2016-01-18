@@ -144,7 +144,7 @@ public class patentPreprocessingTF {
 
             logger.info("Singular Value Decomposition...");
 
-/*
+
 
 
             Array2DRowRealMatrix original=new Array2DRowRealMatrix(var19.toArray());
@@ -184,7 +184,7 @@ public class patentPreprocessingTF {
             var19=new DenseDoubleMatrix2D(M.toArray2());
 
             System.out.println(var19.rows());
-*/
+
 
             IntArrayList intA=new IntArrayList();
 

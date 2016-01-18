@@ -18,8 +18,9 @@ public class HierClusteringPatents extends patentClustering
 
     ArrayList<HierCluster> hier_clusters;
 
-    public HierClusteringPatents() {
+    public HierClusteringPatents(ArrayList<Integer> shuffleIndex) {
         super();
+        this.shuffleIndex=shuffleIndex;
         this.clusteringType="Hierarchical Clustering";
     }
 
@@ -38,7 +39,9 @@ public class HierClusteringPatents extends patentClustering
 
             hc.set_NumClusters(this.number_Cluster);
 
-            hc.buildCluster(patents,new CosDistance());
+            hc.buildCluster(patents,new CosDistance(),this.shuffleIndex);
+
+
 
             clusters.clear();
 
@@ -87,7 +90,7 @@ public class HierClusteringPatents extends patentClustering
 
             hc.set_NumClusters(this.number_Cluster);
 
-            hc.buildCluster(patents,distance);
+            hc.buildCluster(patents,distance,this.shuffleIndex);
 
             clusters.clear();
 

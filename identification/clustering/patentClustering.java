@@ -34,6 +34,8 @@ public abstract class patentClustering
     protected boolean initilization=false;
     protected String clusteringType="Abstract Clustering!";
 
+    protected ArrayList<Integer> shuffleIndex;
+
     protected double threshold=0;
 
     protected pair<HashMap<String,Integer>,HashMap<String,Integer>> attriInfo;
@@ -50,6 +52,10 @@ public abstract class patentClustering
 
     public void setThreshold(double threshold) {
         this.threshold=threshold;
+    }
+
+    public void setShuffleIndex(ArrayList<Integer> var0) {
+        this.shuffleIndex=var0;
     }
 
 

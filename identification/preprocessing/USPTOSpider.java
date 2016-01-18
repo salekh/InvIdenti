@@ -25,6 +25,8 @@ public class USPTOSpider implements PageProcessor
 
     private String title;
 
+    private String NPRS;
+
     private Site site=Site.me().setRetryTimes(3).setRetryTimes(1000);
 
     public void setCharset(String code)
@@ -84,10 +86,73 @@ public class USPTOSpider implements PageProcessor
                 this.description = getTextBetweenTwoTags(current.parent(),"hr","hr");
             }
         }
+
+        e=doc.getElementsMatchingOwnText("Other Reference");
+
+      if (e!=null&&e.size()>0) {
+         NPRS=getAllNPRs(e.get(0).parent().nextElementSibling());
+
+
+      } else
+      {
+          NPRS=" ";
+      }
+
+
+
     }
 
 
+    public String getNPRS(){
+        return this.NPRS;
+    }
 
+    private static String getAllNPRs(Element e){
+
+
+        while(e.nodeName()!="br") {
+            e=e.child(0);
+        }
+
+        String str="";
+        while(e.nextElementSibling()!=null) {
+            String var0=((TextNode)e.nextSibling()).text();
+            if (var0.contains("et al., ")) {
+                int start=var0.indexOf("et al., ");
+                str+=getANPR(start,var0)+"\n";
+            }
+            e=e.nextElementSibling();
+        }
+        return str;
+    }
+
+
+    private static String getANPR(int start,String str) {
+        int start_n=start;
+        while(str.charAt(start_n)!=',') {
+            start_n++;
+        }
+        start_n+=2;
+       // String temp = "";
+       /*
+        if (str.charAt(start_n)=='"') {
+           start_n++;
+
+           while (start_n < str.length() && str.charAt(start_n) != '"') {
+               temp += str.charAt(start_n);
+               start_n++;
+           }
+       } else {
+           while (start_n < str.length() && (str.charAt(start_n)!=','&&str.charAt(start_n)!='.')) {
+               temp += str.charAt(start_n);
+               start_n++;
+           }
+           System.out.println("as "+temp);
+       }*/
+
+
+        return str.substring(start_n,str.length()-1);
+    }
 
     //Get texts between start tag and end tag.
     private static String getTextBetweenTwoTags(Element e,String start,String end)

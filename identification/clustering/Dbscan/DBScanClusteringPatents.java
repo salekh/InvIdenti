@@ -15,9 +15,10 @@ public class DBScanClusteringPatents extends patentClustering {
 
     ArrayList<DBCluster> DBclusters;
 
-    public DBScanClusteringPatents() {
+    public DBScanClusteringPatents(ArrayList<Integer> shuffleIndex) {
         super();
         this.clusteringType="DBSCAN Clustering";
+        this.setShuffleIndex(shuffleIndex);
     }
 
     /**
@@ -44,7 +45,7 @@ public class DBScanClusteringPatents extends patentClustering {
 
 
 
-            var0.buildCluster(patents,distance);
+            var0.buildCluster(patents,distance,shuffleIndex);
 
             clusters.clear();
 

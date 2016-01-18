@@ -36,9 +36,15 @@ public class DBScanCore {
      * @param patents the arraylist of the patents
      * @param distance the distance function
      */
-    public void buildCluster(ArrayList<patent> patents, AbstractDistance distance)
+    public void buildCluster(ArrayList<patent> patents, AbstractDistance distance,ArrayList<Integer> shuffleIndex)
     {
-        this.simMatrix=new SimMatrix(patents,distance);
+        double start=System.currentTimeMillis();
+        //this.simMatrix=new SimMatrix(patents,distance);
+        //this.simMatrix.storeMatrix("distanceMatrix.txt");
+        this.simMatrix=new SimMatrix("distanceMatrix.txt");
+        this.simMatrix.setShuffledIndex(shuffleIndex);
+        double end=System.currentTimeMillis();
+        System.out.println(end-start);
         initilize(patents.size());
 
         for(int i=0;i<patents.size();i++) {
@@ -79,9 +85,10 @@ public class DBScanCore {
 
 
     public void signAllCorePts(){
-        for(int i=0;i<simMatrix.getSimMatrix().size();i++) {
+        System.out.println(this.simMatrix.getShuffledIndex().size());
+        for(int i=0;i<this.simMatrix.getShuffledIndex().size();i++) {
             int temp=0;
-            for(int j=0;j<simMatrix.getSimMatrix().size();j++) {
+            for(int j=0;j<simMatrix.getShuffledIndex().size();j++) {
                 if (i!=j&&simMatrix.getSimbetweenPatents(i,j)>=this.radius) {
                     temp++;
                 }
@@ -113,7 +120,7 @@ public class DBScanCore {
 
     public ArrayList<Integer> getNeighbours(int i) {
         ArrayList<Integer> neighbours=new ArrayList<>();
-        for(int j=0;j<simMatrix.getSimMatrix().size();j++) {
+        for(int j=0;j<simMatrix.getShuffledIndex().size();j++) {
             if (i!=j&&simMatrix.getSimbetweenPatents(i,j)>radius) {
                 neighbours.add(j);
             }

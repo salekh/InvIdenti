@@ -87,6 +87,7 @@ public class TrainingDataGenerator {
             this.storeText(var3+"/Claims.txt",var2.getClaims());
             this.storeText(var3+"/Description.txt",var2.getDescription());
             this.storeText(var3+"/Title.txt",var2.getTitle());
+            this.storeText(var3+"/NPRs.txt",var2.getReferPublications());
         }
 
         System.out.println("Finish extracting the texts");
@@ -161,7 +162,7 @@ public class TrainingDataGenerator {
                         var5--;
                     }
                 }
-                String[] var6=var2.split(",");;
+                String[] var6=var2.split(",");
                 try {
                     String var7 = "insert into TrainingData (ID,Patent,LastName,FirstName)" + "Values ('"+var6[0]+"','"+
                             var6[1]+"','"+var6[2]+"','"+var6[3]+"');";

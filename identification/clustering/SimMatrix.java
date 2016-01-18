@@ -1,8 +1,13 @@
 package clustering;
 
+import base.ProgressBar;
 import base.patent;
 import clustering.distancefunction.AbstractDistance;
 
+import java.io.*;
+import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +21,7 @@ public class SimMatrix {
 
     public ArrayList<String> patentsID;
 
+    private ArrayList<Integer> shuffledIndex;
     double threshold;
 
     AbstractDistance distance;
@@ -31,10 +37,41 @@ public class SimMatrix {
 
     }
 
+    public ArrayList<Integer> getShuffledIndex(){
+        return this.shuffledIndex;
+    }
+
+    public void setShuffledIndex(ArrayList<Integer> shuffledIndex) {
+        this.shuffledIndex=shuffledIndex;
+    }
+
+    public SimMatrix(String Matrix_path)  {
+        FileReader f= null;
+        try {
+            f = new FileReader(Matrix_path);
+            BufferedReader br=new BufferedReader(f);
+            String var0=br.readLine();
+            while(var0!=null) {
+                String[] var1=var0.split(";");
+                ArrayList<Double> var3=new ArrayList<>();
+                for(String var2:var1) {
+                    var3.add(Double.parseDouble(var2));
+                }
+                this.simMatrix.add(var3);
+                var0=br.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     /**
      * Build the similarity matrix for the patents with distance function
      */
     private void buildMatrix() {
+
+        int totalnumber=this.patents.size()*(this.patents.size()-1)/2;
 
         for(int i=0;i<this.patents.size();i++) {
             ArrayList<Double> temp=new ArrayList<>();
@@ -44,16 +81,45 @@ public class SimMatrix {
             simMatrix.add(temp);
         }
 
+        int currentnumber=0;
+
+
         for(int i=0;i<this.patents.size()-1;i++) {
             for (int j=i+1;j<this.patents.size();j++) {
                 double temp=distance.distance(this.patents.get(i),this.patents.get(j));
-
+                temp= (new BigDecimal(temp).setScale(2, RoundingMode.UP)).doubleValue();
                 simMatrix.get(i).set(j,temp);
                 simMatrix.get(j).set(i,temp);
+                currentnumber++;
+                System.out.print("\r"+ProgressBar.barString((int)((currentnumber*100/totalnumber))));
+
             }
         }
+        System.out.println();
     }
 
+    /**
+     * Store Matrix into a file
+     * @param Path file Path
+     */
+    public void storeMatrix(String Path){
+        try {
+            FileWriter fileWriter=new FileWriter(Path);
+            String temp="";
+            for(ArrayList<Double> var0:simMatrix) {
+                temp="";
+                for(double var1:var0) {
+
+                    temp+=var1+";";
+                }
+                temp+="\n";
+                fileWriter.write(temp);
+            }
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void buildMatrix(double threshold,ArrayList<String> patentsID) {
 
@@ -97,7 +163,11 @@ public class SimMatrix {
      * @return the similarity between the patent i and patent j
      */
     public double getSimbetweenPatents(int i,int j) {
-        return simMatrix.get(i).get(j);
+
+        if (shuffledIndex.size()==0||shuffledIndex==null)
+        return simMatrix.get(i).get(j); else {
+            return simMatrix.get(shuffledIndex.get(i)).get(shuffledIndex.get(j));
+        }
     }
 
 }

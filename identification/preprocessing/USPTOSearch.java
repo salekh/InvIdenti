@@ -19,6 +19,8 @@ public class USPTOSearch
 
     private String title;
 
+    private String referPublications;
+
 
     public USPTOSearch(String patent_number) {
         this.patetnt_number = patent_number;
@@ -47,6 +49,7 @@ public class USPTOSearch
                     claims = g.getClaims();
                     description = g.getDescription();
                     title = g.getTitle();
+                    referPublications=g.getNPRS();
                     return;
                 }
             } catch (Exception e)
@@ -117,6 +120,12 @@ public class USPTOSearch
 
     public String getTitle(){return title;}
 
+    public String getReferPublications() {
+        return this.referPublications;
+    }
 
+    public static void main(String[] args) {
+    new USPTOSearch("7041659");
+    }
 
 }

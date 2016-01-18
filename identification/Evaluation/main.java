@@ -30,6 +30,8 @@ public class main {
     ArrayList<Double> lumpings_hi=new ArrayList<>();
     ArrayList<Double> splittings_hi=new ArrayList<>();
 
+    ArrayList<Integer> testingShuffleIndex;
+
     public double suml=0;
     public double sums=0;
     private static Logger logger= LogManager.getLogger(main.class.getName());
@@ -45,13 +47,42 @@ public class main {
 
     public main(int num){
 
-        training=new patentsDataset(traingPath,infoPath,ini.getTextPath(),2000,"Benchmark").getPatents();
+        //training=new patentsDataset(traingPath,infoPath,ini.getTextPath(),2000,"Benchmark").getPatents();
 
         //System.out.println(training.firstarg.size());
-        subsetofTrainingwithRandomly(num);
-      //  testing=new patentsDataset(testingPath,infoPath,"/Users/leisun/Desktop/ThesisData/ES/PatentsText",25000,"Benchmark").getPatents();
+        //subsetofTrainingwithRandomly(num);
+       testing=new patentsDataset(testingPath,infoPath,"/Users/leisun/Desktop/ThesisData/ES/PatentsText",1000,"Benchmark").getPatents();
+        subsetofTestingwithRandomly(num);
+    }
+
+
+    /**
+     * Shuffle the TestingDataset.
+     * @param num
+     */
+    public void subsetofTestingwithRandomly(int num){
+        ArrayList<Integer> shuffleIndex = new ArrayList<>();
+        for (int i = 0; i < testing.firstarg.size(); i++) {
+            shuffleIndex.add(i);
+        }
+        ArrayList<patent> patents=new ArrayList<>();
+        ArrayList<String> patentsID=new ArrayList<>();
+        Collections.shuffle(shuffleIndex);
+        if (num>testing.firstarg.size()) num=testing.firstarg.size();
+        for (int i = 0; i < num; i++) {
+            patents.add(testing.firstarg.get(shuffleIndex.get(i)));
+            patentsID.add(testing.secondarg.get(shuffleIndex.get(i)));
+        }
+        testing=new pair<>(patents,patentsID);
+
+       ArrayList<Integer> var0=new ArrayList<>();
+        for(int i=0;i<num;i++) {
+            var0.add(shuffleIndex.get(i));
+        }
+        this.testingShuffleIndex=var0;
 
     }
+
 
 
     public double test(){
@@ -76,6 +107,32 @@ public class main {
 
     }
 
+    /**
+     * Build simMatrix
+     */
+    public void buildsimMatrx()
+    {
+        this.testing.firstarg=preprocess(this.testing.firstarg);
+        SimMatrix sim=new SimMatrix(this.testing.firstarg,new CosDistance());
+        sim.storeMatrix("distanceMatrix.txt");
+    }
+
+
+    /**
+     * preprocess the patents;
+     */
+    protected ArrayList<patent> preprocess(ArrayList<patent> patents) {
+        double start=System.currentTimeMillis();
+        patentPreprocessingTF preprocess = new patentPreprocessingTF(patents);
+
+        preprocess.setLanguage(LanguageCode.ENGLISH);
+        preprocess.preprocess();
+        double end=System.currentTimeMillis();
+        System.out.println("Preprocessing Time"+(end-start));
+
+        return patents;
+    }
+
     public void testingWithTraining(){
 
 
@@ -88,10 +145,26 @@ public class main {
         //System.out.println(var3.secondarg);
 
         //Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
-        System.out.println("TEsting:"+testing.firstarg.size());
+        System.out.println("Testing:"+testing.firstarg.size());
         Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
         //System.out.println(new CosDistance());
-        System.out.println(e.evaluate(new CosDistance(),13.45,new HierClusteringPatents()));
+        double F_hier,F_db,lumping_hier,lumping_db,splitting_hier,splitting_db;
+
+        F_hier=e.evaluate(new CosDistance(),20.93,new HierClusteringPatents(testingShuffleIndex));
+
+        lumping_hier=e.lumping;
+        splitting_hier=e.splitting;
+
+
+        F_db=e.evaluate(new CosDistance(),20.93,new DBScanClusteringPatents(testingShuffleIndex));
+        //lumping_db=e.lumping;
+        //splitting_db=e.splitting;
+
+        //String temp="Patent Size: "+testing.firstarg.size()+"\n";
+       // temp+="Hierarchical Clustering: "+F_hier+" "+splitting_hier+" "+lumping_hier+"\n";
+  //   temp+="DBScan: "+F_db+" "+splitting_db+" "+lumping_db+"\n";
+      //  storeText("CluteringWithTest.txt",true,temp);
+
        // e.evaluate(new CosDistance(),8.68,new HierClusteringPatents());
 
     }
@@ -116,10 +189,12 @@ public class main {
 
 
         Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
-        double FMeasure_DB=e.evaluate(var5.firstarg,var5.secondarg,new DBScanClusteringPatents());
+        double FMeasure_DB=e.evaluate(var5.firstarg,var5.secondarg,new DBScanClusteringPatents(testingShuffleIndex));
         this.lumpings_db.add(e.lumping);
         this.splittings_db.add(e.splitting);
-        double FMeasure_Hi=e.evaluate(var5.firstarg,var5.secondarg,new HierClusteringPatents());
+
+
+        double FMeasure_Hi=e.evaluate(var5.firstarg,var5.secondarg,new HierClusteringPatents(testingShuffleIndex));
         this.lumpings_hi.add(e.lumping);
         this.splittings_hi.add(e.splitting);
 
@@ -307,10 +382,10 @@ public class main {
         long begintime=System.currentTimeMillis();
 
 
-   //     main temp=new main(10);
-     //  temp.testingWithTraining();
-
-
+        main temp=new main(1000);
+        temp.testingWithTraining();
+     //  temp.buildsimMatrx();
+/*
         for(int i=2000;i<=5000;i+=1000) {
 
         logger.warn("Size: "+i);
@@ -318,7 +393,7 @@ public class main {
             temp.crossValidate(5);
 
         }
-
+*/
 
         long endtime=System.currentTimeMillis();
 

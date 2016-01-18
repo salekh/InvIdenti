@@ -70,11 +70,21 @@ public class HierCore {
      * @param patents the arraylist of the patents
      * @param distance the distance function
      */
-    public void buildCluster(ArrayList<patent> patents,AbstractDistance distance)
+    public void buildCluster(ArrayList<patent> patents,AbstractDistance distance,ArrayList<Integer> shuffleIndex)
     {
 
 
-        this.simMatrix=new SimMatrix(patents,distance);
+        //this.simMatrix=new SimMatrix(patents,distance);
+
+
+        double start=System.currentTimeMillis();
+        //this.simMatrix=new SimMatrix(patents,distance);
+        //this.simMatrix.storeMatrix("distanceMatrix.txt");
+        this.simMatrix=new SimMatrix("distanceMatrix.txt");
+        this.simMatrix.setShuffledIndex(shuffleIndex);
+        double end=System.currentTimeMillis();
+        System.out.println(end-start);
+
         this.m_Distance=distance;
         initializeCluster(patents);
         ArrayList<Double> silCoes=new ArrayList<>();
