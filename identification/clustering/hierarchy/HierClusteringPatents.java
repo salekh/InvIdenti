@@ -45,7 +45,7 @@ public class HierClusteringPatents extends patentClustering
 
             clusters.clear();
 
-          hier_clusters=hc.get_Clusters();
+            hier_clusters=hc.get_Clusters();
 
             for(int i=0;i<hc.numberOfClusters();i++)
             {

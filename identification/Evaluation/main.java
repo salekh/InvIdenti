@@ -9,6 +9,7 @@ import clustering.distancefunction.CosDistance;
 import clustering.hierarchy.HierClusteringPatents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.appender.SyslogAppender;
 import org.apache.logging.log4j.core.config.plugins.convert.TypeConverters;
 import org.carrot2.core.LanguageCode;
 import preprocessing.IniFile;
@@ -51,8 +52,8 @@ public class main {
 
         //System.out.println(training.firstarg.size());
         //subsetofTrainingwithRandomly(num);
-       testing=new patentsDataset(testingPath,infoPath,"/Users/leisun/Desktop/ThesisData/ES/PatentsText",500,"Benchmark").getPatents();
-       //subsetofTestingwithRandomly(num);
+       testing=new patentsDataset(testingPath,infoPath,"/Users/leisun/Desktop/ThesisData/ES/PatentsText",1000,"Benchmark").getPatents();
+       subsetofTestingwithRandomly(num);
     }
 
 
@@ -112,9 +113,12 @@ public class main {
      */
     public void buildsimMatrx()
     {
+
         this.testing.firstarg=preprocess(this.testing.firstarg);
-        SimMatrix sim=new SimMatrix(this.testing.firstarg,new CosDistance());
-        sim.storeMatrix("distanceMatrix.txt");
+        SimMatrix sim=new SimMatrix(this.testing.firstarg,new CosDistance(),"distanceMatrix5000.txt");
+
+
+        //sim.storeMatrix("distanceMatrix5000.txt");
     }
 
 
@@ -150,15 +154,40 @@ public class main {
         //System.out.println(new CosDistance());
         double F_hier,F_db,lumping_hier,lumping_db,splitting_hier,splitting_db;
 
-        F_hier=e.evaluate(new CosDistance(),20.93,new HierClusteringPatents(testingShuffleIndex));
+        double t1=System.currentTimeMillis();
+        ArrayList<Double> fs=new ArrayList<>();
+        ArrayList<Double> ls=new ArrayList<>();
+        ArrayList<Double> ss=new ArrayList<>();
+        DBScanClusteringPatents db=new DBScanClusteringPatents(testingShuffleIndex);
+        db.setMinPts(1);
+        e.evaluate(new CosDistance(),20.93,db);
+       /*
+        for(int i=0;i<31;i++) {
+            db.setMinPts(i+1);
+            F_db=e.evaluate(new CosDistance(),20.93,db);
+            fs.add(F_db);
+            ls.add(e.lumping);
+            ss.add(e.splitting);
+        }
 
-        lumping_hier=e.lumping;
-        splitting_hier=e.splitting;
+        for(int i=0;i<31;i++) {
+            System.out.println((i+21)+" "+fs.get(i)+" "+ls.get(i)+" "+ss.get(i));
+        }
 
-
-        F_db=e.evaluate(new CosDistance(),20.93,new DBScanClusteringPatents(testingShuffleIndex));
+*/
+         double t2=System.currentTimeMillis();
+        //System.out.println("DBScan Clustering time:"+(t2-t1));
         //lumping_db=e.lumping;
         //splitting_db=e.splitting;
+
+        t1=System.currentTimeMillis();
+      //  F_hier=e.evaluate(new CosDistance(),20.93,new HierClusteringPatents(testingShuffleIndex));lumping_hier=e.lumping;
+        //splitting_hier=e.splitting;
+
+        t2= System.currentTimeMillis();
+        //logger.warn(lumping_hier+" "+splitting_hier);
+        //System.out.println("Hierchical Clustering time:"+(t2-t1));
+
 
         //String temp="Patent Size: "+testing.firstarg.size()+"\n";
        // temp+="Hierarchical Clustering: "+F_hier+" "+splitting_hier+" "+lumping_hier+"\n";
@@ -382,9 +411,9 @@ public class main {
         long begintime=System.currentTimeMillis();
 
 
-        main temp=new main(500);
-  //   temp.testingWithTraining();
-       temp.buildsimMatrx();
+        main temp=new main(200);//
+        temp.testingWithTraining();
+      //  temp.buildsimMatrx();
 /*
         for(int i=2000;i<=5000;i+=1000) {
 

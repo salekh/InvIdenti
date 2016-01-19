@@ -56,7 +56,7 @@ public class HierCluster extends indexCluster {
             {
                double temp=simMatrix.getSimbetweenPatents(i,j);
                 sum+=temp;
-                if (temp>maxdistance) maxdistance=temp;
+                if (temp<maxdistance) maxdistance=temp;
             }
 
         }

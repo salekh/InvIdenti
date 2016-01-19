@@ -2,6 +2,7 @@ package clustering;
 
 import base.ProgressBar;
 import base.patent;
+import base.textOperator;
 import clustering.distancefunction.AbstractDistance;
 
 import java.io.*;
@@ -37,6 +38,13 @@ public class SimMatrix {
 
     }
 
+    public SimMatrix(ArrayList<patent> patents,AbstractDistance distance,String path) {
+        this.patents=patents;
+        this.distance=distance;
+        buildMatrix(path);
+
+    }
+
     public ArrayList<Integer> getShuffledIndex(){
         return this.shuffledIndex;
     }
@@ -66,6 +74,43 @@ public class SimMatrix {
 
     }
 
+
+    private void buildMatrix(String path){
+        textOperator.storeText(path,false,"");
+
+        int totalnumber=this.patents.size()*(this.patents.size()-1)/2+this.patents.size();
+
+
+
+        int currentnumber=0;
+
+
+        for(int i=0;i<this.patents.size();i++) {
+            String temp_a="";
+            for (int j=0;j<=i;j++) {
+                if (i==j) temp_a+="0.00;"; else {
+                    double temp = distance.distance(this.patents.get(i), this.patents.get(j));
+                    temp = (new BigDecimal(temp).setScale(2, RoundingMode.UP)).doubleValue();
+                    temp_a+=temp+";";
+
+
+                    // simMatrix.get(i).set(j, temp);
+                    // simMatrix.get(j).set(i, temp);
+                }
+
+
+
+                currentnumber++;
+
+                System.out.print("\r"+ProgressBar.barString((int)((currentnumber*100/totalnumber)))+" "+currentnumber);
+
+            }
+            textOperator.storeText(path,true,temp_a+"\n");
+          //  simMatrix.add(temp_a);
+        }
+        System.out.println();
+    }
+
     /**
      * Build the similarity matrix for the patents with distance function
      */
@@ -82,22 +127,19 @@ public class SimMatrix {
             ArrayList<Double> temp_a=new ArrayList<>();
             for (int j=0;j<this.patents.size();j++) {
                if (i==j) temp_a.add(0.0); else if (i<j)
-               { double t1=System.currentTimeMillis();
+               {
                     double temp = distance.distance(this.patents.get(i), this.patents.get(j));
                     temp = (new BigDecimal(temp).setScale(2, RoundingMode.UP)).doubleValue();
                     temp_a.add(temp);
 
-                   double t2=System.currentTimeMillis();
 
-                   System.out.println(t2-t1);
-                   System.exit(3);
                     // simMatrix.get(i).set(j, temp);
                    // simMatrix.get(j).set(i, temp);
                 }  else {
                   temp_a.add(simMatrix.get(j).get(i));
                }
                 currentnumber++;
-                System.out.print("\r"+ProgressBar.barString((int)((currentnumber*100/totalnumber))));
+                System.out.print("\r"+ProgressBar.barString((int)((currentnumber*100/totalnumber)))+" "+currentnumber);
 
             }
             simMatrix.add(temp_a);
@@ -171,11 +213,28 @@ public class SimMatrix {
      * @return the similarity between the patent i and patent j
      */
     public double getSimbetweenPatents(int i,int j) {
-
+        int b,l=0;
         if (shuffledIndex.size()==0||shuffledIndex==null)
-        return simMatrix.get(i).get(j); else {
-            return simMatrix.get(shuffledIndex.get(i)).get(shuffledIndex.get(j));
+        {
+            if(i>j) {
+               b=i;
+                l=j;
+            } else {
+                b=j;
+                l=i;
+            }
+            return simMatrix.get(b).get(l);
+        } else {
+            if (shuffledIndex.get(i)>shuffledIndex.get(j)) {
+                b=i;
+                l=j;
+            } else {
+                b=j;
+                l=i;
+            }
+            return simMatrix.get(shuffledIndex.get(b)).get(shuffledIndex.get(l));
         }
     }
+
 
 }

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class DBScanClusteringPatents extends patentClustering {
 
     ArrayList<DBCluster> DBclusters;
+    int minPts=1;
 
     public DBScanClusteringPatents(ArrayList<Integer> shuffleIndex) {
         super();
@@ -21,6 +22,11 @@ public class DBScanClusteringPatents extends patentClustering {
         this.setShuffleIndex(shuffleIndex);
     }
 
+
+    public void setMinPts(int minPts){
+        this.minPts=minPts;
+
+    }
     /**
      * Clustering based on a specific function
      * @param distance distance function
@@ -37,6 +43,7 @@ public class DBScanClusteringPatents extends patentClustering {
 
         var0.setRadius(this.threshold);
 
+        var0.setMinpts(minPts);
 
 
         try {

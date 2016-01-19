@@ -56,6 +56,8 @@ public class Evaluation {
 
         method.Cluster(distance);
 
+        System.out.println("Cluster Number:"+method.getClusters().size());
+
         double FMeasurement=getFScoreofClustering(method.getClustersIndex(),patentsID);
 
         logger.warn("F Measurement:"+ FMeasurement);

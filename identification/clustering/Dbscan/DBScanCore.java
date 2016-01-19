@@ -41,10 +41,11 @@ public class DBScanCore {
         double start=System.currentTimeMillis();
         //this.simMatrix=new SimMatrix(patents,distance);
         //this.simMatrix.storeMatrix("distanceMatrix.txt");
-        this.simMatrix=new SimMatrix("distanceMatrix.txt");
+        this.simMatrix=new SimMatrix("distanceMatrix5000.txt");
         this.simMatrix.setShuffledIndex(shuffleIndex);
         double end=System.currentTimeMillis();
-        System.out.println(end-start);
+        System.out.println("Reading Matrix Time:"+(end-start));
+
         initilize(patents.size());
 
         for(int i=0;i<patents.size();i++) {
@@ -85,7 +86,7 @@ public class DBScanCore {
 
 
     public void signAllCorePts(){
-        System.out.println(this.simMatrix.getShuffledIndex().size());
+        int corenumber=0;
         for(int i=0;i<this.simMatrix.getShuffledIndex().size();i++) {
             int temp=0;
             for(int j=0;j<simMatrix.getShuffledIndex().size();j++) {
@@ -93,8 +94,12 @@ public class DBScanCore {
                     temp++;
                 }
             }
-            if (temp>=minpts) corePts[i]=true;
+            if (temp>=minpts) {
+                corePts[i]=true;
+                corenumber++;
+            }
         }
+        System.out.println("Core number: "+corenumber);
     }
 
 
