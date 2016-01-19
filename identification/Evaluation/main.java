@@ -51,8 +51,8 @@ public class main {
 
         //System.out.println(training.firstarg.size());
         //subsetofTrainingwithRandomly(num);
-       testing=new patentsDataset(testingPath,infoPath,"/Users/leisun/Desktop/ThesisData/ES/PatentsText",1000,"Benchmark").getPatents();
-        subsetofTestingwithRandomly(num);
+       testing=new patentsDataset(testingPath,infoPath,"/Users/leisun/Desktop/ThesisData/ES/PatentsText",500,"Benchmark").getPatents();
+       //subsetofTestingwithRandomly(num);
     }
 
 
@@ -382,9 +382,9 @@ public class main {
         long begintime=System.currentTimeMillis();
 
 
-        main temp=new main(1000);
-        temp.testingWithTraining();
-     //  temp.buildsimMatrx();
+        main temp=new main(500);
+  //   temp.testingWithTraining();
+       temp.buildsimMatrx();
 /*
         for(int i=2000;i<=5000;i+=1000) {
 

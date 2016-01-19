@@ -71,31 +71,39 @@ public class SimMatrix {
      */
     private void buildMatrix() {
 
-        int totalnumber=this.patents.size()*(this.patents.size()-1)/2;
+        int totalnumber=this.patents.size()*this.patents.size();
 
-        for(int i=0;i<this.patents.size();i++) {
-            ArrayList<Double> temp=new ArrayList<>();
-            for (int j=0;j<this.patents.size();j++) {
-                temp.add(0.0);
-            }
-            simMatrix.add(temp);
-        }
+
 
         int currentnumber=0;
 
 
-        for(int i=0;i<this.patents.size()-1;i++) {
-            for (int j=i+1;j<this.patents.size();j++) {
-                double temp=distance.distance(this.patents.get(i),this.patents.get(j));
-                temp= (new BigDecimal(temp).setScale(2, RoundingMode.UP)).doubleValue();
-                simMatrix.get(i).set(j,temp);
-                simMatrix.get(j).set(i,temp);
+        for(int i=0;i<this.patents.size();i++) {
+            ArrayList<Double> temp_a=new ArrayList<>();
+            for (int j=0;j<this.patents.size();j++) {
+               if (i==j) temp_a.add(0.0); else if (i<j)
+               { double t1=System.currentTimeMillis();
+                    double temp = distance.distance(this.patents.get(i), this.patents.get(j));
+                    temp = (new BigDecimal(temp).setScale(2, RoundingMode.UP)).doubleValue();
+                    temp_a.add(temp);
+
+                   double t2=System.currentTimeMillis();
+
+                   System.out.println(t2-t1);
+                   System.exit(3);
+                    // simMatrix.get(i).set(j, temp);
+                   // simMatrix.get(j).set(i, temp);
+                }  else {
+                  temp_a.add(simMatrix.get(j).get(i));
+               }
                 currentnumber++;
                 System.out.print("\r"+ProgressBar.barString((int)((currentnumber*100/totalnumber))));
 
             }
+            simMatrix.add(temp_a);
         }
         System.out.println();
+
     }
 
     /**

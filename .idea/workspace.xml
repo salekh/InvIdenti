@@ -2,31 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab209d6b-4348-46b0-8871-b774722eae25" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/DatasetGenerator/PatentsGenerator.class" afterPath="$PROJECT_DIR$/target/classes/DatasetGenerator/PatentsGenerator.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/DatasetGenerator/TrainingDataGenerator.class" afterPath="$PROJECT_DIR$/target/classes/DatasetGenerator/TrainingDataGenerator.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Evaluation/Evaluation.class" afterPath="$PROJECT_DIR$/target/classes/Evaluation/Evaluation.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Evaluation/main.class" afterPath="$PROJECT_DIR$/target/classes/Evaluation/main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/Dbscan/DBScanCore.class" afterPath="$PROJECT_DIR$/target/classes/clustering/Dbscan/DBScanCore.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/clustering/SimMatrix.class" afterPath="$PROJECT_DIR$/target/classes/clustering/SimMatrix.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/USPTOSearch.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/USPTOSearch.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/USPTOSpider.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/USPTOSpider.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/patentPreprocessingTF.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/patentPreprocessingTF.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/faillist.txt" afterPath="$PROJECT_DIR$/faillist.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/DatasetGenerator/PatentsGenerator.java" afterPath="$PROJECT_DIR$/identification/DatasetGenerator/PatentsGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/DatasetGenerator/TrainingDataGenerator.java" afterPath="$PROJECT_DIR$/identification/DatasetGenerator/TrainingDataGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/Evaluation/Evaluation.java" afterPath="$PROJECT_DIR$/identification/Evaluation/Evaluation.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/Evaluation/main.java" afterPath="$PROJECT_DIR$/identification/Evaluation/main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/Dbscan/DBScanClusteringPatents.java" afterPath="$PROJECT_DIR$/identification/clustering/Dbscan/DBScanClusteringPatents.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/Dbscan/DBScanCore.java" afterPath="$PROJECT_DIR$/identification/clustering/Dbscan/DBScanCore.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/SimMatrix.java" afterPath="$PROJECT_DIR$/identification/clustering/SimMatrix.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java" afterPath="$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java" afterPath="$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/patentClustering.java" afterPath="$PROJECT_DIR$/identification/clustering/patentClustering.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/USPTOSearch.java" afterPath="$PROJECT_DIR$/identification/preprocessing/USPTOSearch.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/USPTOSpider.java" afterPath="$PROJECT_DIR$/identification/preprocessing/USPTOSpider.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java" afterPath="$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/invidenti.ini" afterPath="$PROJECT_DIR$/invidenti.ini" />
     </list>
     <ignored path="InvIdenti.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -53,11 +34,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/identification/Evaluation/main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.028777">
-              <caret line="384" column="31" selection-start-line="384" selection-start-column="31" selection-end-line="384" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="53" column="106" selection-start-line="53" selection-start-column="106" selection-end-line="53" selection-end-column="106" />
               <folding />
             </state>
           </provider>
@@ -103,11 +84,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimMatrix.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SimMatrix.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/identification/clustering/SimMatrix.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="166" column="0" selection-start-line="166" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
+            <state vertical-scroll-proportion="1.2230216">
+              <caret line="92" column="34" selection-start-line="92" selection-start-column="34" selection-end-line="92" selection-end-column="34" />
               <folding>
                 <element signature="e#785#786#0" expanded="true" />
                 <element signature="e#826#827#0" expanded="true" />
@@ -143,7 +124,7 @@
         <entry file="file://$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="186" column="0" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
+              <caret line="186" column="3" selection-start-line="186" selection-start-column="3" selection-end-line="186" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -221,7 +202,6 @@
         <option value="$PROJECT_DIR$/identification/preprocessing/USPTOSpider.java" />
         <option value="$PROJECT_DIR$/faillist.txt" />
         <option value="$PROJECT_DIR$/identification/DatasetGenerator/PatentsGenerator.java" />
-        <option value="$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java" />
         <option value="$PROJECT_DIR$/invidenti.ini" />
         <option value="$PROJECT_DIR$/identification/clustering/patentClustering.java" />
         <option value="$PROJECT_DIR$/identification/clustering/Dbscan/DBScanClusteringPatents.java" />
@@ -229,8 +209,9 @@
         <option value="$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java" />
         <option value="$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java" />
         <option value="$PROJECT_DIR$/identification/Evaluation/Evaluation.java" />
-        <option value="$PROJECT_DIR$/identification/clustering/SimMatrix.java" />
+        <option value="$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java" />
         <option value="$PROJECT_DIR$/identification/Evaluation/main.java" />
+        <option value="$PROJECT_DIR$/identification/clustering/SimMatrix.java" />
       </list>
     </option>
   </component>
@@ -1320,14 +1301,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/invidenti.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="16" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/identification/clustering/distancefunction/AbstractDistance.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1371,14 +1344,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/identification/base/ProgressBar.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1395,10 +1360,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="174" column="0" selection-start-line="174" selection-start-column="0" selection-end-line="174" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/invidenti.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="16" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="186" column="0" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
+          <caret line="186" column="3" selection-start-line="186" selection-start-column="3" selection-end-line="186" selection-end-column="3" />
           <folding />
         </state>
       </provider>
@@ -1411,30 +1392,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierCore.java">
+    <entry file="file://$PROJECT_DIR$/identification/Evaluation/main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="174" column="0" selection-start-line="174" selection-start-column="0" selection-end-line="174" selection-end-column="0" />
+          <caret line="53" column="106" selection-start-line="53" selection-start-column="106" selection-end-line="53" selection-end-column="106" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/clustering/hierarchy/HierClusteringPatents.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/identification/clustering/SimMatrix.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="166" column="0" selection-start-line="166" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
+        <state vertical-scroll-proportion="1.2230216">
+          <caret line="92" column="34" selection-start-line="92" selection-start-column="34" selection-end-line="92" selection-end-column="34" />
           <folding>
             <element signature="e#785#786#0" expanded="true" />
             <element signature="e#826#827#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/Evaluation/main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.028777">
-          <caret line="384" column="31" selection-start-line="384" selection-start-column="31" selection-end-line="384" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
