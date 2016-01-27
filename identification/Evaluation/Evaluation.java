@@ -1,9 +1,11 @@
 package Evaluation;
 
 import DatasetGenerator.PatentsGenerator;
+import Refinement.Refinement;
 import base.indexCluster;
 import base.pair;
 import base.patent;
+import base.textOperator;
 import clustering.NameHierClustering;
 import clustering.distancefunction.AbstractDistance;
 import clustering.distancefunction.CosDistance;
@@ -19,6 +21,7 @@ import org.jblas.DoubleMatrix;
 import org.jblas.MatrixFunctions;
 import preprocessing.*;
 
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -53,12 +56,20 @@ public class Evaluation {
         method.ininitialize(patents,true);
 
         method.setThreshold(threshold);
-
+        logger.info("Clustering...");
         method.Cluster(distance);
 
-        System.out.println("Cluster Number:"+method.getClusters().size());
+        logger.info("Publication-Patent Matching...");
+        Refinement refinement=new Refinement(method.getClusters(),method.getClustersIndex());
+       // textOperator.storeText("result.txt",false,method.toString());
 
-        double FMeasurement=getFScoreofClustering(method.getClustersIndex(),patentsID);
+       // textOperator.storeText("BenchmarkClusteringResult.txt",false,method.toString());
+
+        double FMeasurement=getFScoreofClustering(refinement.clusters_index_r,patentsID);
+
+
+
+        // double FMeasurement=getFScoreofClustering(refinement.clusters_index_r,patentsID);
 
         logger.warn("F Measurement:"+ FMeasurement);
 

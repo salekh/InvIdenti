@@ -70,7 +70,7 @@ public class patentPreprocessingTF {
 
     public void preprocess()
     {
-//        this.generateTextVector("FullText");
+//      this.generateTextVector("FullText");
         this.generateTextVector("Abstract");
         this.generateTextVector("Claims");
         this.generateTextVector("Description");

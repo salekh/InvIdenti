@@ -34,6 +34,7 @@ public class patent
     private String coAuthor;
     private String country;
     private String ID;
+    private String NPR;
 
     public ArrayList<String> absStems;
     public ArrayList<String> titleStems;
@@ -74,6 +75,11 @@ public class patent
 
    }
 
+
+    public void setNPR(String path){
+       this.NPR=textOperator.readText(path+this.getPatent_number()+"/"+"NPRs.txt");
+
+    }
 
     /**Set patent attributes value**/
     public void setAuthor(String author)
@@ -210,6 +216,8 @@ public class patent
     public String getAsgNum() {return this.asgNum;}
 
     public String getID() {return this.ID;}
+
+    public String getNPR() {return this.NPR;}
 
     public String toString() {
         String str="Patent Number: "+this.patent_number+"\n";

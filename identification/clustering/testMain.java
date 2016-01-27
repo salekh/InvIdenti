@@ -42,9 +42,26 @@ public class testMain
 {
     private static Logger l= LogManager.getLogger(testMain.class.getName());
     public static void main(String[] args) {
-//        SqlitePatents s=new SqlitePatents("/Users/sunlei/Desktop/ThesisData/PatentData/PatTest.sqlite");
+    Levenshtein method=new Levenshtein();
 
+        System.out.println(method.distance("CLASSIFICATION","CLUSTERING"));
 
+        String str="CLASSIFICATION";
+        String str2="CLUSTERING";
+
+        for(int i=0;i<11;i++) {
+            for(int j=0;j<15;j++) {
+                System.out.print(method.distance(str2.substring(0,i),str.substring(0,j))+" ");
+            }
+            System.out.println();
+        }
+//
+//
+//
+//
+// SqlitePatents s=new SqlitePatents("/Users/sunlei/Desktop/ThesisData/PatentData/PatTest.sqlite");
+
+/*
         double[][] x={{1,0,1,0,0,0},{0,1,0,0,0,0},{1,1,0,0,0,0},{1,0,0,1,1,0},{0,0,0,1,0,1}};
 
         Array2DRowRealMatrix X=new Array2DRowRealMatrix(x);
@@ -127,7 +144,7 @@ public class testMain
         CosDistance c=new CosDistance();
         l.error(c.distance(p1,p2));
 */
-
+/*
         pair<ArrayList<String>,double[]> temp= TFcalculation("a,app,apple,invent,invention,invent,a,a,app,app",0.2);
 
         for(int i=0;i<temp.secondarg.length;i++) {
@@ -143,6 +160,7 @@ public class testMain
         }
         DenseDoubleMatrix2D f=new DenseDoubleMatrix2D(var1);
         */
+ /*
         pair<ArrayList<String>,double[]>temp2=TFcalculation("a,app,apple,b",0.2);
         for(int i=0;i<temp2.secondarg.length;i++) {
             System.out.println(temp2.firstarg.get(i)+" "+temp2.secondarg[i]);

@@ -52,7 +52,9 @@ public class main {
 
         //System.out.println(training.firstarg.size());
         //subsetofTrainingwithRandomly(num);
-       testing=new patentsDataset(testingPath,infoPath,"/Users/leisun/Desktop/ThesisData/ES/PatentsText",1000,"Benchmark").getPatents();
+       testing=new patentsDataset(testingPath,infoPath,"/Users/leisun/Desktop/ThesisData/ES/PatentsText",25000,"Benchmark").getPatents();
+        System.out.println(testing.firstarg.size());
+      System.exit(3);
        subsetofTestingwithRandomly(num);
     }
 
@@ -113,10 +115,11 @@ public class main {
      */
     public void buildsimMatrx()
     {
-
+        double t1=System.currentTimeMillis();
         this.testing.firstarg=preprocess(this.testing.firstarg);
-        SimMatrix sim=new SimMatrix(this.testing.firstarg,new CosDistance(),"distanceMatrix5000.txt");
-
+        SimMatrix sim=new SimMatrix(this.testing.firstarg,new CosDistance(),"distanceMatrix1000.txt");
+        double t2=System.currentTimeMillis();
+        System.out.println("MAtrix Time:"+(t2-t1));
 
         //sim.storeMatrix("distanceMatrix5000.txt");
     }
@@ -161,6 +164,9 @@ public class main {
         DBScanClusteringPatents db=new DBScanClusteringPatents(testingShuffleIndex);
         db.setMinPts(1);
         e.evaluate(new CosDistance(),20.93,db);
+        logger.warn("Lumping Error: "+e.lumping);
+        logger.warn("Splitting Error: "+e.splitting);
+
        /*
         for(int i=0;i<31;i++) {
             db.setMinPts(i+1);
@@ -194,7 +200,7 @@ public class main {
   //   temp+="DBScan: "+F_db+" "+splitting_db+" "+lumping_db+"\n";
       //  storeText("CluteringWithTest.txt",true,temp);
 
-       // e.evaluate(new CosDistance(),8.68,new HierClusteringPatents());
+
 
     }
 
@@ -411,9 +417,9 @@ public class main {
         long begintime=System.currentTimeMillis();
 
 
-        main temp=new main(200);//
+        main temp=new main(3604);//
         temp.testingWithTraining();
-      //  temp.buildsimMatrx();
+       //temp.buildsimMatrx();
 /*
         for(int i=2000;i<=5000;i+=1000) {
 
