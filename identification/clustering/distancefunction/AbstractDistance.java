@@ -4,12 +4,9 @@ import base.patent;
 import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import org.apache.logging.log4j.Logger;
 import org.ini4j.Wini;
-import us.codecraft.webmagic.model.formatter.BasicTypeFormatter;
 
-import javax.naming.ldap.HasControls;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -508,7 +505,7 @@ public abstract class AbstractDistance {
 
 
     public String getWeights(){
-        return this.weightAbstract+" "+weightAbstract+" "+weightClaims+" "+weightTitle+" "+weightFirstName+" "+weightLastName+" "+weightCategory+" "+weightAssignee+" "+weightCoAuthor+" "+weightLocation;
+        return this.weightAbstract+" "+weightDes+" "+weightClaims+" "+weightTitle+" "+weightFirstName+" "+weightLastName+" "+weightCategory+" "+weightAssignee+" "+weightCoAuthor+" "+weightLocation;
     }
 
 

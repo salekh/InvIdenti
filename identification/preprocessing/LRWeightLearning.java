@@ -6,13 +6,11 @@ import base.patent;
 import clustering.distancefunction.AbstractDistance;
 
 import clustering.distancefunction.CosDistance;
-import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.carrot2.core.LanguageCode;
 import org.jblas.DoubleMatrix;
 import org.jblas.MatrixFunctions;
 
 import java.io.*;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 

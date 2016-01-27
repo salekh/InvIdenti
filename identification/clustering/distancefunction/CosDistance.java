@@ -6,7 +6,6 @@ import org.apache.mahout.math.matrix.impl.DenseDoubleMatrix2D;
 import org.jblas.DoubleMatrix;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  *

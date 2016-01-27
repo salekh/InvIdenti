@@ -1,13 +1,5 @@
 package preprocessing;
 
-import base.pair;
-import clustering.distancefunction.AbstractDistance;
-import org.jblas.DoubleMatrix;
-import org.jblas.MatrixFunctions;
-
-import java.util.ArrayList;
-import java.util.Collections;
-
 /**
  * Created by leisun on 15/12/7.
  */

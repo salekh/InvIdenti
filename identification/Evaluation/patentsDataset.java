@@ -3,7 +3,6 @@ package Evaluation;
 import DatasetGenerator.PatentsGenerator;
 import base.pair;
 import base.patent;
-import preprocessing.IniFile;
 
 import java.util.ArrayList;
 

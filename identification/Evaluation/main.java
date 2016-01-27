@@ -9,11 +9,8 @@ import clustering.distancefunction.CosDistance;
 import clustering.hierarchy.HierClusteringPatents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.appender.SyslogAppender;
-import org.apache.logging.log4j.core.config.plugins.convert.TypeConverters;
 import org.carrot2.core.LanguageCode;
 import preprocessing.IniFile;
-import preprocessing.LRWeightLearning;
 import preprocessing.LRWithBoldDriver;
 import preprocessing.patentPreprocessingTF;
 
@@ -38,9 +35,9 @@ public class main {
     private static Logger logger= LogManager.getLogger(main.class.getName());
 
     IniFile ini=new IniFile();
-    String traingPath="/Users/leisun/Desktop/ThesisData/ES/training.db";
-    String testingPath="/Users/leisun/Desktop/ThesisData/ES/testing.db";
-    String infoPath="/Users/leisun/Desktop/ThesisData/ES/PatTest.sqlite";
+    String traingPath="/Users/sanchitalekh/Desktop/ThesisData/ES/training.db";
+    String testingPath="/Users/sanchitalekh/Desktop/ThesisData/ES/testing.db";
+    String infoPath="/Users/sanchitalekh/Desktop/ThesisData/ES/PatTest.sqlite";
 
     pair<ArrayList<patent>,ArrayList<String>> training;
     pair<ArrayList<patent>,ArrayList<String>> testing;
@@ -52,10 +49,9 @@ public class main {
 
         //System.out.println(training.firstarg.size());
         //subsetofTrainingwithRandomly(num);
-       testing=new patentsDataset(testingPath,infoPath,"/Users/leisun/Desktop/ThesisData/ES/PatentsText",25000,"Benchmark").getPatents();
-        System.out.println(testing.firstarg.size());
-      System.exit(3);
-       subsetofTestingwithRandomly(num);
+        testing=new patentsDataset(testingPath,infoPath,"/Users/sanchitalekh/Desktop/ThesisData/ES/PatentsText",2000,"Benchmark").getPatents();
+        //System.out.println(testing.firstarg.size());
+        subsetofTestingwithRandomly(num);
     }
 
 
@@ -181,16 +177,16 @@ public class main {
         }
 
 */
-         double t2=System.currentTimeMillis();
+        // double t2=System.currentTimeMillis();
         //System.out.println("DBScan Clustering time:"+(t2-t1));
         //lumping_db=e.lumping;
         //splitting_db=e.splitting;
 
-        t1=System.currentTimeMillis();
+       // t1=System.currentTimeMillis();
       //  F_hier=e.evaluate(new CosDistance(),20.93,new HierClusteringPatents(testingShuffleIndex));lumping_hier=e.lumping;
         //splitting_hier=e.splitting;
 
-        t2= System.currentTimeMillis();
+      //  t2= System.currentTimeMillis();
         //logger.warn(lumping_hier+" "+splitting_hier);
         //System.out.println("Hierchical Clustering time:"+(t2-t1));
 
@@ -417,7 +413,9 @@ public class main {
         long begintime=System.currentTimeMillis();
 
 
-        main temp=new main(3604);//
+        main temp=new main(1000);
+        //temp.crossValidate(5);
+        //
         temp.testingWithTraining();
        //temp.buildsimMatrx();
 /*

@@ -5,7 +5,6 @@ import base.pair;
 import base.patent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.appender.SyslogAppender;
 import org.carrot2.core.LanguageCode;
 
 import java.io.*;

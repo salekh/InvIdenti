@@ -84,9 +84,9 @@ public class LRWithBoldDriver extends ParameterLearning{
 
 
                 double errorforValidation=calculateTheError(X,Y,thetas_t);
-                System.out.println(errorForTraining+" "+" "+errorforValidation+" "+alpha);
+                System.out.println(errorForTraining+" "+" "+errorforValidation+" "+errorforValidation);
                // outputMatrix(thetas_t.transpose(),"as");
-                if (errorForTraining<1e-5||( previous_error - errorForTraining) < 1e-5|| Math.abs((previous_error - errorForTraining) / previous_error)<1e-3||previoud_error_v<errorforValidation||alpha<1e-10) {
+                if (errorForTraining<1e-10||( previous_error - errorForTraining) < 1e-10|| Math.abs((previous_error - errorForTraining) / previous_error)<1e-10||previoud_error_v<errorforValidation||alpha<1e-10) {
                     previous_error = errorForTraining;
                     previoud_error_v=errorforValidation;
                     thetas = new DoubleMatrix(thetas_t.toArray2());
