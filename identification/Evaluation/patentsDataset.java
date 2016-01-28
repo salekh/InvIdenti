@@ -21,6 +21,7 @@ public class patentsDataset {
 
 
 
+    //not used
     public patentsDataset(String dataPath,String infoPath,int dataSize,String IDType) {
         //ini=new IniFile();
 
@@ -53,6 +54,8 @@ public class patentsDataset {
 
 
 
+    //takes 5 arguments
+    //constructor of patentsDataset calls PatentsGenerator class and its methos getTrainingPatents
     public patentsDataset(String dataPath,String infoPath,String textPath,int dataSize,String IDType) {
         //ini=new IniFile();
 
@@ -66,7 +69,10 @@ public class patentsDataset {
         this.trainingTextPath=textPath+"/";
         infoDataPath=infoPath;
         this.dataSize=dataSize;
+
+        //data structure for patent and patentID
         pair<ArrayList<patent>, ArrayList<String>> var0;
+
         PatentsGenerator patentGenerator=new PatentsGenerator(infoDataPath,trainingTextPath,trainingDataPath);
         if(!IDType.equalsIgnoreCase("Benchmark")) {
             patentGenerator.setIDType(IDType);
@@ -86,11 +92,13 @@ public class patentsDataset {
 
 
 
+    //just returns the patents and patentID already retrieved on object creation by the constructor
     public pair<ArrayList<patent>,ArrayList<String>>getPatents() {
 
         return new pair<>(patents,patentsID);
     }
 
+    //will be used if we want patents and patentIDs from given start value to given end value
     public pair<ArrayList<patent>,ArrayList<String>>getPatents(int start,int end) {
         ArrayList<patent> var0=new ArrayList<>();
         ArrayList<String> var1=new ArrayList<>();
@@ -101,6 +109,7 @@ public class patentsDataset {
         return new pair<>(var0,var1);
     }
 
+    //will be used if we want the patents and patentIDs from supplied indices only
     public pair<ArrayList<patent>,ArrayList<String>>getPatents(ArrayList<Integer> indexes) {
         ArrayList<patent> var0=new ArrayList<>();
         ArrayList<String> var1=new ArrayList<>();
