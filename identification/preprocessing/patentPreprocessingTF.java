@@ -63,6 +63,10 @@ public class patentPreprocessingTF {
         return this.patents;
     }
 
+    /**
+     *can be greatly parallelized if each runs on own thread
+     */
+
     public void preprocess()
     {
 //      this.generateTextVector("FullText");
@@ -87,6 +91,10 @@ public class patentPreprocessingTF {
             if (str.equalsIgnoreCase("Description")) temp=p.getDescription();
             if (str.equalsIgnoreCase("Title")) temp=p.getTitle();
 
+            /**
+             * @params title of the document
+             * @params summary of the document
+             */
             docs.add(new Document("",temp));
         }
 
@@ -135,6 +143,9 @@ public class patentPreprocessingTF {
 
             var19=normalize(var19);
 
+            /**
+             * Number of rows before Singular Value Decomposition
+             */
             System.out.println(var19.rows());
 
             logger.info("Singular Value Decomposition...");
@@ -159,6 +170,9 @@ public class patentPreprocessingTF {
             int numofs=0;
             for (double d:singularvalues) {
                 sum1+=d*d;
+                /**
+                 * Generates 300 dimensions after Singular Value Decomposition
+                 */
                 if (numofs>299) break;
                 numofs++;
             }
@@ -168,6 +182,7 @@ public class patentPreprocessingTF {
 
          //  System.out.println(((Array2DRowRealMatrix)decomposition.getU()).getColumnDimension());
 
+            //what does this do?
             decomposition.getU().copySubMatrix(0,original.getRowDimension()-1,0,numofs-1,u);
 
             DoubleMatrix U1=new DoubleMatrix(u);

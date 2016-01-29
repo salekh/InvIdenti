@@ -50,7 +50,7 @@ public class main {
         //System.out.println(training.firstarg.size());
         //subsetofTrainingwithRandomly(num);
         testing=new patentsDataset(testingPath,infoPath,"/Users/sanchitalekh/Desktop/ThesisData/ES/PatentsText",2000,"Benchmark").getPatents();
-        //System.out.println(testing.firstarg.size());
+        System.out.println(testing.firstarg.size());
         subsetofTestingwithRandomly(num);
     }
 
@@ -140,6 +140,7 @@ public class main {
 
 
         //Training var2=new Training(training.firstarg,training.secondarg,new LRWeightLearning());
+
         //pair<AbstractDistance,Double> var3=var2.estimateParameter();
 
 
@@ -418,15 +419,16 @@ public class main {
         //
         temp.testingWithTraining();
        //temp.buildsimMatrx();
-/*
+
         for(int i=2000;i<=5000;i+=1000) {
 
-        logger.warn("Size: "+i);
+     /*   logger.warn("Size: "+i);
             main temp=new main(i);
             temp.crossValidate(5);
 
-        }
 */
+        }
+
 
         long endtime=System.currentTimeMillis();
 
