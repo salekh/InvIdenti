@@ -27,6 +27,9 @@ public class LRWithBoldDriver extends ParameterLearning{
 
 
     public AbstractDistance estimateDistanceFunction(){
+        /**
+         * Note: Write comment about what <code>separateDataset</code> method does
+         */
         seperateDataset();
         logger.info("Generating validation matrix...");
         System.out.println(validation.size());
@@ -41,24 +44,18 @@ public class LRWithBoldDriver extends ParameterLearning{
         }
         DoubleMatrix thetas = new DoubleMatrix(var0);
 
-
-
-
         int maxIteration=5000;
         double alpha=1.0;
         double lambda=0;
 
-
-
-
-
         logger.info("Generating training matrix...");
+        /**
+         * Generates pairs of training data matrices for Logistic Regression Training
+         */
         pair<DoubleMatrix,DoubleMatrix> trainingMatrice=new trainingDataMatrix(training,trainingID,false).getPatents_Matrices();
 
         double errorForTraining=calculateTheError(trainingMatrice.firstarg,trainingMatrice.secondarg,thetas);
-
         double previous_error=errorForTraining;
-
         double previoud_error_v=calculateTheError(X,Y,thetas);
 
 
@@ -70,27 +67,23 @@ public class LRWithBoldDriver extends ParameterLearning{
 
 
             DoubleMatrix thetas_t = new DoubleMatrix(thetas.toArray2());
-
             thetas_t = updateWeights(trainingMatrice.firstarg, trainingMatrice.secondarg,thetas_t, alpha / trainingMatrice.firstarg.rows, lambda);
-
-
-
             errorForTraining=calculateTheError(trainingMatrice.firstarg,trainingMatrice.secondarg,thetas_t);
-
-
-
 
             if (previous_error>errorForTraining) {
 
 
                 double errorforValidation=calculateTheError(X,Y,thetas_t);
                 System.out.println(errorForTraining+" "+" "+errorforValidation+" "+errorforValidation);
-               // outputMatrix(thetas_t.transpose(),"as");
+                // outputMatrix(thetas_t.transpose(),"as");
+
+                /**
+                 * Bold Driver Method
+                 */
                 if (errorForTraining<1e-10||( previous_error - errorForTraining) < 1e-10|| Math.abs((previous_error - errorForTraining) / previous_error)<1e-10||previoud_error_v<errorforValidation||alpha<1e-10) {
                     previous_error = errorForTraining;
                     previoud_error_v=errorforValidation;
                     thetas = new DoubleMatrix(thetas_t.toArray2());
-
                     break label;
                 }
 
@@ -110,7 +103,6 @@ public class LRWithBoldDriver extends ParameterLearning{
 
 
         double[] weights = thetas.toArray();
-
         ArrayList<Double> weight = new ArrayList<>();
         int i = 1;
 
@@ -162,15 +154,10 @@ public class LRWithBoldDriver extends ParameterLearning{
 
         double sum = 0;
         for (int m = 0; m < Y.rows; m++) {
-
             double temp = varM.get(m, 0);
-
-
             if (temp > 1) temp = 1;
             if (temp < 0) temp = 0;
-
             sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
-
         }
 
         return (-sum)/X.rows;
@@ -189,18 +176,11 @@ public class LRWithBoldDriver extends ParameterLearning{
         for (int i=0;i<x.rows;i++) {
             String temp="";
             for(int j=0;j<x.columns;j++) {
-
                 temp+=x.get(i,j)+" ";
-
-
             }
             System.out.println(temp);
         }
-
-
-
     }
-
 
 
     public void storeText(String path,boolean follow,String str){
@@ -237,31 +217,16 @@ public class LRWithBoldDriver extends ParameterLearning{
      */
     public DoubleMatrix updateWeights(DoubleMatrix X, DoubleMatrix Y, DoubleMatrix thetas, double alpha, double lamda) {
 
-
         DoubleMatrix varM1=applyLogisticonData(X,thetas);
-
-
         varM1.subi(Y);
-
-
         varM1 = X.transpose().mmul(varM1);
-
-
         DoubleMatrix thetas1 = new DoubleMatrix(thetas.toArray2());
-
         thetas1 = thetas1.put(0, 0, 0);
-
         varM1.muli(alpha);
-
-
         thetas1.muli(lamda * alpha);
-
         thetas.subi(varM1);
         thetas.subi(thetas1);
-
-
         return thetas;
-
     }
 
     /**
@@ -274,26 +239,14 @@ public class LRWithBoldDriver extends ParameterLearning{
     public DoubleMatrix applyLogisticonData(DoubleMatrix X,DoubleMatrix thetas) {
 
         DoubleMatrix varM1 = new DoubleMatrix(X.transpose().toArray2());
-
-
-
         varM1 = varM1.transpose().mmul(thetas);
-
         DoubleMatrix varM2 = new DoubleMatrix(varM1.rows, varM1.columns);
-
         varM2.subi(varM1);
-
         MatrixFunctions.expi(varM2);
-
         varM2.addi(1);
-
         DoubleMatrix varM3 = new DoubleMatrix(varM2.rows, varM2.columns);
         varM3.addi(1);
-
         varM3.divi(varM2);
-
-
-
         return varM3;
 
     }
@@ -325,14 +278,13 @@ public class LRWithBoldDriver extends ParameterLearning{
 
             var0.setWeights(var2);
         }
-
-
-
         return var0;
     }
 
 
-
+    /**
+     * Separates the patents dataset of parent class into 80% training and 20% validation data
+     */
     public void seperateDataset() {
 
         training.clear();

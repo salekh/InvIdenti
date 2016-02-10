@@ -10,7 +10,10 @@ import org.carrot2.core.LanguageCode;
 import java.util.ArrayList;
 
 /**
- * Created by leisun on 15/11/3.
+ * Created by leisun on 15/11/3
+ *
+ * Used as a base class for different weight learning methods
+ * Preprocesses the supplied patents and generates separate distance functions for them as per the options
  */
 public abstract class ParameterLearning {
 
@@ -101,35 +104,26 @@ public abstract class ParameterLearning {
             for(int i=0;i<this.ini.getOptionsNames().size();i++) {
                 var2[i]=weights.get(i);
             }
-
             var0.setWeights(var2);
         }
-
-
-
         return var0;
     }
 
     /**
-     * geneerate all the seperated distance functions based on the options needed
+     * generate all the seperated distance functions based on the options needed
      */
 
     public void generateSeperatedDisFunctions(){
         ArrayList<String> optionsName=ini.getOptionsNames();
-
-
         this.distances=new ArrayList<>();
         int var0=0;
 
         for(int i=0;i<optionsName.size();i++) {
-
-                ArrayList<Integer> var1 = new ArrayList<>();
-                var1.add(i);
-
-                distances.add(this.generateDistanceFunction(var1, null));
-
-                if (ini.getOptionValue(optionsName.get(i))) var0++;
-
+            ArrayList<Integer> var1 = new ArrayList<>();
+            var1.add(i);
+            //supplies the attribute index and calculates Distance Function for each and stores in distances ArrayList
+            distances.add(this.generateDistanceFunction(var1, null));
+            if (ini.getOptionValue(optionsName.get(i))) var0++;
         }
 
         this.numberofOptions=var0;

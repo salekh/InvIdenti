@@ -64,7 +64,7 @@ public class patentPreprocessingTF {
     }
 
     /**
-     *can be greatly parallelized if each runs on own thread
+     *Note: can be greatly parallelized if each runs on own thread
      */
 
     public void preprocess()
@@ -85,7 +85,7 @@ public class patentPreprocessingTF {
         {
             String temp=" ";
 
-            //        if (str.equalsIgnoreCase("FullText")) temp=p.getAbs() + " " + p.getClaims() + " " + p.getDescription();
+            // if (str.equalsIgnoreCase("FullText")) temp=p.getAbs() + " " + p.getClaims() + " " + p.getDescription();
             if (str.equalsIgnoreCase("Abstract")) temp=p.getAbs();
             if (str.equalsIgnoreCase("Claims"))   temp=p.getClaims();
             if (str.equalsIgnoreCase("Description")) temp=p.getDescription();
@@ -132,41 +132,21 @@ public class patentPreprocessingTF {
             }
 
             DoubleMatrix2D var19;
-
-
-
-
-
-
             var19 = var17.termDocumentMatrix;
-
-
             var19=normalize(var19);
 
             /**
              * Number of rows before Singular Value Decomposition
              */
             System.out.println(var19.rows());
-
             logger.info("Singular Value Decomposition...");
-
-
-
-
             Array2DRowRealMatrix original=new Array2DRowRealMatrix(var19.toArray());
-
             SingularValueDecomposition decomposition=new SingularValueDecomposition(original);
 
-
-
-
             double[] singularvalues=decomposition.getSingularValues();
-
             DoubleMatrix sv=new DoubleMatrix(singularvalues);
             double sum=sv.transpose().mmul(sv).get(0);
-
             double sum1=0;
-
             int numofs=0;
             for (double d:singularvalues) {
                 sum1+=d*d;
@@ -184,15 +164,10 @@ public class patentPreprocessingTF {
 
             //what does this do?
             decomposition.getU().copySubMatrix(0,original.getRowDimension()-1,0,numofs-1,u);
-
             DoubleMatrix U1=new DoubleMatrix(u);
-
             DoubleMatrix M=new DoubleMatrix(original.getData());
-
             M=U1.transpose().mmul(M);
-
             var19=new DenseDoubleMatrix2D(M.toArray2());
-
             System.out.println(var19.rows());
 
             IntArrayList intA=new IntArrayList();

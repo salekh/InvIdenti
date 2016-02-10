@@ -209,6 +209,9 @@ public class main {
      */
     public pair<Double,Double> testingWithTraining(pair<ArrayList<patent>,ArrayList<String>> training,pair<ArrayList<patent>,ArrayList<String>> testing) {
 
+        /**
+         * Training via Logistic Regression with Bold Driver method
+         */
         Training var4=new Training(training.firstarg,training.secondarg,new LRWithBoldDriver());
 
 
