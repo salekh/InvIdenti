@@ -23,12 +23,10 @@ import java.util.Collections;
  */
 public class LRWithBoldDriver extends ParameterLearning{
 
-
     ArrayList<patent> training=new ArrayList<>();
     ArrayList<String> trainingID=new ArrayList<>();
     ArrayList<patent> validation=new ArrayList<>();
     ArrayList<String> validationID=new ArrayList<>();
-
 
     /**
      * Implements the <code>estimateDistanceFunction</code> method of the Parameter Learning class
@@ -42,8 +40,8 @@ public class LRWithBoldDriver extends ParameterLearning{
         System.out.println(validation.size());
         pair<DoubleMatrix,DoubleMatrix> validations=new trainingDataMatrix(validation,validationID,false).getPatents_Matrices();
 
-        DoubleMatrix X=validations.firstarg;
-        DoubleMatrix Y=validations.secondarg;
+        DoubleMatrix validationsFirstarg=validations.firstarg;
+        DoubleMatrix validationsSecondarg=validations.secondarg;
 
         double[][] var0 = new double[numberofOptions + 1][1];
         for (int i = 0; i < numberofOptions + 1; i++) {
@@ -64,7 +62,7 @@ public class LRWithBoldDriver extends ParameterLearning{
 
         double errorForTraining=calculateTheError(trainingMatrice.firstarg,trainingMatrice.secondarg,thetas);
         double previous_error=errorForTraining;
-        double previoud_error_v=calculateTheError(X,Y,thetas);
+        double previoud_error_v=calculateTheError(validationsFirstarg,validationsSecondarg,thetas);
 
         logger.warn("Start the training...");
 
@@ -77,7 +75,7 @@ public class LRWithBoldDriver extends ParameterLearning{
 
             if (previous_error>errorForTraining) {
 
-                double errorforValidation=calculateTheError(X,Y,thetas_t);
+                double errorforValidation=calculateTheError(validationsFirstarg,validationsSecondarg,thetas_t);
                 System.out.println(errorForTraining+" "+" "+errorforValidation+" "+errorforValidation);
                 // outputMatrix(thetas_t.transpose(),"as");
 
@@ -90,19 +88,15 @@ public class LRWithBoldDriver extends ParameterLearning{
                     thetas = new DoubleMatrix(thetas_t.toArray2());
                     break label;
                 }
-
                 alpha*=1.1;
                 previous_error=errorForTraining;
                 previoud_error_v=errorforValidation;
                 thetas = new DoubleMatrix(thetas_t.toArray2());
 
-            } else {
-
+            }   else {
                 alpha/=2;
                 k--;
             }
-
-
         }
 
         double[] weights = thetas.toArray();
@@ -113,23 +107,22 @@ public class LRWithBoldDriver extends ParameterLearning{
             if (ini.getOptionValue(optionsName.get(j))) {
                 weight.add(weights[i]);
                 i++;
-            } else {
+            }
+            else {
                 weight.add(0.0);
             }
-
         }
-
         this.threshold=-weights[0];
         logger.debug("Finish the training...");
         return (this.generateDistanceFunction(null,weight));
     }
-
 
     /**
      * Preprocess the patents
      * @return the preprocessed patents after stop-word removal, stemming, term-frequency calculation and singular value decomposition
      */
     protected ArrayList<patent> preprocess(ArrayList<patent> patents) {
+
         double start=System.currentTimeMillis();
         patentPreprocessingTF preprocess = new patentPreprocessingTF(patents);
         preprocess.setLanguage(LanguageCode.ENGLISH);
@@ -139,7 +132,6 @@ public class LRWithBoldDriver extends ParameterLearning{
         return patents;
     }
 
-
     /**
      * Calculate the error of the training or the validation
      * @param X feature matrix
@@ -147,8 +139,8 @@ public class LRWithBoldDriver extends ParameterLearning{
      * @param thetas weights vector
      * @return training error for the Logistic Regression
      */
-
     public double calculateTheError(DoubleMatrix X,DoubleMatrix Y,DoubleMatrix thetas){
+
         DoubleMatrix varM=applyLogisticonData(X, thetas);
         double sum = 0;
         for (int m = 0; m < Y.rows; m++) {
@@ -157,11 +149,8 @@ public class LRWithBoldDriver extends ParameterLearning{
             if (temp < 0) temp = 0;
             sum += Y.get(m, 0) * Math.log(temp) + (1 - Y.get(m, 0)) * Math.log(1-temp);
         }
-
         return (-sum)/X.rows;
-
     }
-
 
     /**
      * output the matrix
@@ -169,6 +158,7 @@ public class LRWithBoldDriver extends ParameterLearning{
      * @param name matrix name
      */
     public void outputMatrix(DoubleMatrix x,String name) {
+
         System.out.println("Matrix Name:" +name);
         int var0=0;
         for (int i=0;i<x.rows;i++) {
@@ -180,17 +170,25 @@ public class LRWithBoldDriver extends ParameterLearning{
         }
     }
 
-
+    /**
+     *
+     * @param path the path of the file where the <code>str</code> is to be written
+     * @param follow indicates whether the file has to be appended or not
+     * @param str the actual string that has to be written to the file
+     */
     public void storeText(String path,boolean follow,String str){
+
         if (follow) {
             try {
                 FileWriter w=new FileWriter(path,follow);
                 w.write(str);
                 w.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
+        }
+        else {
             try {
                 FileWriter w=new FileWriter(path,follow);
                 w.write(str);
@@ -201,7 +199,6 @@ public class LRWithBoldDriver extends ParameterLearning{
         }
 
     }
-
 
     /**
      * Update the weights and threshold
@@ -233,7 +230,6 @@ public class LRWithBoldDriver extends ParameterLearning{
      * @param thetas the weights and the threshold
      * @return the Matrix after applying the sigmoid function on the similarity matrix
      */
-
     public DoubleMatrix applyLogisticonData(DoubleMatrix X,DoubleMatrix thetas) {
 
         DoubleMatrix varM1 = new DoubleMatrix(X.transpose().toArray2());
@@ -246,11 +242,11 @@ public class LRWithBoldDriver extends ParameterLearning{
         varM3.addi(1);
         varM3.divi(varM2);
         return varM3;
-
     }
 
     /**
      * Generate a distance function based on a arraylist of weights and a arraylist of index
+     * overrides method in Parameter Learning class
      * @param attrIndex distance function index
      * @param weights distance function weights
      * @return the generated distance function
@@ -262,7 +258,8 @@ public class LRWithBoldDriver extends ParameterLearning{
             for(int i=0;i<this.ini.getOptionsNames().size();i++) {
                 if (attrIndex.contains(i)) {
                     var1[i]=true;
-                } else {
+                }
+                else {
                     var1[i]=false;
                 }
             }
@@ -273,15 +270,13 @@ public class LRWithBoldDriver extends ParameterLearning{
             for(int i=0;i<this.ini.getOptionsNames().size();i++) {
                 var2[i]=weights.get(i);
             }
-
             var0.setWeights(var2);
         }
         return var0;
     }
 
-
     /**
-     * Separates the patents dataset into 80% training and 20% validation data
+     * Separates the patents dataset into 80% training data and 20% validation data
      */
     public void seperateDataset() {
 
@@ -289,7 +284,6 @@ public class LRWithBoldDriver extends ParameterLearning{
         validation.clear();
         trainingID.clear();
         validationID.clear();
-
 
         ArrayList<Integer> index=new ArrayList<>();
         for(int i=0;i<patents.size();i++) {
@@ -301,7 +295,8 @@ public class LRWithBoldDriver extends ParameterLearning{
             if (k<index.size()*0.2) {
                 validation.add(patents.get(index.get(i)));
                 validationID.add(patentsID.get(index.get(i)));
-            }else{
+            }
+            else{
                 training.add(patents.get(index.get(i)));
                 trainingID.add(patentsID.get(index.get(i)));
             }

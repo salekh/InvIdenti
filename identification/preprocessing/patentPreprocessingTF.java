@@ -24,13 +24,17 @@ import java.util.*;
 /**
  * Created by sunlei on 15/9/7.
  */
+
+/**
+ *  main <code>preprocessing</code> class for the text mining process
+ *  performs stop word removal, stemming, term weighting and singular value decomposition
+ */
 public class patentPreprocessingTF {
     ArrayList<Document> docs = new ArrayList<>();
     ArrayList<patent> patents = new ArrayList<>();
     LanguageCode language = LanguageCode.ENGLISH;
     public int clusterCount = 15;
     public boolean useDimensionalityReduction = false;
-
     public IPreprocessingPipeline preprocessingPipeline = new BasicPreprocessingPipeline();
     public final TermDocumentMatrixBuilder matrixBuilder = new TermDocumentMatrixBuilder();
     public final TermDocumentMatrixReducer matrixReducer = new TermDocumentMatrixReducer();
@@ -49,15 +53,12 @@ public class patentPreprocessingTF {
     public void setLanguage(LanguageCode code) {
         this.language = code;
     }
-
     public void setClusterCount(int ClusterCount) {
         this.clusterCount = ClusterCount;
     }
-
     public void setUseDimensionalityReduction(boolean r) {
         this.useDimensionalityReduction = r;
     }
-
     public ArrayList<patent> getPatents()
     {
         return this.patents;
@@ -66,7 +67,6 @@ public class patentPreprocessingTF {
     /**
      *Note: can be greatly parallelized if each runs on own thread
      */
-
     public void preprocess()
     {
 //      this.generateTextVector("FullText");
@@ -74,7 +74,6 @@ public class patentPreprocessingTF {
         this.generateTextVector("Claims");
         this.generateTextVector("Description");
         this.generateTextVector("Title");
-
     }
 
     public void generateTextVector(String str)
@@ -84,7 +83,6 @@ public class patentPreprocessingTF {
         for (patent p : patents)
         {
             String temp=" ";
-
             // if (str.equalsIgnoreCase("FullText")) temp=p.getAbs() + " " + p.getClaims() + " " + p.getDescription();
             if (str.equalsIgnoreCase("Abstract")) temp=p.getAbs();
             if (str.equalsIgnoreCase("Claims"))   temp=p.getClaims();
@@ -162,7 +160,7 @@ public class patentPreprocessingTF {
 
          //  System.out.println(((Array2DRowRealMatrix)decomposition.getU()).getColumnDimension());
 
-            //what does this do?
+            //note: what does this do?
             decomposition.getU().copySubMatrix(0,original.getRowDimension()-1,0,numofs-1,u);
             DoubleMatrix U1=new DoubleMatrix(u);
             DoubleMatrix M=new DoubleMatrix(original.getData());
@@ -189,10 +187,6 @@ public class patentPreprocessingTF {
         }
 
         logger.info("Finish the text preprocessing...");
-
-
-
-
     }
 
 
