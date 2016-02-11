@@ -36,8 +36,6 @@ public class trainingDataMatrix {
         this.optionsName=iniFile.getOptionsNames();
         generateSeperatedDisFunctions();
         generateDoubleMatrix();
-
-
     }
 
     public pair<DoubleMatrix,DoubleMatrix> getPatents_Matrices(){
@@ -57,7 +55,6 @@ public class trainingDataMatrix {
         }
     }
 
-
     /**
      * Generating the training data of the matrix type.
      */
@@ -66,12 +63,7 @@ public class trainingDataMatrix {
         /**
          * Clean the Training Data
          */
-
-
-
         this.lrTrainingData.clear();
-
-
         for (int i = 0; i < patents.size() - 1; i++) {
             for (int j = i + 1; j < patents.size(); j++) {
                 int[] tempint = new int[2];
@@ -94,21 +86,14 @@ public class trainingDataMatrix {
 
     }
 
-
-
-
-
-
     /** Generating the training data of the matrix form
      * @return the similarity matrix and the target value vector
      */
     public pair<DoubleMatrix,DoubleMatrix> logisticRTrainingDataGenerator() {
 
-
-
         double[][] var0=new double[this.lrTrainingData.size()][numberofOptions+1];
         double[][] var1=new double[this.lrTrainingData.size()][1];
-       if (infoShow) logger.info("Start to generate trainingData of patent-patent pair.");
+        if (infoShow) logger.info("Start to generate trainingData of patent-patent pair.");
         int i=0;
         double sum=0;
         for(pair<int[],Double> p:this.lrTrainingData) {
@@ -129,17 +114,11 @@ public class trainingDataMatrix {
         }
 
         lrTrainingData.clear();
-
         DoubleMatrix X=new DoubleMatrix(var0);
-
         DoubleMatrix Y=new DoubleMatrix(var1);
-
         if (infoShow) System.out.println();
-
-
         return new pair<>(X, Y);
     }
-
 
     /**
      * Generate a distance function based on a arraylist of weights and a arraylist of index
@@ -175,25 +154,18 @@ public class trainingDataMatrix {
     }
 
     /**
-     * geneerate all the seperated distance functions based on the options needed
+     * generate all the separated distance functions based on the options needed
      */
 
     public void generateSeperatedDisFunctions(){
-
-
 
         this.distances=new ArrayList<>();
         int var0=0;
 
         for(int i=0;i<optionsName.size();i++) {
-
-            ArrayList<Integer> var1 = new ArrayList<>();
-            var1.add(i);
-
+            ArrayList<Integer> var1 = new ArrayList<>();var1.add(i);
             distances.add(this.generateDistanceFunction(var1, null));
-
             if (iniFile.getOptionValue(optionsName.get(i))) var0++;
-
         }
 
         this.numberofOptions=var0;
