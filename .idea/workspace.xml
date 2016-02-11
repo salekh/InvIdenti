@@ -12,8 +12,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/cache.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/cache.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/patentPreprocessingTF.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/patentPreprocessingTF.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/Evaluation/trainingDataMatrix.java" afterPath="$PROJECT_DIR$/identification/Evaluation/trainingDataMatrix.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/LRWithBoldDriver.java" afterPath="$PROJECT_DIR$/identification/preprocessing/LRWithBoldDriver.java" />
     </list>
     <ignored path="InvIdenti.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -840,7 +838,13 @@
       <option name="project" value="LOCAL" />
       <updated>1455130649288</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added some more comments">
+      <created>1455188305061</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1455188305061</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView">
@@ -901,7 +905,8 @@
     <MESSAGE value="add country ， coauthor , graphical information&#10;" />
     <MESSAGE value="Added comment to cache.java" />
     <MESSAGE value="Added some comments" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added some comments" />
+    <MESSAGE value="Added some more comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added some more comments" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
