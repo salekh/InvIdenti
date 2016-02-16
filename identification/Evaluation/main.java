@@ -45,10 +45,9 @@ public class main {
 
     public main(int num){
 
-        //training=new patentsDataset(traingPath,infoPath,ini.getTextPath(),2000,"Benchmark").getPatents();
-
-        //System.out.println(training.firstarg.size());
-        //subsetofTrainingwithRandomly(num);
+        training=new patentsDataset(traingPath,infoPath,ini.getTextPath(),2000,"Benchmark").getPatents();
+        System.out.println(training.firstarg.size());
+        subsetofTrainingwithRandomly(num);
         testing=new patentsDataset(testingPath,infoPath,"/Users/sanchitalekh/Desktop/ThesisData/ES/PatentsText",2000,"Benchmark").getPatents();
         System.out.println(testing.firstarg.size());
         subsetofTestingwithRandomly(num);
@@ -56,7 +55,7 @@ public class main {
 
 
     /**
-     * Shuffle the TestingDataset.
+     * Shuffle the Testing Dataset
      * @param num
      */
     public void subsetofTestingwithRandomly(int num){
@@ -79,7 +78,6 @@ public class main {
             var0.add(shuffleIndex.get(i));
         }
         this.testingShuffleIndex=var0;
-
     }
 
 
@@ -103,7 +101,6 @@ public class main {
             patentsID.add(training.secondarg.get(shuffleIndex.get(i)));
         }
         training=new pair<>(patents,patentsID);
-
     }
 
     /**
@@ -127,27 +124,19 @@ public class main {
     protected ArrayList<patent> preprocess(ArrayList<patent> patents) {
         double start=System.currentTimeMillis();
         patentPreprocessingTF preprocess = new patentPreprocessingTF(patents);
-
         preprocess.setLanguage(LanguageCode.ENGLISH);
         preprocess.preprocess();
         double end=System.currentTimeMillis();
         System.out.println("Preprocessing Time"+(end-start));
-
         return patents;
     }
 
     public void testingWithTraining(){
 
-
         //Training var2=new Training(training.firstarg,training.secondarg,new LRWeightLearning());
-
         //pair<AbstractDistance,Double> var3=var2.estimateParameter();
-
-
         //System.out.println(var3.firstarg);
-
         //System.out.println(var3.secondarg);
-
         //Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
         System.out.println("Testing:"+testing.firstarg.size());
         Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
@@ -196,8 +185,6 @@ public class main {
        // temp+="Hierarchical Clustering: "+F_hier+" "+splitting_hier+" "+lumping_hier+"\n";
   //   temp+="DBScan: "+F_db+" "+splitting_db+" "+lumping_db+"\n";
       //  storeText("CluteringWithTest.txt",true,temp);
-
-
 
     }
 
@@ -418,19 +405,19 @@ public class main {
 
 
         main temp=new main(1000);
-        //temp.crossValidate(5);
-        //
-        temp.testingWithTraining();
+        temp.crossValidate(5);
+
+        //temp.testingWithTraining();
        //temp.buildsimMatrx();
 
-        for(int i=2000;i<=5000;i+=1000) {
+        //for(int i=2000;i<=5000;i+=1000) {
 
      /*   logger.warn("Size: "+i);
             main temp=new main(i);
             temp.crossValidate(5);
 
 */
-        }
+       // }
 
 
         long endtime=System.currentTimeMillis();

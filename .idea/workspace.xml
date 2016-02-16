@@ -5,13 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab209d6b-4348-46b0-8871-b774722eae25" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/sanchitalekh.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/sanchitalekh.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/Evaluation/trainingDataMatrix.java" afterPath="$PROJECT_DIR$/identification/Evaluation/trainingDataMatrix.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/LRWithBoldDriver.java" afterPath="$PROJECT_DIR$/identification/preprocessing/LRWithBoldDriver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/ParameterLearning.java" afterPath="$PROJECT_DIR$/identification/preprocessing/ParameterLearning.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java" afterPath="$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/Evaluation/main.java" afterPath="$PROJECT_DIR$/identification/Evaluation/main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/invidenti.ini" afterPath="$PROJECT_DIR$/invidenti.ini" />
     </list>
     <ignored path="InvIdenti.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,7 +40,13 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="50" column="28" selection-start-line="50" selection-start-column="28" selection-end-line="50" selection-end-column="28" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#1246#1247#0" expanded="false" />
+                <element signature="e#1283#1284#0" expanded="false" />
+                <element signature="e#1332#1333#0" expanded="false" />
+                <element signature="e#1366#1367#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -53,7 +56,17 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="76" column="4" selection-start-line="76" selection-start-column="4" selection-end-line="76" selection-end-column="4" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#2060#2061#0" expanded="false" />
+                <element signature="e#2096#2097#0" expanded="false" />
+                <element signature="e#2148#2149#0" expanded="false" />
+                <element signature="e#2196#2197#0" expanded="false" />
+                <element signature="e#2255#2256#0" expanded="false" />
+                <element signature="e#2306#2307#0" expanded="false" />
+                <element signature="e#2354#2355#0" expanded="false" />
+                <element signature="e#2389#2390#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -63,7 +76,53 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#2121#2122#0" expanded="false" />
+                <element signature="e#2155#2156#0" expanded="false" />
+                <element signature="e#2205#2206#0" expanded="false" />
+                <element signature="e#2234#2235#0" expanded="false" />
+                <element signature="e#2279#2280#0" expanded="false" />
+                <element signature="e#2308#2309#0" expanded="false" />
+                <element signature="e#2616#2617#0" expanded="false" />
+                <element signature="e#2644#2645#0" expanded="false" />
+                <element signature="e#2687#2688#0" expanded="false" />
+                <element signature="e#2721#2722#0" expanded="false" />
+                <element signature="e#2774#2775#0" expanded="false" />
+                <element signature="e#2818#2819#0" expanded="false" />
+                <element signature="e#2859#2860#0" expanded="false" />
+                <element signature="e#2891#2892#0" expanded="false" />
+                <element signature="e#3269#3270#0" expanded="false" />
+                <element signature="e#3303#3304#0" expanded="false" />
+                <element signature="e#3346#3347#0" expanded="false" />
+                <element signature="e#3375#3376#0" expanded="false" />
+                <element signature="e#3414#3415#0" expanded="false" />
+                <element signature="e#3443#3444#0" expanded="false" />
+                <element signature="e#3485#3486#0" expanded="false" />
+                <element signature="e#3517#3518#0" expanded="false" />
+                <element signature="e#3558#3559#0" expanded="false" />
+                <element signature="e#3589#3590#0" expanded="false" />
+                <element signature="e#3633#3634#0" expanded="false" />
+                <element signature="e#3674#3675#0" expanded="false" />
+                <element signature="e#3708#3709#0" expanded="false" />
+                <element signature="e#3739#3740#0" expanded="false" />
+                <element signature="e#3776#3777#0" expanded="false" />
+                <element signature="e#3810#3811#0" expanded="false" />
+                <element signature="e#3852#3853#0" expanded="false" />
+                <element signature="e#3891#3892#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LRWithBoldDriver.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/preprocessing/LRWithBoldDriver.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -73,7 +132,49 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#2502#2503#0" expanded="false" />
+                <element signature="e#2536#2537#0" expanded="false" />
+                <element signature="e#2583#2584#0" expanded="false" />
+                <element signature="e#2610#2611#0" expanded="false" />
+                <element signature="e#2661#2662#0" expanded="false" />
+                <element signature="e#2697#2698#0" expanded="false" />
+                <element signature="e#2748#2749#0" expanded="false" />
+                <element signature="e#2784#2785#0" expanded="false" />
+                <element signature="e#2838#2839#0" expanded="false" />
+                <element signature="e#2877#2878#0" expanded="false" />
+                <element signature="e#2930#2931#0" expanded="false" />
+                <element signature="e#2968#2969#0" expanded="false" />
+                <element signature="e#3150#3151#0" expanded="false" />
+                <element signature="e#3178#3179#0" expanded="false" />
+                <element signature="e#3221#3222#0" expanded="false" />
+                <element signature="e#3255#3256#0" expanded="false" />
+                <element signature="e#3308#3309#0" expanded="false" />
+                <element signature="e#3352#3353#0" expanded="false" />
+                <element signature="e#3393#3394#0" expanded="false" />
+                <element signature="e#3425#3426#0" expanded="false" />
+                <element signature="e#3803#3804#0" expanded="false" />
+                <element signature="e#3837#3838#0" expanded="false" />
+                <element signature="e#3878#3879#0" expanded="false" />
+                <element signature="e#3903#3904#0" expanded="false" />
+                <element signature="e#3948#3949#0" expanded="false" />
+                <element signature="e#3977#3978#0" expanded="false" />
+                <element signature="e#4022#4023#0" expanded="false" />
+                <element signature="e#4051#4052#0" expanded="false" />
+                <element signature="e#4099#4100#0" expanded="false" />
+                <element signature="e#4131#4132#0" expanded="false" />
+                <element signature="e#4178#4179#0" expanded="false" />
+                <element signature="e#4209#4210#0" expanded="false" />
+                <element signature="e#4253#4254#0" expanded="false" />
+                <element signature="e#4294#4295#0" expanded="false" />
+                <element signature="e#4328#4329#0" expanded="false" />
+                <element signature="e#4359#4360#0" expanded="false" />
+                <element signature="e#4396#4397#0" expanded="false" />
+                <element signature="e#4430#4431#0" expanded="false" />
+                <element signature="e#4472#4473#0" expanded="false" />
+                <element signature="e#4511#4512#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -83,7 +184,14 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
-              <folding />
+              <folding>
+                <element signature="e#258#259#0" expanded="false" />
+                <element signature="e#292#293#0" expanded="false" />
+                <element signature="e#334#335#0" expanded="false" />
+                <element signature="e#369#370#0" expanded="false" />
+                <element signature="e#417#418#0" expanded="false" />
+                <element signature="e#447#448#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -92,30 +200,7 @@
         <entry file="file://$PROJECT_DIR$/identification/clustering/distancefunction/CosDistance.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="27" column="5" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="trainingDataMatrix.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/identification/Evaluation/trainingDataMatrix.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.4275863">
-              <caret line="98" column="8" selection-start-line="98" selection-start-column="8" selection-end-line="98" selection-end-column="8" />
-              <folding>
-                <element signature="e#1620#1621#0" expanded="true" />
-                <element signature="e#1653#1654#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Training.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/Evaluation/Training.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+              <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="false" />
               </folding>
@@ -123,11 +208,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/Evaluation/main.java">
+      <file leaf-file-name="trainingDataMatrix.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/identification/Evaluation/trainingDataMatrix.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="359" column="16" selection-start-line="359" selection-start-column="16" selection-end-line="359" selection-end-column="16" />
+              <caret line="112" column="0" selection-start-line="112" selection-start-column="0" selection-end-line="112" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/identification/Evaluation/main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.8827586">
+              <caret line="49" column="8" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="8" />
+              <folding>
+                <marker date="1455623382000" expanded="true" signature="1513:1707" placeholder="//..." />
+                <marker date="1455623382000" expanded="true" signature="13889:13912" placeholder="//..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="invidenti.ini" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/invidenti.ini">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -191,13 +299,11 @@
         <option value="$PROJECT_DIR$/identification/clustering/Dbscan/DBScanCore.java" />
         <option value="$PROJECT_DIR$/identification/clustering/SimMatrix.java" />
         <option value="$PROJECT_DIR$/ClusteringDistance.txt" />
-        <option value="$PROJECT_DIR$/invidenti.ini" />
         <option value="$PROJECT_DIR$/identification/Evaluation/patentsDataset.java" />
         <option value="$PROJECT_DIR$/identification/DatasetGenerator/PatentsGenerator.java" />
         <option value="$PROJECT_DIR$/identification/preprocessing/cache.java" />
         <option value="$PROJECT_DIR$/identification/clustering/distancefunction/AbstractDistance.java" />
         <option value="$PROJECT_DIR$/identification/clustering/distancefunction/CosDistance.java" />
-        <option value="$PROJECT_DIR$/identification/Evaluation/main.java" />
         <option value="$PROJECT_DIR$/identification/preprocessing/LRWeightLearning.java" />
         <option value="$PROJECT_DIR$/identification/Evaluation/Training.java" />
         <option value="$PROJECT_DIR$/identification/base/patentCluster.java" />
@@ -205,6 +311,8 @@
         <option value="$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java" />
         <option value="$PROJECT_DIR$/identification/preprocessing/ParameterLearning.java" />
         <option value="$PROJECT_DIR$/identification/Evaluation/trainingDataMatrix.java" />
+        <option value="$PROJECT_DIR$/invidenti.ini" />
+        <option value="$PROJECT_DIR$/identification/Evaluation/main.java" />
       </list>
     </option>
   </component>
@@ -388,8 +496,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -863,7 +971,13 @@
       <option name="project" value="LOCAL" />
       <updated>1455188311153</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Major code refactoring of LRWithBoldDriver and trainingDataMatrix classes">
+      <created>1455200464538</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1455200464538</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView">
@@ -883,16 +997,15 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32520324" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2891326" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28818062" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.51128817" sideWeight="0.30724174" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.50332004" sideWeight="0.31171876" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32956383" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328" sideWeight="0.49676898" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.50332004" sideWeight="0.69275826" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.50332004" sideWeight="0.68828124" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3232" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2140625" sideWeight="0.4887097" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3240372" sideWeight="0.48465267" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24920128" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -906,6 +1019,7 @@
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295964" sideWeight="0.92119277" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32956383" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3240372" sideWeight="0.48465267" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -925,7 +1039,8 @@
     <MESSAGE value="Added comment to cache.java" />
     <MESSAGE value="Added some comments" />
     <MESSAGE value="Added some more comments" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added some more comments" />
+    <MESSAGE value="Major code refactoring of LRWithBoldDriver and trainingDataMatrix classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Major code refactoring of LRWithBoldDriver and trainingDataMatrix classes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1133,13 +1248,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/invidenti.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/identification/Evaluation/Evaluation.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1251,29 +1359,53 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/Evaluation/Training.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/Evaluation/main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="359" column="16" selection-start-line="359" selection-start-column="16" selection-end-line="359" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/identification/base/patent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#2502#2503#0" expanded="false" />
+            <element signature="e#2536#2537#0" expanded="false" />
+            <element signature="e#2583#2584#0" expanded="false" />
+            <element signature="e#2610#2611#0" expanded="false" />
+            <element signature="e#2661#2662#0" expanded="false" />
+            <element signature="e#2697#2698#0" expanded="false" />
+            <element signature="e#2748#2749#0" expanded="false" />
+            <element signature="e#2784#2785#0" expanded="false" />
+            <element signature="e#2838#2839#0" expanded="false" />
+            <element signature="e#2877#2878#0" expanded="false" />
+            <element signature="e#2930#2931#0" expanded="false" />
+            <element signature="e#2968#2969#0" expanded="false" />
+            <element signature="e#3150#3151#0" expanded="false" />
+            <element signature="e#3178#3179#0" expanded="false" />
+            <element signature="e#3221#3222#0" expanded="false" />
+            <element signature="e#3255#3256#0" expanded="false" />
+            <element signature="e#3308#3309#0" expanded="false" />
+            <element signature="e#3352#3353#0" expanded="false" />
+            <element signature="e#3393#3394#0" expanded="false" />
+            <element signature="e#3425#3426#0" expanded="false" />
+            <element signature="e#3803#3804#0" expanded="false" />
+            <element signature="e#3837#3838#0" expanded="false" />
+            <element signature="e#3878#3879#0" expanded="false" />
+            <element signature="e#3903#3904#0" expanded="false" />
+            <element signature="e#3948#3949#0" expanded="false" />
+            <element signature="e#3977#3978#0" expanded="false" />
+            <element signature="e#4022#4023#0" expanded="false" />
+            <element signature="e#4051#4052#0" expanded="false" />
+            <element signature="e#4099#4100#0" expanded="false" />
+            <element signature="e#4131#4132#0" expanded="false" />
+            <element signature="e#4178#4179#0" expanded="false" />
+            <element signature="e#4209#4210#0" expanded="false" />
+            <element signature="e#4253#4254#0" expanded="false" />
+            <element signature="e#4294#4295#0" expanded="false" />
+            <element signature="e#4328#4329#0" expanded="false" />
+            <element signature="e#4359#4360#0" expanded="false" />
+            <element signature="e#4396#4397#0" expanded="false" />
+            <element signature="e#4430#4431#0" expanded="false" />
+            <element signature="e#4472#4473#0" expanded="false" />
+            <element signature="e#4511#4512#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1281,23 +1413,41 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/preprocessing/LRWithBoldDriver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5157593">
-          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="76" column="4" selection-start-line="76" selection-start-column="4" selection-end-line="76" selection-end-column="4" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#2121#2122#0" expanded="false" />
+            <element signature="e#2155#2156#0" expanded="false" />
+            <element signature="e#2205#2206#0" expanded="false" />
+            <element signature="e#2234#2235#0" expanded="false" />
+            <element signature="e#2279#2280#0" expanded="false" />
+            <element signature="e#2308#2309#0" expanded="false" />
+            <element signature="e#2616#2617#0" expanded="false" />
+            <element signature="e#2644#2645#0" expanded="false" />
+            <element signature="e#2687#2688#0" expanded="false" />
+            <element signature="e#2721#2722#0" expanded="false" />
+            <element signature="e#2774#2775#0" expanded="false" />
+            <element signature="e#2818#2819#0" expanded="false" />
+            <element signature="e#2859#2860#0" expanded="false" />
+            <element signature="e#2891#2892#0" expanded="false" />
+            <element signature="e#3269#3270#0" expanded="false" />
+            <element signature="e#3303#3304#0" expanded="false" />
+            <element signature="e#3346#3347#0" expanded="false" />
+            <element signature="e#3375#3376#0" expanded="false" />
+            <element signature="e#3414#3415#0" expanded="false" />
+            <element signature="e#3443#3444#0" expanded="false" />
+            <element signature="e#3485#3486#0" expanded="false" />
+            <element signature="e#3517#3518#0" expanded="false" />
+            <element signature="e#3558#3559#0" expanded="false" />
+            <element signature="e#3589#3590#0" expanded="false" />
+            <element signature="e#3633#3634#0" expanded="false" />
+            <element signature="e#3674#3675#0" expanded="false" />
+            <element signature="e#3708#3709#0" expanded="false" />
+            <element signature="e#3739#3740#0" expanded="false" />
+            <element signature="e#3776#3777#0" expanded="false" />
+            <element signature="e#3810#3811#0" expanded="false" />
+            <element signature="e#3852#3853#0" expanded="false" />
+            <element signature="e#3891#3892#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1309,10 +1459,77 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/identification/base/patentCluster.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
+          <folding>
+            <element signature="e#258#259#0" expanded="false" />
+            <element signature="e#292#293#0" expanded="false" />
+            <element signature="e#334#335#0" expanded="false" />
+            <element signature="e#369#370#0" expanded="false" />
+            <element signature="e#417#418#0" expanded="false" />
+            <element signature="e#447#448#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/identification/preprocessing/ParameterLearning.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="50" column="28" selection-start-line="50" selection-start-column="28" selection-end-line="50" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1246#1247#0" expanded="false" />
+            <element signature="e#1283#1284#0" expanded="false" />
+            <element signature="e#1332#1333#0" expanded="false" />
+            <element signature="e#1366#1367#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="76" column="4" selection-start-line="76" selection-start-column="4" selection-end-line="76" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#2060#2061#0" expanded="false" />
+            <element signature="e#2096#2097#0" expanded="false" />
+            <element signature="e#2148#2149#0" expanded="false" />
+            <element signature="e#2196#2197#0" expanded="false" />
+            <element signature="e#2255#2256#0" expanded="false" />
+            <element signature="e#2306#2307#0" expanded="false" />
+            <element signature="e#2354#2355#0" expanded="false" />
+            <element signature="e#2389#2390#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/Evaluation/Training.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/preprocessing/LRWithBoldDriver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/identification/Evaluation/trainingDataMatrix.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="112" column="0" selection-start-line="112" selection-start-column="0" selection-end-line="112" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1320,26 +1537,28 @@
     <entry file="file://$PROJECT_DIR$/identification/clustering/distancefunction/CosDistance.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="5" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-          <folding />
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/base/patentCluster.java">
+    <entry file="file://$PROJECT_DIR$/invidenti.ini">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
+          <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/identification/Evaluation/trainingDataMatrix.java">
+    <entry file="file://$PROJECT_DIR$/identification/Evaluation/main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.4275863">
-          <caret line="98" column="8" selection-start-line="98" selection-start-column="8" selection-end-line="98" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.8827586">
+          <caret line="49" column="8" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="8" />
           <folding>
-            <element signature="e#1620#1621#0" expanded="true" />
-            <element signature="e#1653#1654#0" expanded="true" />
+            <marker date="1455623382000" expanded="true" signature="1513:1707" placeholder="//..." />
+            <marker date="1455623382000" expanded="true" signature="13889:13912" placeholder="//..." />
           </folding>
         </state>
       </provider>
