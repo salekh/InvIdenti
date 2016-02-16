@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab209d6b-4348-46b0-8871-b774722eae25" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/Evaluation/main.java" afterPath="$PROJECT_DIR$/identification/Evaluation/main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/invidenti.ini" afterPath="$PROJECT_DIR$/invidenti.ini" />
     </list>
     <ignored path="InvIdenti.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -977,7 +974,13 @@
       <option name="project" value="LOCAL" />
       <updated>1455200464538</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="crossvalidate works now, reset the weights in ini file, created a backup, modified the data paths">
+      <created>1455623683367</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1455623683367</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1040,7 +1043,8 @@
     <MESSAGE value="Added some comments" />
     <MESSAGE value="Added some more comments" />
     <MESSAGE value="Major code refactoring of LRWithBoldDriver and trainingDataMatrix classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Major code refactoring of LRWithBoldDriver and trainingDataMatrix classes" />
+    <MESSAGE value="crossvalidate works now, reset the weights in ini file, created a backup, modified the data paths" />
+    <option name="LAST_COMMIT_MESSAGE" value="crossvalidate works now, reset the weights in ini file, created a backup, modified the data paths" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
