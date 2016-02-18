@@ -5,17 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab209d6b-4348-46b0-8871-b774722eae25" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Documentation/creation_of_main_0.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Evaluation/main.class" afterPath="$PROJECT_DIR$/target/classes/Evaluation/main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Evaluation/trainingDataMatrix.class" afterPath="$PROJECT_DIR$/target/classes/Evaluation/trainingDataMatrix.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/LRWithBoldDriver.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/LRWithBoldDriver.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/ParameterLearning.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/ParameterLearning.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/preprocessing/patentPreprocessingTF.class" afterPath="$PROJECT_DIR$/target/classes/preprocessing/patentPreprocessingTF.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/sanchitalekh.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/sanchitalekh.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/Evaluation/main.java" afterPath="$PROJECT_DIR$/identification/Evaluation/main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/clustering/distancefunction/AbstractDistance.java" afterPath="$PROJECT_DIR$/identification/clustering/distancefunction/AbstractDistance.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java" afterPath="$PROJECT_DIR$/identification/preprocessing/patentPreprocessingTF.java" />
     </list>
     <ignored path="InvIdenti.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -90,23 +80,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="patentCluster.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/identification/base/patentCluster.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
-              <folding>
-                <element signature="e#258#259#0" expanded="false" />
-                <element signature="e#292#293#0" expanded="false" />
-                <element signature="e#334#335#0" expanded="false" />
-                <element signature="e#369#370#0" expanded="false" />
-                <element signature="e#417#418#0" expanded="false" />
-                <element signature="e#447#448#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="CosDistance.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/identification/clustering/distancefunction/CosDistance.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -136,8 +109,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/identification/Evaluation/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.6965518">
-              <caret line="75" column="8" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.4413793">
+              <caret line="210" column="29" selection-start-line="210" selection-start-column="29" selection-end-line="210" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -935,7 +908,13 @@
       <option name="project" value="LOCAL" />
       <updated>1455623691073</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="several minor changes to main (now Main). Added new folder &quot;Documentation&quot;. Added sequence diagram for creation of Main object">
+      <created>1455801643440</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1455801643440</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TodoView">
@@ -951,7 +930,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32520324" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -963,7 +942,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.50332004" sideWeight="0.68828124" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3232" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22578125" sideWeight="0.4887097" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22578125" sideWeight="0.4887097" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3240372" sideWeight="0.6046875" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24920128" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -999,7 +978,8 @@
     <MESSAGE value="Added some more comments" />
     <MESSAGE value="Major code refactoring of LRWithBoldDriver and trainingDataMatrix classes" />
     <MESSAGE value="crossvalidate works now, reset the weights in ini file, created a backup, modified the data paths" />
-    <option name="LAST_COMMIT_MESSAGE" value="crossvalidate works now, reset the weights in ini file, created a backup, modified the data paths" />
+    <MESSAGE value="several minor changes to main (now Main). Added new folder &quot;Documentation&quot;. Added sequence diagram for creation of Main object" />
+    <option name="LAST_COMMIT_MESSAGE" value="several minor changes to main (now Main). Added new folder &quot;Documentation&quot;. Added sequence diagram for creation of Main object" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1038,13 +1018,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/identification/base/indexCluster.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/identification/clustering/Dbscan/DBCluster.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1474,10 +1447,15 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Documentation/creation_of_main_0.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/identification/Evaluation/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.6965518">
-          <caret line="75" column="8" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.4413793">
+          <caret line="210" column="29" selection-start-line="210" selection-start-column="29" selection-end-line="210" selection-end-column="29" />
           <folding />
         </state>
       </provider>
