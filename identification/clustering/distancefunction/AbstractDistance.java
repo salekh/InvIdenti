@@ -189,7 +189,7 @@ public abstract class AbstractDistance {
         Hashtable<String,ArrayList<String>> var0=new Hashtable<>();
         Hashtable<String,ArrayList<String>> var1=new Hashtable<>();
         /**
-         * Split the technology class into main class and subclass
+         * Split the technology class into integral class and subclass
          *
          */
         for(String var2:strs_1) {

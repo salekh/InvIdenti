@@ -26,7 +26,7 @@ import java.util.*;
  */
 
 /**
- *  main <code>preprocessing</code> class for the text mining process
+ *  Main <code>preprocessing</code> class for the text mining process
  *  performs stop word removal, stemming, term weighting and singular value decomposition
  */
 public class patentPreprocessingTF {
