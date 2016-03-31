@@ -30,6 +30,7 @@ import java.util.*;
  *  performs stop word removal, stemming, term weighting and singular value decomposition
  */
 public class patentPreprocessingTF {
+
     ArrayList<Document> docs = new ArrayList<>();
     ArrayList<patent> patents = new ArrayList<>();
     LanguageCode language = LanguageCode.ENGLISH;
@@ -47,6 +48,15 @@ public class patentPreprocessingTF {
          * Set the matrix size to build the term frequency.
          */
         this.matrixBuilder.maximumMatrixSize=Pts.size()*1000;
+        this.matrixBuilder.maxWordDf=1.0;
+    }
+
+    public patentPreprocessingTF(patentPreprocessingTF var0) {
+        this.patents = var0.patents;
+        /**
+         * Set the matrix size to build the term frequency.
+         */
+        this.matrixBuilder.maximumMatrixSize=var0.patents.size()*1000;
         this.matrixBuilder.maxWordDf=1.0;
     }
 
@@ -69,17 +79,39 @@ public class patentPreprocessingTF {
      */
     public void preprocess()
     {
+//
 //      this.generateTextVector("FullText");
+        long begintime=System.currentTimeMillis();
+
+        Thread preprocessAbstract = new Thread(new ProcessAbstractThread(this));
+        preprocessAbstract.start();
+        Thread preprocessClaims = new Thread(new ProcessClaimsThread(this));
+        preprocessClaims.start();
+        Thread preprocessDescription = new Thread(new ProcessDescriptionThread(this));
+        preprocessDescription.start();
+        Thread preprocessTitle = new Thread(new ProcessTitleThread(this));
+        preprocessTitle.start();
+
+        while(preprocessAbstract.isAlive() || preprocessClaims.isAlive() || preprocessDescription.isAlive() || preprocessTitle.isAlive()){}
+
+        //Commented for testing
+        /*
         this.generateTextVector("Abstract");
         this.generateTextVector("Claims");
         this.generateTextVector("Description");
         this.generateTextVector("Title");
+        */
+        long endtime =System.currentTimeMillis();
+        long timecost = endtime - begintime;
+        System.out.println("Time Cost for SVD is " + timecost);
+        //System.exit(123);
     }
 
     public void generateTextVector(String str)
     {
         docs.clear();
-        //Build arrayList of docs
+        //Build arrayList of docs, i.e. claims/description/abstract/title of the patent
+
         for (patent p : patents)
         {
             String temp=" ";
@@ -96,10 +128,8 @@ public class patentPreprocessingTF {
             docs.add(new Document("",temp));
         }
 
-        logger.info("Term Frequency Generating "+str+"...");
-
+        logger.info("Term Frequency Generating "+str+"..."+this.docs.size());
         PreprocessingContext preprocessingContext = this.preprocessingPipeline.preprocess(this.docs, (String) null, language);
-
 
 
         int[] stemsMfow = preprocessingContext.allStems.mostFrequentOriginalWordIndex;
@@ -118,7 +148,6 @@ public class patentPreprocessingTF {
         if (preprocessingContext.hasLabels()) {
             VectorSpaceModelContext var17 = new VectorSpaceModelContext(preprocessingContext);
             ReducedVectorSpaceModelContext var18 = new ReducedVectorSpaceModelContext(var17);
-
             this.matrixBuilder.termWeighting=new TfTermWeighting();
             this.matrixBuilder.buildTermDocumentMatrix(var17);
             IntIntHashMap rowToStemIndex = new IntIntHashMap();
@@ -189,7 +218,6 @@ public class patentPreprocessingTF {
         logger.info("Finish the text preprocessing...");
     }
 
-
     public DoubleMatrix2D normalize(DoubleMatrix2D var) {
         double[] sum=new double[var.columns()];
         for(int i=0;i<var.columns();i++) {
@@ -207,6 +235,60 @@ public class patentPreprocessingTF {
     }
 
 }
+
+class ProcessAbstractThread implements Runnable{
+
+    patentPreprocessingTF thisInstance;
+
+    public ProcessAbstractThread(patentPreprocessingTF currentInstance){
+        this.thisInstance = new patentPreprocessingTF(currentInstance);
+    }
+
+    public void run(){
+
+        thisInstance.generateTextVector("Abstract");
+    }
+}
+
+class ProcessClaimsThread implements Runnable{
+
+    patentPreprocessingTF thisInstance;
+
+    public ProcessClaimsThread(patentPreprocessingTF currentInstance){
+        this.thisInstance = new patentPreprocessingTF(currentInstance);
+    }
+
+    public void run(){
+        thisInstance.generateTextVector("Claims");
+    }
+}
+
+class ProcessDescriptionThread implements Runnable{
+
+    patentPreprocessingTF thisInstance;
+
+    public ProcessDescriptionThread(patentPreprocessingTF currentInstance){
+        this.thisInstance = new patentPreprocessingTF(currentInstance);
+    }
+
+    public void run(){
+        thisInstance.generateTextVector("Description");
+    }
+}
+
+class ProcessTitleThread implements Runnable{
+
+    patentPreprocessingTF thisInstance;
+
+    public ProcessTitleThread(patentPreprocessingTF currentInstance){
+        this.thisInstance = new patentPreprocessingTF(currentInstance);
+    }
+
+    public void run(){
+        thisInstance.generateTextVector("Title");
+    }
+}
+
 
 
 

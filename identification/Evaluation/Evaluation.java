@@ -19,15 +19,10 @@ public class Evaluation {
 
     private static Logger logger= LogManager.getLogger(Evaluation.class.getName());
 
-
     ArrayList<patent> patents;
     ArrayList<String> patentsID;
     public double lumping;
     public double splitting;
-
-
-
-
 
     public Evaluation(ArrayList<patent> patents,ArrayList<String> IDs) {
 
@@ -48,18 +43,12 @@ public class Evaluation {
 
         //logger.info("Publication-Patent Matching...");
         //Refinement refinement=new Refinement(method.getClusters(),method.getClustersIndex());
-       // textOperator.storeText("result.txt",false,method.toString());
-
-       // textOperator.storeText("BenchmarkClusteringResult.txt",false,method.toString());
-
+        // textOperator.storeText("result.txt",false,method.toString());
+        // textOperator.storeText("BenchmarkClusteringResult.txt",false,method.toString());
         //double FMeasurement=getFScoreofClustering(refinement.clusters_index_r,patentsID);
 
-
-
         double FMeasurement=getFScoreofClustering(method.getClustersIndex(),patentsID);
-
         logger.warn("F Measurement:"+ FMeasurement);
-
         return FMeasurement;
     }
 
@@ -111,9 +100,8 @@ public class Evaluation {
 
 
     //    System.out.println(TP + " " + FP + " " + " " + TN + " " + FN);
-
-//        System.out.print("lumping:"+(double)FP/(TP+FN));
-  //      System.out.print("Splitting:"+(double)FN/(TP+FN));
+        //        System.out.print("lumping:"+(double)FP/(TP+FN));
+    //      System.out.print("Splitting:"+(double)FN/(TP+FN));
 
         this.lumping=(double)FP/(TP+FN);
         this.splitting=(double)FN/(TP+FN);
@@ -144,12 +132,10 @@ public class Evaluation {
     protected ArrayList<patent> preprocess(ArrayList<patent> patents) {
         double start=System.currentTimeMillis();
         patentPreprocessingTF preprocess = new patentPreprocessingTF(patents);
-
         preprocess.setLanguage(LanguageCode.ENGLISH);
         preprocess.preprocess();
         double end=System.currentTimeMillis();
         System.out.println("Preprocessing Time"+(end-start));
-
         return patents;
     }
 
@@ -177,43 +163,24 @@ public class Evaluation {
         }
 
         weightlearning.initilize(training,trainingIDs);
-
         CosDistance d=(CosDistance)weightlearning.estimateDistanceFunction();
-
         logger.info(d);
         logger.info("Training Data Size:"+training.size());
         logger.info("Testing Data Size:"+testing.size());
-
         double threshold=weightlearning.getThreshold();
-
         clusteirngMethod.ininitialize(testing);
-
-
         //((HierClusteringPatents)clusteirngMethod).setEps(threshold*di);
-
         clusteirngMethod.setThreshold(threshold);
-
         logger.warn(threshold);
-
         clusteirngMethod.Cluster(d);
-
         logger.error(clusteirngMethod);
-
         d.show=false;
-
         //logger.error(d.distance(patents.get(232),patents.get(239)));
-
         //logger.error(d.compareAssignee(patents.get(232).getAssignee(),patents.get(239).getAssignee(),patents.get(232).getAsgNum(),patents.get(239).getAsgNum()));
-
         //logger.error(d.compareLocation(patents.get(232).getCountry(),patents.get(232).getLat(),patents.get(232).getLng(),patents.get(239).getCountry(),patents.get(239).getLat(),patents.get(239).getLng()));
-
         double FMeasurement = getFScoreofClustering(clusteirngMethod.getClustersIndex(), testingIDs);
-
         logger.warn("F Measurement:" + FMeasurement);
-
-
     }
 */
-
 
 }
