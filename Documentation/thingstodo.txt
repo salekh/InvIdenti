@@ -1,0 +1,8 @@
+1. Main.java
+	(i) Some more variable name changes
+
+2. Study clustering algorithm and look for deadlocks
+
+3. Worker threads and their implementation in preprocessing
+
+4. patentPreprocessingTF still has bad variable names

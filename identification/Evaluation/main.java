@@ -51,6 +51,7 @@ public class Main {
         testing=new patentsDataset(testingPath,infoPath,"/Users/sanchitalekh/Desktop/ThesisData/ES/PatentsText",2000,"Benchmark").getPatents();
         System.out.println(testing.firstarg.size());
         subsetofTestingwithRandomly(num);
+
     }
 
     /**
@@ -208,14 +209,14 @@ public class Main {
         logger.warn(var5.firstarg);
         logger.warn("Threshold: " + var5.secondarg );
 
-        Evaluation e=new Evaluation(testing.firstarg,testing.secondarg);
-        double FMeasure_DB=e.evaluate(var5.firstarg,var5.secondarg,new DBScanClusteringPatents(testingShuffleIndex));
-        this.lumpings_db.add(e.lumping);
-        this.splittings_db.add(e.splitting);
+        Evaluation evaluation=new Evaluation(testing.firstarg,testing.secondarg);
+        double FMeasure_DB=evaluation.evaluate(var5.firstarg,var5.secondarg,new DBScanClusteringPatents(testingShuffleIndex));
+        this.lumpings_db.add(evaluation.lumping);
+        this.splittings_db.add(evaluation.splitting);
 
-        double FMeasure_Hi=e.evaluate(var5.firstarg,var5.secondarg,new HierClusteringPatents(testingShuffleIndex));
-        this.lumpings_hi.add(e.lumping);
-        this.splittings_hi.add(e.splitting);
+        double FMeasure_Hi=evaluation.evaluate(var5.firstarg,var5.secondarg,new HierClusteringPatents(testingShuffleIndex));
+        this.lumpings_hi.add(evaluation.lumping);
+        this.splittings_hi.add(evaluation.splitting);
 
         return new pair<>(FMeasure_DB,FMeasure_Hi);
     }
@@ -397,8 +398,8 @@ public class Main {
 
         //initialize object of main class with number of dataset records
         Main temp=new Main(1000);
-        //temp.crossValidate(5);
-        temp.testingWithTraining();
+        temp.crossValidate(5);
+        //temp.testingWithTraining();
 
         //some old testing code
         /*
