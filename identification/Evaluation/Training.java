@@ -25,9 +25,9 @@ public class Training {
     public pair<AbstractDistance,Double> estimateParameter() {
 
         method.setInitialization(true);
-
         //Initializes Parameter Learning by setting the patents and patentsID arraylists
         method.initilize(patents,patentsID,true);
+        //main driver method for training
         CosDistance distance=(CosDistance)method.estimateDistanceFunction();
         return new pair<>(distance,method.getThreshold());
     }

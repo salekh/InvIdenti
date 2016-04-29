@@ -9,6 +9,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.concurrent.*;
 
 /**
  * Created by sunlei on 15/10/27.
@@ -16,10 +17,12 @@ import java.util.ArrayList;
 public class SimMatrix {
 
     ArrayList<ArrayList<Double>> simMatrix=new ArrayList<>();
-
     ArrayList<patent> patents;
-
     public ArrayList<String> patentsID;
+    ArrayList<Double> temp_a;
+    int totalnumber;
+    int currentnumber;
+    CyclicBarrier barrier;
 
     private ArrayList<Integer> shuffledIndex;
     double threshold;
@@ -29,19 +32,18 @@ public class SimMatrix {
     public SimMatrix(ArrayList<patent> patents,AbstractDistance distance) {
         this.patents=patents;
         this.distance=distance;
-
-
-        buildMatrix();
-
-
-
+        try {
+            buildMatrix();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     public SimMatrix(ArrayList<patent> patents,AbstractDistance distance,String path) {
         this.patents=patents;
         this.distance=distance;
         buildMatrix(path);
-
     }
 
     public ArrayList<Integer> getShuffledIndex(){
@@ -76,13 +78,8 @@ public class SimMatrix {
 
     private void buildMatrix(String path){
         textOperator.storeText(path,false,"");
-
         int totalnumber=this.patents.size()*(this.patents.size()-1)/2+this.patents.size();
-
-
-
         int currentnumber=0;
-
 
         for(int i=0;i<this.patents.size();i++) {
             String temp_a="";
@@ -91,21 +88,14 @@ public class SimMatrix {
                     double temp = distance.distance(this.patents.get(i), this.patents.get(j));
                     temp = (new BigDecimal(temp).setScale(2, RoundingMode.UP)).doubleValue();
                     temp_a+=temp+";";
-
-
                     // simMatrix.get(i).set(j, temp);
                     // simMatrix.get(j).set(i, temp);
                 }
-
-
-
                 currentnumber++;
-
                 System.out.print("\r"+ProgressBar.barString((int)((currentnumber*100/totalnumber)))+" "+currentnumber);
-
             }
             textOperator.storeText(path,true,temp_a+"\n");
-          //  simMatrix.add(temp_a);
+            //  simMatrix.add(temp_a);
         }
         System.out.println();
     }
@@ -113,39 +103,44 @@ public class SimMatrix {
     /**
      * Build the similarity matrix for the patents with distance function
      */
-    private void buildMatrix() {
+    private synchronized void buildMatrix() throws IOException {
 
-        int totalnumber=this.patents.size()*this.patents.size();
+        totalnumber=this.patents.size()*this.patents.size();
+        currentnumber=0;
 
-
-
-        int currentnumber=0;
-
+        barrier = new CyclicBarrier(2);
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        WorkerDBScan worker = new WorkerDBScan(this);
 
         for(int i=0;i<this.patents.size();i++) {
-            ArrayList<Double> temp_a=new ArrayList<>();
-            for (int j=0;j<this.patents.size();j++) {
-               if (i==j) temp_a.add(0.0); else if (i<j)
-               {
-                    double temp = distance.distance(this.patents.get(i), this.patents.get(j));
-                    temp = (new BigDecimal(temp).setScale(2, RoundingMode.UP)).doubleValue();
-                    temp_a.add(temp);
-
-
-                    // simMatrix.get(i).set(j, temp);
-                   // simMatrix.get(j).set(i, temp);
-                }  else {
-                  temp_a.add(simMatrix.get(j).get(i));
-               }
-                currentnumber++;
-                System.out.print("\r"+ProgressBar.barString((int)((currentnumber*100/totalnumber)))+" "+currentnumber);
-
+            final int iteration = i;
+            for(int c = 0; c < 1; c++) {
+                executor.submit(new Runnable() {
+                    public void run() {
+                        worker.doSomeWork(iteration);
+                    }
+                });
             }
-            simMatrix.add(temp_a);
-        }
-        System.out.println();
 
+
+
+            try {
+                barrier.await();
+                //barrier.await(2, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                // handle
+                e.printStackTrace();
+            } catch (BrokenBarrierException e) {
+                // handle
+                e.printStackTrace();
+            }
+
+            System.out.println("Iteration "+ i + "is complete");
+        }
+        executor.shutdown();
+        System.out.println();
     }
+
 
     /**
      * Store Matrix into a file
@@ -185,7 +180,7 @@ public class SimMatrix {
                 double temp=distance.distance(this.patents.get(i),this.patents.get(j));
 
                 if (temp>threshold&&patentsID.get(i).equalsIgnoreCase(patentsID.get(j))) {
-                double sum=0;
+                    double sum=0;
 
 
                     sum+=distance.weightLastName*distance.compareName(patents.get(i).getLastName(),patents.get(j).getLastName());
@@ -216,7 +211,7 @@ public class SimMatrix {
         if (shuffledIndex==null||shuffledIndex.size()==0)
         {
             if(i>j) {
-               b=i;
+                b=i;
                 l=j;
             } else {
                 b=j;
@@ -234,6 +229,48 @@ public class SimMatrix {
             return simMatrix.get(shuffledIndex.get(b)).get(shuffledIndex.get(l));
         }
     }
+}
 
+class WorkerDBScan {
+
+    SimMatrix thisSimMatrix;
+    ArrayList<Double> temp_a = new ArrayList<Double>();
+
+    public WorkerDBScan(SimMatrix simMatrix){
+        this.thisSimMatrix = simMatrix;
+    }
+
+    public void doSomeWork(int i){
+        System.out.println("Processing loop" + i);
+        temp_a=new ArrayList<>();
+        for (int j=0;j<thisSimMatrix.patents.size();j++) {
+            if (i==j) temp_a.add(0.0); else if (i<j)
+            {
+                double temp = thisSimMatrix.distance.distance(thisSimMatrix.patents.get(i), thisSimMatrix.patents.get(j));
+                temp = (new BigDecimal(temp).setScale(2, RoundingMode.UP)).doubleValue();
+                temp_a.add(temp);
+                // simMatrix.get(i).set(j, temp);
+                // simMatrix.get(j).set(i, temp);
+            }  else {
+                temp_a.add(thisSimMatrix.simMatrix.get(j).get(i));
+            }
+            //thisSimMatrix.currentnumber++;
+            //System.out.print("\r"+ProgressBar.barString((int)((thisSimMatrix.currentnumber*100/thisSimMatrix.totalnumber)))+" "+thisSimMatrix.currentnumber);
+
+        }
+        thisSimMatrix.simMatrix.add(temp_a);
+
+        try {
+            thisSimMatrix.barrier.await();
+            System.out.println("Awaiting at iteration" + i);
+        } catch (InterruptedException e) {
+            // handle
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            // handle
+            e.printStackTrace();
+        }
+
+    }
 
 }

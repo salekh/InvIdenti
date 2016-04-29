@@ -6,3 +6,5 @@
 3. Worker threads and their implementation in preprocessing
 
 4. patentPreprocessingTF still has bad variable names
+
+5. Add Diagrams in the GitLab instance

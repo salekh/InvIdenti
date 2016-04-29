@@ -19,7 +19,6 @@ public class DBScanCore {
     private ArrayList<DBCluster> clusters=new ArrayList<>();
 
     DBScanCore(){
-
     }
 
     public void setMinpts(int minpts) {
@@ -40,8 +39,8 @@ public class DBScanCore {
         double start=System.currentTimeMillis();
         this.simMatrix=new SimMatrix(patents,distance);
         //this.simMatrix.storeMatrix("distanceMatrix.txt");
-//        this.simMatrix=new SimMatrix("distanceMatrix5000.txt");
-     //   this.simMatrix.setShuffledIndex(shuffleIndex);
+        //this.simMatrix=new SimMatrix("distanceMatrix5000.txt");
+        //this.simMatrix.setShuffledIndex(shuffleIndex);
         double end=System.currentTimeMillis();
         System.out.println("Reading Matrix Time:"+(end-start));
 
@@ -67,7 +66,6 @@ public class DBScanCore {
 
     public ArrayList<DBCluster> get_Clusters()
     {
-
         return this.clusters;
     }
 

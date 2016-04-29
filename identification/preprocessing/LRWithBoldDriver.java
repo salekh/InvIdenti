@@ -70,6 +70,7 @@ public class LRWithBoldDriver extends ParameterLearning{
         for(int k=0;k<maxIteration;k++) {
 
             DoubleMatrix thetas_t = new DoubleMatrix(thetas.toArray2());
+            //thetas_t is the modified thetas after first error update
             thetas_t = updateWeights(trainingMatrice.firstarg, trainingMatrice.secondarg,thetas_t, alpha / trainingMatrice.firstarg.rows, lambda);
             errorForTraining=calculateTheError(trainingMatrice.firstarg,trainingMatrice.secondarg,thetas_t);
 
@@ -122,7 +123,6 @@ public class LRWithBoldDriver extends ParameterLearning{
      * @return the preprocessed patents after stop-word removal, stemming, term-frequency calculation and singular value decomposition
      */
     protected ArrayList<patent> preprocess(ArrayList<patent> patents) {
-
         double start=System.currentTimeMillis();
         patentPreprocessingTF preprocess = new patentPreprocessingTF(patents);
         preprocess.setLanguage(LanguageCode.ENGLISH);

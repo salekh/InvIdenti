@@ -34,41 +34,46 @@ public abstract class patentClustering
     protected String clusteringType="Abstract Clustering!";
 
     protected ArrayList<Integer> shuffleIndex;
-
     protected double threshold=0;
-
     protected pair<HashMap<String,Integer>,HashMap<String,Integer>> attriInfo;
-
     public void setLanguage(LanguageCode code)
     {
         this.language=code;
     }
-
     public void setNumberofCluster(Integer num)
     {
         this.number_Cluster=num;
     }
-
     public void setThreshold(double threshold) {
         this.threshold=threshold;
     }
-
     public void setShuffleIndex(ArrayList<Integer> var0) {
         this.shuffleIndex=var0;
     }
 
-
+    /**
+     * getter function for clusters
+     * @return clusters
+     */
     public ArrayList<patentCluster> getClusters()
     {
         return this.clusters;
     }
 
+    /**
+     * getter function for cluster Indices
+     * @return clusterIndices
+     */
     public ArrayList<indexCluster> getClustersIndex()
     {
         return this.clustersIndex;
     }
 
-    /**Get original index of the patent**/
+    /**
+     * Gets the original index of a patent
+     * @param p the Patent who original index is to be retrieved
+     * @return the original index of the patent, and -1 if patent is not found
+     */
     public int getIndex(patent p)
     {
 
@@ -80,7 +85,10 @@ public abstract class patentClustering
         return -1;
     }
 
-    /**output the clustering result**/
+    /**
+     * outputs the result of clustering
+     * @return the output of Clustering in <code>String</code> form
+     */
     public String toString()
     {
         String str="Clustering Type: "+this.clusteringType+"\nThreshold:"+this.threshold+"\nCluster Number:"+clusters.size()+"\n";
@@ -111,6 +119,9 @@ public abstract class patentClustering
         return str;
     }
 
+    /**
+     * constructor for patentClustering initializes options from ini file
+     */
     public patentClustering()
     {
         try {
@@ -130,6 +141,11 @@ public abstract class patentClustering
         this.patents=patents;
     }
 
+    /**
+     * Clears the clusters and cluster Indices to get ready for clustering
+     * @param patents ArrayList of patents to be clustered
+     * @param ini boolean variable to indicate whether preprocessing is required
+     */
     public void ininitialize(ArrayList<patent> patents,boolean ini) {
         this.patents=patents;
         this.initilization=true;
@@ -143,7 +159,9 @@ public abstract class patentClustering
 
     public abstract void Cluster(AbstractDistance distance);
 
-    /**Preprocessing for the clustering**/
+    /**
+     * Preprocessing for the clustering if <code>ini</code> variable is true
+     */
     protected void preprocess() {
 
         patentPreprocessingTF preprocess = new patentPreprocessingTF(this.patents);

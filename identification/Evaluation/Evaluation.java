@@ -34,9 +34,7 @@ public class Evaluation {
 
     public double evaluate(AbstractDistance distance,double threshold,patentClustering method){
 
-
         method.ininitialize(patents,false);
-
         method.setThreshold(threshold);
         logger.info("Clustering...");
         method.Cluster(distance);

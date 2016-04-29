@@ -45,10 +45,10 @@ public class Main {
 
     public Main(int num){
 
-        training=new patentsDataset(trainingPath,infoPath,ini.getTextPath(),2000,"Benchmark").getPatents();
+        training=new patentsDataset(trainingPath,infoPath,ini.getTextPath(),500,"Benchmark").getPatents();
         System.out.println(training.firstarg.size());
         subsetofTrainingwithRandomly(num);
-        testing=new patentsDataset(testingPath,infoPath,"/Users/sanchitalekh/Desktop/ThesisData/ES/PatentsText",2000,"Benchmark").getPatents();
+        testing=new patentsDataset(testingPath,infoPath,"/Users/sanchitalekh/Desktop/ThesisData/ES/PatentsText",500,"Benchmark").getPatents();
         System.out.println(testing.firstarg.size());
         subsetofTestingwithRandomly(num);
 
@@ -203,22 +203,34 @@ public class Main {
          * Training via Logistic Regression with Bold Driver method
          */
         Training var4=new Training(training.firstarg,training.secondarg,new LRWithBoldDriver());
-        pair<AbstractDistance,Double> var5=var4.estimateParameter();
-        storeText("ClusteringDistance.txt",true,var5.firstarg.getWeights()+" "+var5.secondarg+"\n");
+        pair<AbstractDistance,Double> var5=var4.estimateParameter();        //var5 receives the cosine distances and the threshold
+        storeText("ClusteringDistance.txt",true,var5.firstarg.getWeights()+" "+var5.secondarg+"\n");        //store weights and threshold
 
+        //Display the cosine distances and threshold
         logger.warn(var5.firstarg);
         logger.warn("Threshold: " + var5.secondarg );
 
+        /**
+         * Clustering Process starts here
+         */
         Evaluation evaluation=new Evaluation(testing.firstarg,testing.secondarg);
+
+        /*
+        DBScan Clustering Method
+         */
         double FMeasure_DB=evaluation.evaluate(var5.firstarg,var5.secondarg,new DBScanClusteringPatents(testingShuffleIndex));
         this.lumpings_db.add(evaluation.lumping);
         this.splittings_db.add(evaluation.splitting);
 
+        /*
+        Hierarchical Clustering Method
+         */
         double FMeasure_Hi=evaluation.evaluate(var5.firstarg,var5.secondarg,new HierClusteringPatents(testingShuffleIndex));
         this.lumpings_hi.add(evaluation.lumping);
         this.splittings_hi.add(evaluation.splitting);
 
         return new pair<>(FMeasure_DB,FMeasure_Hi);
+
     }
 
     /**
@@ -268,6 +280,8 @@ public class Main {
             FMeasure_hi.add(fs.secondarg);
         }
 
+
+        //Output the evaluation metrics
         String result="Patent Number: "+patents.size()+"\n"+"DBScan:\n";
         logger.info("");
         double sum=0;
@@ -397,8 +411,8 @@ public class Main {
         long begintime=System.currentTimeMillis();
 
         //initialize object of main class with number of dataset records
-        Main temp=new Main(1000);
-        temp.crossValidate(5);
+        Main temp=new Main(500);
+        temp.crossValidate(3);
         //temp.testingWithTraining();
 
         //some old testing code

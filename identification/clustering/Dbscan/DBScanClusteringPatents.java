@@ -35,27 +35,15 @@ public class DBScanClusteringPatents extends patentClustering {
             return;
         }
 
-
-
-       DBScanCore var0=new DBScanCore();
-
+        DBScanCore var0=new DBScanCore();
         var0.setRadius(this.threshold);
-
         var0.setMinpts(minPts);
-
 
         try {
 
-
-
-
-
             var0.buildCluster(patents,distance,shuffleIndex);
-
             clusters.clear();
-
             DBclusters=var0.get_Clusters();
-
             clustersIndex.clear();
 
             for(DBCluster cluster:this.DBclusters) {
@@ -63,7 +51,6 @@ public class DBScanClusteringPatents extends patentClustering {
             }
 
             // System.out.println(hier_clusters.size());
-
 
             for(int i=0;i<var0.get_Clusters().size();i++)
             {

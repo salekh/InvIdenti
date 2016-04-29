@@ -1,0 +1,38 @@
+[DistanceOption]
+FullTextCompare = false
+AbstractCompare = true
+ClaimsCompare =  true
+DescriptionCompare = true
+CategoryCompare = true
+AssigneeCompare = true
+LastNameCompare = true
+CoAuthorCompare =  true
+LocationCompare = true
+FirstNameCompare= true
+TitleCompare = true
+PCorrelation = true
+Options = FullText,Abstract,Claims,Description,Category,Assignee,LastName,CoAuthor,Location,FirstName,Title
+[Weights]
+FullText = 0.0
+Abstract = 1.822
+Claims = 0.982
+Description = 2.369
+Category = 1.682
+Assignee = 1.543
+CoAuthor = 1.506
+Location = 4.557
+LastName= 13.234
+FirstName= 8.164
+Title = 0.516
+[DataSet]
+TrainingDataInputPath = /Users/leisun/Desktop/Benchmark.csv
+TrainingDataOutputPath = /Users/leisun/Desktop/ThesisData/ES/PBMED
+InfoDataPath = /Users/leisun/Desktop/ThesisData/ES/PatTest.sqlite
+TextPath =  /Users/leisun/Desktop/ThesisData/ES/PatentsText
+SamplePath =  /Users/leisun/Desktop/ThesisData/ES/
+
+
+
+
+
+
